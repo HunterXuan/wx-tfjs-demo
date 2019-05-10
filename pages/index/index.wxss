@@ -1,0 +1,23 @@
+/**index.wxss**/
+.top-block {
+  top: 0px;
+  width: 100%;
+  height: 100vw;
+  position: absolute;
+}
+
+.bottom-block {
+  bottom: 0px;
+  height: 200rpx;
+  width: 100%;
+  position: absolute;
+ 
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.takePhoto {
+  width: 132rpx;
+  height: 132rpx;
+}

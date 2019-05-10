@@ -1,0 +1,16 @@
+<!--index.wxml-->
+<camera device-position="back" flash="off" binderror="error" style="width:100vw; height:400px;">
+  <cover-view class="top-block">
+    <cover-image class='bgImage' src="../../images/bg.png" style="width:100vw,height:100vw;;position: absolute;"></cover-image>
+  </cover-view>
+  <cover-view class='bottom-block'>
+    <cover-image class='takePhoto' src='../../images/capture.png' bindtap='takeAndPredict'></cover-image>
+  </cover-view>
+</camera>
+<canvas canvas-id="canvas" class="canvas" style="width:224px; height:224px;"></canvas>
+
+<!--
+<image mode="widthFix" src="{{src}}"></image>
+<canvas canvas-id="canvas" class="canvas"></canvas>
+ <canvas canvas-id="canvas" class="canvas"></canvas>
+ <button bindtap="openAndTag">打开图片并判断</button>-->
