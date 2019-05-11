@@ -16,18 +16,38 @@ Page({
   onLoad: function () {
     let that = this
     wx.showLoading({
-      title: 'loading',
+      title: '拼命加载模型',
     })
+    /*
+    wx.downloadFile({
+      url: 'https://hunterx.leanapp.cn/model/group1-shard1of1',
+      success: function (res) {
+        console.log(res)
+      }
+    })
+    wx.request({
+      url: 'https://hunterx.leanapp.cn/model/group1-shard1of1',
+      dataType: '',
+      responseType: 'arraybuffer',
+      success: function (res) {
+        resolve(generateResponse(res));
+      },
+      fail: function (res) {
+        console.log(res)
+      }
+    })*/
+    
     tfcon.loadFrozenModel(
-      'https://ai.flypot.cn/model/tensorflowjs_model.pb',
-      'https://ai.flypot.cn/model/weights_manifest.json'
+      'https://hunterx.leanapp.cn/model/tensorflowjs_model.pb',
+      'https://hunterx.leanapp.cn/model/weights_manifest.json'
     ).then(function (res) {
       app.globalData.model = res
-      console.log(res)
-      console.log(app.globalData.model)
+      //console.log(res)
+      //console.log(app.globalData.model)
       let warmUpRes = that.warmUp()
-      console.log(warmUpRes)
-      console.log(warmUpRes.dataSync())
+      //warmUpRes.dataSync()
+      //console.log(warmUpRes)
+      //console.log(warmUpRes.dataSync())
       //let predictions = that.predict(tfc.zeros([224, 224, 3]))
       //console.log(predictions)
       //let topKClasses = that.getTopKClasses(predictions, 5)
@@ -38,31 +58,32 @@ Page({
 
   onShow: function () {
     //
-    console.log(global)
+    //console.log(global)
   },
 
   predict: function (input) {
-    console.log('predict')
-    console.log(new Date())
+    //console.log('predict')
+    //console.log(new Date())
     let PREPROCESS_DIVISOR = tfc.scalar(255 / 2)
 
     let preprocessedInput = tfc.div(
       tfc.sub(input.asType('float32'), PREPROCESS_DIVISOR),
-      PREPROCESS_DIVISOR);
+      PREPROCESS_DIVISOR)
 
     let reshapedInput =
       preprocessedInput.reshape([1, ...preprocessedInput.shape]);
 
-    let dict = {};
-    dict['input'] = reshapedInput; console.log(new Date())
-    return app.globalData.model.execute(dict, 'final_result');
+    let dict = {}
+    dict['input'] = reshapedInput
+    //console.log(new Date())
+    return app.globalData.model.execute(dict, 'final_result')
   },
 
   getTopKClasses: function (predictions, topK) {
-    console.log('top')
-    console.log(new Date())
+    //console.log('top')
+    //console.log(new Date())
     let values = predictions.dataSync()
-    console.log(values)
+    //console.log(values)
     predictions.dispose()
     let predictionList = []
     for (let i = 0; i < values.length; i++) {
@@ -89,7 +110,7 @@ Page({
         const ctx = wx.createCanvasContext('canvas', this);
         ctx.drawImage(res.tempFilePaths[0], 0, 0)
         ctx.draw()
-        console.log(this)
+        //console.log(this)
         wx.canvasGetImageData({
           canvasId: 'canvas',
           x: 0,
@@ -98,11 +119,11 @@ Page({
           height: 224,
           success: (res) => {
             let tmp = tfc.fromPixels(res)
-            console.log(tmp)
+            //console.log(tmp)
             console.log(this.getTopKClasses(this.predict(tmp), 5))
 
-            console.log('end')
-            console.log(new Date())
+            //console.log('end')
+            //console.log(new Date())
           }
         })
       }
@@ -133,6 +154,9 @@ Page({
   },
 
   takeAndPredict: function () {
+    wx.showLoading({
+      title: '疯狂识别中',
+    })
     const ctx = wx.createCameraContext()
     ctx.takePhoto({
       quality: 'high',
@@ -148,17 +172,25 @@ Page({
             width: 224,
             height: 224,
             success: (res) => {
-              console.log(res)
+              //console.log(res)
               let tmp = tfc.fromPixels(res)
-              console.log(tmp)
+              //console.log(tmp)
               let pres = this.getTopKClasses(this.predict(tmp), 5)
               console.log(pres)
+              wx.hideLoading()
+              /*
+              wx.showModal({
+                title: '111',
+                content: JSON.stringify(pres),
+              })
+              */
               wx.showToast({
-                title: pres[0]['label'],
+                icon: 'none',
+                title: pres[0]['label'] + ', ' + pres[1]['label'] + ', ' + pres[2]['label']
               })
 
-              console.log('end')
-              console.log(new Date())
+              //console.log('end')
+              //console.log(new Date())
             }
           })
         })

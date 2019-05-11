@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<camera device-position="back" flash="off" binderror="error" style="width:100vw; height:400px;">
+<camera device-position="back" flash="off" binderror="error" style="width:100vw; height:100vh;">
   <cover-view class="top-block">
     <cover-image class='bgImage' src="../../images/bg.png" style="width:100vw,height:100vw;;position: absolute;"></cover-image>
   </cover-view>

@@ -16845,7 +16845,10 @@
                 return [2, new Promise(function (resolve, reject) {
                         wx.request({
                             url: input,
-                            header: init.headers || {},
+                            header: init.headers || {
+                              'Content-Type': 'application/octet-stream',
+                              'Cache-Control': 'no-cache',
+                            },
                             data: init.body || {},
                             method: init.method || 'GET',
                             dataType: '',
