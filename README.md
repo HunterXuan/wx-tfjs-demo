@@ -7,5 +7,7 @@
 对实现的坎坷经历感兴趣的，可以看看博文 [tfjs 移植到微信小程序](https://hunterx.xyz/try-tfjs-on-wx.html) 和 [TensorFlowJS 移植再次尝试](https://hunterx.xyz/retry-tfjs-on-wx.html)。
 
 # Demo
-![](https://hunterx.xyz/retry-tfjs-on-wx/demo.gif)
+图片较大，加载时间可能比较长
+
+![](https://github.com/HunterXuan/wx-tfjs-demo/blob/master/images/demo.gif)
 
