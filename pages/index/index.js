@@ -165,34 +165,36 @@ Page({
           showImage: true
         }, () => {
           this.drawImage(res.tempImagePath)
-          wx.canvasGetImageData({
-            canvasId: 'canvas',
-            x: 0,
-            y: 0,
-            width: 224,
-            height: 224,
-            success: (res) => {
-              //console.log(res)
-              let tmp = tfc.fromPixels(res)
-              //console.log(tmp)
-              let pres = this.getTopKClasses(this.predict(tmp), 5)
-              console.log(pres)
-              wx.hideLoading()
-              /*
-              wx.showModal({
-                title: '111',
-                content: JSON.stringify(pres),
-              })
-              */
-              wx.showToast({
-                icon: 'none',
-                title: pres[0]['label'] + ', ' + pres[1]['label'] + ', ' + pres[2]['label']
-              })
+          setTimeout(() => {
+            wx.canvasGetImageData({
+              canvasId: 'canvas',
+              x: 0,
+              y: 0,
+              width: 224,
+              height: 224,
+              success: (res) => {
+                //console.log(res)
+                let tmp = tfc.fromPixels(res)
+                //console.log(tmp)
+                let pres = this.getTopKClasses(this.predict(tmp), 5)
+                console.log(pres)
+                wx.hideLoading()
+                /*
+                wx.showModal({
+                  title: '111',
+                  content: JSON.stringify(pres),
+                })
+                */
+                wx.showToast({
+                  icon: 'none',
+                  title: pres[0]['label'] + ', ' + pres[1]['label'] + ', ' + pres[2]['label']
+                })
 
-              //console.log('end')
-              //console.log(new Date())
-            }
-          })
+                //console.log('end')
+                //console.log(new Date())
+              }
+            })
+          }, 1000)
         })
       }
     })
