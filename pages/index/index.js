@@ -187,7 +187,8 @@ Page({
                 */
                 wx.showToast({
                   icon: 'none',
-                  title: pres[0]['label'] + ', ' + pres[1]['label'] + ', ' + pres[2]['label']
+                  title: pres[0]['label'] + ' [' + (pres[0]['value'] * 100).toFixed(2) + '%] ' +  pres[1]['label'] + ' [' + (pres[1]['value'] * 100).toFixed(2) + '%] ' + pres[2]['label'] + ' [' + (pres[2]['value'] * 100).toFixed(2) + '%]',
+                  duration: 2000
                 })
 
                 //console.log('end')
