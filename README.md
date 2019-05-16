@@ -16,3 +16,7 @@
 
 ![](https://github.com/HunterXuan/wx-tfjs-demo/blob/master/images/demo.gif)
 
+# 交流
+欢迎关注个人微信公众号「猎人杂货铺」，附二维码：
+
+![猎人杂货铺 • 微信公众号](https://hunterx.xyz/images/wechat-qrcode.jpg)
