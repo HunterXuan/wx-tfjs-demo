@@ -38,8 +38,8 @@ Page({
     })*/
     
     tfcon.loadFrozenModel(
-      'https://hunterx.leanapp.cn/model/tensorflowjs_model.pb',
-      'https://hunterx.leanapp.cn/model/weights_manifest.json'
+      'https://ai.flypot.cn/model/tensorflowjs_model.pb',
+      'https://ai.flypot.cn/model/weights_manifest.json'
     ).then(function (res) {
       app.globalData.model = res
       //console.log(res)

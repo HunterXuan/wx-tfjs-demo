@@ -1,5 +1,5 @@
 {
-	"description": "Project configuration file",
+	"description": "小微信运行 TensorFlow 的 Demo",
 	"packOptions": {
 		"ignore": []
 	},
@@ -24,8 +24,8 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.6.6",
 	"appid": "yourappid",
+	"libVersion": "2.7.4",
 	"projectname": "wx-tfjs-demo",
 	"debugOptions": {
 		"hidedInDevtools": []
