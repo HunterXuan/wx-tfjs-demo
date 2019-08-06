@@ -9,7 +9,7 @@
 # 小程序 Demo
 临时上线了（随时可能下线），欢迎大家体验下，测试下自己手机的算力
 
-![gh_7390d3414c10_258.jpg](http://i.endpot.com/image/H1DFC/gh_7390d3414c10_258.jpg)
+![AIPocket.jpg](https://i.endpot.com/image/CIDDI/AIPocket.jpg)
 
 # Demo 自嗨效果
 图片较大，加载时间可能比较长
