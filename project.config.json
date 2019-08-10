@@ -13,7 +13,7 @@
 		"coverView": true,
 		"nodeModules": true,
 		"autoAudits": false,
-		"uglifyFileName": true,
+		"uglifyFileName": false,
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
 		"uploadWithSourceMap": true,
@@ -25,8 +25,8 @@
 	},
 	"compileType": "miniprogram",
 	"appid": "yourappid",
-	"libVersion": "2.7.4",
 	"projectname": "wx-tfjs-demo",
+	"libVersion": "2.8.0",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},

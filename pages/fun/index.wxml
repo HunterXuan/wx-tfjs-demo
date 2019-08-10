@@ -1,0 +1,35 @@
+<view class="page">
+  <view class="page__bd page__bd_spacing">
+    <wux-wing-blank size="large">
+      <wux-divider text="基础" />
+      <wux-row>
+        <wux-col span="10" push="1">
+          <wux-button block outline type="dark" data-dest="performance-test" bind:click="jumpTo" disabled>算力测试</wux-button>
+        </wux-col>
+      </wux-row>
+      
+      <wux-white-space size="large" />
+
+      <wux-divider text="语音" />
+      <wux-row>
+        <wux-col span="10" push="1">
+          <wux-button block outline type="dark" data-dest="musicality-pk" bind:click="jumpTo" disabled>乐感比拼</wux-button>
+        </wux-col>
+      </wux-row>
+
+      <wux-white-space size="large" />
+
+      <wux-divider text="图像" />
+      <wux-row>
+        <wux-col span="10" push="1">
+          <wux-button block outline type="dark" data-dest="treasure-hunt" bind:click="jumpTo" disabled>寻宝作战</wux-button>
+          <wux-button block outline type="dark" data-dest="dance-game" bind:click="jumpTo" disabled>舞感测试</wux-button>
+          <wux-button block outline type="dark" data-dest="cartoon-figure" bind:click="jumpTo" disabled>我的卡通形象</wux-button>
+          <wux-button block outline type="dark" data-dest="older-me" bind:click="jumpTo" disabled>变老后的我</wux-button>
+        </wux-col>
+      </wux-row>
+    </wux-wing-blank>
+
+    <wux-white-space size="large" />
+  </view>
+</view>

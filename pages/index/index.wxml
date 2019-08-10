@@ -1,16 +1,40 @@
-<!--index.wxml-->
-<camera device-position="back" flash="off" binderror="error" style="width:100vw; height:100vh;">
-  <cover-view class="top-block">
-    <cover-image class='bgImage' src="../../images/bg.png" style="width:100vw,height:100vw;;position: absolute;"></cover-image>
-  </cover-view>
-  <cover-view class='bottom-block'>
-    <cover-image class='takePhoto' src='../../images/capture.png' bindtap='takeAndPredict'></cover-image>
-  </cover-view>
-</camera>
-<canvas canvas-id="canvas" class="canvas" style="width:224px; height:224px;"></canvas>
+<view class="page">
+  <view class="page__hd">
+    <wux-white-space size="large" />
+    <view class="page__title wux-text--center">
+      AI in Pocket
+    </view>
+  </view>
+  <view class="page__bd page__bd_spacing">
+    <wux-wing-blank size="large">
+      <wux-white-space size="large" />
+      <wux-divider text="简介" />
 
-<!--
-<image mode="widthFix" src="{{src}}"></image>
-<canvas canvas-id="canvas" class="canvas"></canvas>
- <canvas canvas-id="canvas" class="canvas"></canvas>
- <button bindtap="openAndTag">打开图片并判断</button>-->
+      <view class="indent-text">
+        AI Pocket 是一个可以在手机上运行 TF 模型的小程序，包括但不限于文本分类、语音识别、图像识别等模型。
+      </view>
+
+      <wux-white-space size="large" />
+      <wux-divider text="热门" />
+
+      <wux-grids col="2">
+        <wux-grid thumb="/images/pocket.png" label="基础篇" data-tab="pocket" data-dest="pocket" bind:click="jumpTo" />
+        <wux-grid thumb="/images/fun.png" label="趣味篇" data-tab="fun" data-dest="fun" bind:click="jumpTo" />
+        <wux-grid thumb="/images/about.png" label="关于" data-tab="about" data-dest="about" bind:click="jumpTo" />
+        <wux-grid thumb="/images/mobilenet.png" label="物品识别" data-dest="mobilenet" bind:click="jumpTo" />
+        <wux-grid thumb="/images/posenet.png" label="动作捕捉" data-dest="posenet" bind:click="jumpTo" />
+        
+        <wux-grid thumb="/images/body-pix.png" label="人体检测" data-dest="body-pix" bind:click="jumpTo" />
+      </wux-grids>
+
+      <wux-divider text="联系作者" />
+      <wux-row>
+        <wux-col span="12">
+          <official-account></official-account>
+          <wux-button block outline size="small" type="dark" openType="feedback">意见反馈</wux-button>
+        </wux-col>
+      </wux-row>
+    </wux-wing-blank>
+    <wux-white-space size="large" />
+  </view>
+</view>

@@ -1,0 +1,7 @@
+/* pages/about/index.wxss */
+.indent-text + .indent-text {
+  margin-top: 0.5rem;
+}
+.indent-text {
+  text-indent: 2rem;
+}

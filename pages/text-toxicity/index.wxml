@@ -1,0 +1,17 @@
+<!--pages/text-toxicity/index.wxml-->
+<view class="page">
+  <view class="page__hd">
+    <view class="page__title wux-text--center">Input</view>
+    <view class="page__desc">文本输入框</view>
+  </view>
+  <view class="page__bd">
+    <wux-cell-group title="文本">
+      <wux-cell hover-class="none">
+        <wux-textarea hasCount rows="3" cursorSpacing="80" placeholder="文本" />
+      </wux-cell>
+    </wux-cell-group>
+    <wux-button block size="default" type="calm">calm</wux-button>
+    <wux-progress status="normal" percent="{{ positivePercent }}" />
+    <wux-progress status="error" percent="{{ negativePercent }}" />
+  </view>
+</view>

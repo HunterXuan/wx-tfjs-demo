@@ -1,0 +1,165 @@
+<view class="page">
+  <view class="page__bd page__bd_spacing">
+    <wux-tabs current="{{ currentTab }}" bind:change="onTabChange">
+      <wux-tab key="story" title="开发故事"></wux-tab>
+      <wux-tab key="author" title="作者简介"></wux-tab>
+      <wux-tab key="opportunity" title="合作机会"></wux-tab>
+    </wux-tabs>
+
+    <wux-wing-blank size="large">
+      <block wx:if="{{ currentTab === 'story' }}">
+        <wux-white-space size="large" />
+        <wux-divider text="导火索" />
+
+        <wux-row>
+          <wux-col span="12">
+            <view class="indent-text">
+              某一天，大佬和我聊到 TensorFlow.js，问我有没可能搬到小程序上，说是没准可以做个爆款。
+            </view>
+            <view class="indent-text">
+              经过一番魔改，我成功把 tfjs 移植到了微信小程序上。然而，由于小程序 API 诸多的不完善，以及没有办法优雅地用上 webgl，模型预测速度实在太慢，就没有了爆款的下文。
+            </view>
+          </wux-col>
+        </wux-row>
+
+        <wux-white-space size="large" />
+        <wux-divider text="首次开源" />
+
+        <wux-row>
+          <wux-col :span="12">
+            <view class="indent-text">
+              过了几个月，有人看到我写的一篇关于魔改 tfjs 的文章，留言表示很有兴趣，希望能开源。然后，我就整理了下旧代码并开源在了 GitHub 上。
+            </view>
+          </wux-col>
+        </wux-row>
+
+        <wux-white-space size="large" />
+        <wux-divider text="改良优化" />
+
+        <wux-row>
+          <wux-col :span="12">
+            <view class="indent-text">
+              又过了几个月，同事给我分享了一篇文章，里面有提到 TensorFlow 官方对小程序的支持插件。我掐指一算，感觉可以继续搞搞。
+            </view>
+            <view class="indent-text">
+              我连夜瞄了 tfjs 最近的更新和小程序插件的代码，发现 tfjs 开始考虑对多平台的支持，而且小程序也开放了更多有利的 API。
+            </view>
+            <view class="indent-text">
+              于是，我就把之前开源的 Demo 再完善了下，用上了 webgl 加速，预测速度飞起，便有了现在的 AI Pocket。
+            </view>
+          </wux-col>
+        </wux-row>
+
+        <wux-white-space size="large" />
+        <wux-divider text="把 AI 装进口袋" />
+
+        <wux-row>
+          <wux-col :span="12">
+            <view class="indent-text">
+              我希望把更多的 AI 模型装到 AI Pocket 上，在小程序上就可以跑机器学习/深度学习模型，打造一个「流弊」的 AI 口袋。
+            </view>
+          </wux-col>
+        </wux-row>
+      </block>
+
+      <block wx:if="{{ currentTab === 'author' }}">
+        <wux-white-space size="large" />
+        <wux-divider text="简而言之" />
+
+        <wux-row>
+          <wux-col span="12">
+            <view class="indent-text">
+              只不过是一介码农，希望能和优秀的人共事，一起影响世界。
+            </view>
+          </wux-col>
+        </wux-row>
+
+        <wux-white-space size="large" />
+        <wux-divider text="关于我" />
+
+        <wux-row>
+          <wux-col span="12">
+            <view class="indent-text">
+              在校期间，我作为技术负责人和好友一同创建了 NYPT 站点，也因此结缘了诸多好友，大家都倾向叫我「猎人」。
+            </view>
+            <view class="indent-text">
+              某天心血来潮，我也开了个公众号「猎人杂货铺」，想分享一些工作上的技术积累、生活上的个人感悟等等。
+            </view>
+            <view class="indent-text" style="text-indent: 0;">
+              <official-account></official-account>
+            </view>
+            <view class="indent-text">
+              研究生毕业之后，我来到美丽的厦门，就职于网宿科技，先后从事流程引擎、智能客服相关的设计开发工作。很感谢在网宿的同事和领导们，给了很多包容以及成长的机会。
+            </view>
+            <view class="indent-text">
+              目前已于网宿离职，全职投身于 STEAM/K12 的教育创业项目中，希望日后能为我国的素质教育发展贡献点力量。
+            </view>
+          </wux-col>
+        </wux-row>
+
+        <wux-white-space size="large" />
+        <wux-divider text="技能标签" />
+
+        <wux-row>
+          <wux-col span="12">
+            <wux-tag color="magenta">PHP</wux-tag>
+            <wux-tag color="lime">Python</wux-tag>
+            <wux-tag color="red">Vue</wux-tag>
+            <wux-tag color="green">AI</wux-tag>
+            <wux-tag color="cyan">NLP</wux-tag>
+            <wux-tag color="orange">Docker</wux-tag>
+            <wux-tag color="gold">Swarm</wux-tag>
+            <wux-tag color="volcano">Laravel</wux-tag>
+            <wux-tag color="blue">Camunda</wux-tag>
+            <wux-tag color="geekblue">MiniProgram</wux-tag>
+          </wux-col>
+        </wux-row>
+      </block>
+
+      <block wx:if="{{ currentTab === 'opportunity' }}">
+        <wux-white-space size="large" />
+        <wux-divider text="代码贡献" />
+
+        <wux-row>
+          <wux-col span="12">
+            <view class="indent-text">
+              目前只有我一个人在折腾，代码将不定期更新到 GitHub 仓库 HunterXuan/wx-tfjs-demo 上。欢迎有兴趣的同学一起加功能 & 改 BUG。
+            </view>
+          </wux-col>
+        </wux-row>
+
+        <wux-white-space size="large" />
+        <wux-divider text="商务合作" />
+
+        <wux-row>
+          <wux-col span="12">
+            <view class="indent-text">
+              本人在前后端开发、Docker 集群架构、持续部署、人工智能（尤其 NLP）领域均有积累，可以快速提供成套的解决方案。
+            </view>
+            <view class="indent-text">
+              如果有商务合作需求，或者是对我目前所创业的领域有兴趣，欢迎通过各种途径联系我，包括但不限于微信公众号、个人博客、GitHub 等。
+            </view>
+          </wux-col>
+        </wux-row>
+
+        <wux-white-space size="large" />
+        <wux-divider text="联系方式" />
+
+        <wux-row>
+          <wux-col span="12">
+            <wux-cell-group>
+              <wux-cell title="Blog" extra="hunterx.xyz"></wux-cell>
+              <wux-cell title="Email" extra="endpot@gmail.com"></wux-cell>
+              <wux-cell title="GitHub" extra="github.com/HunterXuan"></wux-cell>
+              <wux-cell title="公众号" extra="猎人杂货铺"></wux-cell>
+              <wux-cell title="知识星球" extra="猎人杂货铺"></wux-cell>
+            </wux-cell-group>
+          </wux-col>
+        </wux-row>
+
+      </block>
+    </wux-wing-blank>
+
+    <wux-white-space size="large" />
+  </view>
+</view>

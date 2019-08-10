@@ -1,0 +1,23 @@
+<view class="page">
+  <view class="page__bd">
+    <camera
+      device-position="back"
+      flash="off"
+      binderror="error"
+      frame-size="medium"
+      class="camera"
+    >
+    </camera>
+    <scroll-view class="prediction-result" scroll-y>
+      <wux-wing-blank size="default">
+        <wux-white-space size="small" />
+        <text class="result">预测耗时: {{ predictionDuration }} ms</text>
+        <view wx:for="{{ predictionResults }}" wx:for-item="item" wx:key="item">
+          <view class="sub-title">{{ item.label }}</view>
+          <wux-progress status="progress" percent="{{ item.value * 100 }}" />
+        </view>
+      </wux-wing-blank>
+      <!--<canvas canvas-id="mycanvas" class="mycanvas"></canvas>-->
+    </scroll-view>
+  </view>
+</view>

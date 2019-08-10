@@ -1,0 +1,35 @@
+<view class="page">
+  <view class="page__bd page__bd_spacing">
+    <wux-wing-blank size="large">
+      <wux-divider text="文本" />
+      <wux-row>
+        <wux-col span="10" push="1">
+          <wux-button block outline type="dark" data-dest="text-toxicity" bind:click="jumpTo" disabled>敬请期待...</wux-button>
+        </wux-col>
+      </wux-row>
+      
+      <wux-white-space size="large" />
+
+      <wux-divider text="语音" />
+      <wux-row>
+        <wux-col span="10" push="1">
+          <wux-button block outline type="dark" data-dest="speech-commands" bind:click="jumpTo" disabled>敬请期待...</wux-button>
+        </wux-col>
+      </wux-row>
+
+      <wux-white-space size="large" />
+
+      <wux-divider text="图像" />
+      <wux-row>
+        <wux-col span="10" push="1">
+          <wux-button block outline type="dark" data-dest="mobilenet" bind:click="jumpTo">常见物品识别</wux-button>
+          <wux-button block outline type="dark" data-dest="posenet" bind:click="jumpTo">人体动作捕捉</wux-button>
+          <wux-button block outline type="dark" data-dest="body-pix" bind:click="jumpTo">身体部位识别</wux-button>
+          <wux-button block outline type="dark" data-dest="coco-ssd" bind:click="jumpTo" disabled>简易物体分割</wux-button>
+        </wux-col>
+      </wux-row>
+    </wux-wing-blank>
+
+    <wux-white-space size="large" />
+  </view>
+</view>
