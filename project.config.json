@@ -24,9 +24,9 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"appid": "yourappid",
 	"projectname": "wx-tfjs-demo",
 	"libVersion": "2.8.0",
+	"appid": "your-app-id",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},
