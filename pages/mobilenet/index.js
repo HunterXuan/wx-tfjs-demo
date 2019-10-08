@@ -71,5 +71,14 @@ Page({
     if (this.classifier) {
       this.classifier.dispose()
     }
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+    return {
+      title: 'AI Pocket - 常见物品识别'
+    }
   }
 })

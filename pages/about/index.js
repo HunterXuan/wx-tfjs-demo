@@ -68,5 +68,14 @@ Page({
     this.setData({
       currentTab: e.detail.key
     })
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+    return {
+      title: 'AI Pocket - 故事'
+    }
   }
 })

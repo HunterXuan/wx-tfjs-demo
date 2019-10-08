@@ -117,5 +117,14 @@ Page({
     if (this.bodyPixModel) {
       this.bodyPixModel.dispose()
     }
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+    return {
+      title: 'AI Pocket - 身体部位识别'
+    }
   }
 })
