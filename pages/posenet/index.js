@@ -90,5 +90,14 @@ Page({
     if (this.posenetModel) {
       this.posenetModel.dispose()
     }
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+    return {
+      title: 'AI Pocket - 人体动作捕捉'
+    }
   }
 })

@@ -27,5 +27,11 @@ Page({
 
   onUnload() {
     //
+  },
+
+  onShareAppMessage() {
+    return {
+      title: 'AI Pocket'
+    }
   }
 })
