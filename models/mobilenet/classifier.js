@@ -18,7 +18,7 @@ export class Classifier {
   classify(ab, size) {
     const data = new Uint8Array(ab)
     return tf.tidy(() => {
-      const temp = tf.browser.fromPixels({ data, ...size })
+      const temp = tf.tensor(new Uint8Array(data), [size.height, size.width, 4])
       const sliceOptions = getFrameSliceOptions('back', size.width, size.height, 224, 224)
 
       const pixels = temp.slice(sliceOptions.start, sliceOptions.size).resizeBilinear([224, 224])
