@@ -31,6 +31,8 @@
         <wux-grid thumb="/images/body-pix.png" label="人体检测" data-dest="body-pix" bind:click="jumpTo" />
       </wux-grids>
 
+      <ad unit-id="adunit-ecd835a5ec9df5c1"></ad>
+
       <wux-divider text="联系作者" />
       <wux-row>
         <wux-col span="12">
