@@ -23,6 +23,22 @@
   background: #eee !important;
 }
 
+.category-input-container .wux-input {
+  border: 1rpx solid #eee;
+}
+
+.category-input-container .wux-input__label {
+  color: #fff;
+  text-align: right;
+  padding: 10rpx;
+  background-color: #333300; 
+}
+
+.category-input-container .wux-input__control {
+  padding: 10rpx;
+  background-color: #eee; 
+}
+
 .segmented-control {
   margin: 15rpx 0 !important;
 }

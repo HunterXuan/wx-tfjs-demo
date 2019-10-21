@@ -17,16 +17,29 @@
           wux-class="segmented-control"
           controlled
           current="{{ currentSegment }}"
-          values="{{ [ '分类一', '分类二', '分类三' ] }}"
+          values="{{ [ imageGroups[0]['label'], imageGroups[1]['label'], imageGroups[2]['label'] ] }}"
           bind:change="onSegmentChange"
         />
 
+          <wux-row>
+            <wux-col wux-class="category-input-container" span="12">
+              <wux-input
+                controlled
+                label="分类别名"
+                value="{{ imageGroups[currentSegment]['label'] }}"
+                bind:change="handleInputChange"
+              />
+            </wux-col>
+          </wux-row>
           <wux-row gutter="2">
-            <wux-col span="6">
+            <wux-col span="5">
                 <wux-button block size="small" type="calm" bindtap="takeSample">采集样本</wux-button>
             </wux-col>
-            <wux-col span="6">
+            <wux-col span="5">
                 <wux-button block size="small" type="assertive" bindtap="cleanSample">清空样本</wux-button>
+            </wux-col>
+            <wux-col span="2">
+                <wux-button block outline size="small" type="dark" bindtap="showHelp">帮助</wux-button>
             </wux-col>
           </wux-row>
           

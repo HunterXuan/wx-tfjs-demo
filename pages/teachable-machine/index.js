@@ -162,26 +162,47 @@ Page({
   },
 
   executeClassify: function(frame) {
-    if (this.squeezer && this.knn && this.knn.getNumClasses() === 3 && !this.data.predicting) {
-      this.setData({
-        predicting: true
-      }, () => {
-        const tensor = this.squeezer.squeeze(
-          frame.data,
-          { width: frame.width, height: frame.height }
-        )
+    if (this.squeezer && this.knn && !this.data.predicting) {
+      if (this.knn.getNumClasses() === 3) {
+        this.setData({
+          predicting: true
+        }, () => {
+          const tensor = this.squeezer.squeeze(
+            frame.data,
+            { width: frame.width, height: frame.height }
+          )
 
-        console.log(tensor)
+          // console.log(tensor)
 
-        this.knn.predictClass(tensor, 3).then((res) => {
-          console.log(res)
-          this.setData({
-            predicting: false,
-            prediction: this.data.imageGroups[res.classIndex].label
+          this.knn.predictClass(tensor, 3).then((res) => {
+            // console.log(res)
+            this.setData({
+              predicting: false,
+              prediction: this.data.imageGroups[res.classIndex].label
+            })
           })
         })
-      })
+      } else {
+        this.setData({
+          prediction: '样本不足'
+        })
+      }
     }
+  },
+
+  handleInputChange: function(e) {
+    const imageGroups = this.data.imageGroups
+    imageGroups[this.data.currentSegment]['label'] = e.detail.value
+    this.setData({
+      imageGroups: imageGroups
+    })
+  },
+
+  showHelp: function() {
+    wx.showModal({
+      title: '使用帮助',
+      content: '1. 修改各分类的「分类别名」；\r\n2. 点击「采集样本」按钮可以采集一张分类图像；\r\n3. 点击「清空样本」清空某个分类下的样本；\r\n4. 所有分类均采集样本后，会自动实时预测',
+    })
   },
 
   /**
