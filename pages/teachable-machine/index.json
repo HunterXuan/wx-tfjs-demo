@@ -1,0 +1,15 @@
+{
+  "navigationBarTitleText": "初识 AI",
+  "usingComponents": {
+    "wux-row": "../../miniprogram_npm/wux-weapp/row/index",
+    "wux-col": "../../miniprogram_npm/wux-weapp/col/index",
+    "wux-wing-blank": "../../miniprogram_npm/wux-weapp/wing-blank/index",
+    "wux-white-space": "../../miniprogram_npm/wux-weapp/white-space/index",
+    "wux-tabs": "../../miniprogram_npm/wux-weapp/tabs/index",
+    "wux-tab": "../../miniprogram_npm/wux-weapp/tab/index",
+    "wux-segmented-control": "../../miniprogram_npm/wux-weapp/segmented-control/index",
+    "wux-icon": "../../miniprogram_npm/wux-weapp/icon/index",
+    "wux-button": "../../miniprogram_npm/wux-weapp/button/index",
+    "wux-input": "../../miniprogram_npm/wux-weapp/input/index"
+  }
+}

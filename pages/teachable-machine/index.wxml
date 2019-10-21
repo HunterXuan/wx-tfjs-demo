@@ -1,0 +1,41 @@
+<view class="page">
+  <view class="page__bd page__bd_spacing">
+    <camera
+      device-position="back"
+      flash="off"
+      binderror="error"
+      frame-size="medium"
+      class="camera"
+    >
+      <cover-view class="prediction-view">{{ prediction }}</cover-view>
+    </camera>
+
+    <scroll-view class="action-block" scroll-y>
+      <wux-wing-blank size="large">
+        <wux-segmented-control
+          theme="dark"
+          wux-class="segmented-control"
+          controlled
+          current="{{ currentSegment }}"
+          values="{{ [ '分类一', '分类二', '分类三' ] }}"
+          bind:change="onSegmentChange"
+        />
+
+          <wux-row gutter="2">
+            <wux-col span="6">
+                <wux-button block size="small" type="calm" bindtap="takeSample">采集样本</wux-button>
+            </wux-col>
+            <wux-col span="6">
+                <wux-button block size="small" type="assertive" bindtap="cleanSample">清空样本</wux-button>
+            </wux-col>
+          </wux-row>
+          
+          <scroll-view class="images-scroll-view" scroll-x>
+            <block wx:for="{{ imageGroups[currentSegment]['images'] }}" wx:key="key">
+              <image class="sample-image" src="{{ item['imagePath'] }}"></image>
+            </block>
+          </scroll-view>
+      </wux-wing-blank>
+    </scroll-view>
+  </view>
+</view>
