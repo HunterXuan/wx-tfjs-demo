@@ -10,3 +10,7 @@
 .indent-text {
   text-indent: 2rem;
 }
+
+.indent-text + .indent-text {
+  margin-top: 0.5rem;
+}

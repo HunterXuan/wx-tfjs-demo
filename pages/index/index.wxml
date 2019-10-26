@@ -14,6 +14,10 @@
         AI Pocket 是一个可以在手机上运行 TF 模型的小程序，包括但不限于文本分类、语音识别、图像识别等模型。
       </view>
 
+      <view class="indent-text">
+        由于需要联网下载模型文件，为了保证体验效果，请在网络良好条件下使用。
+      </view>
+
       <wux-white-space size="large" />
       <wux-divider text="热门" />
 
@@ -26,6 +30,8 @@
         
         <wux-grid thumb="/images/body-pix.png" label="人体检测" data-dest="body-pix" bind:click="jumpTo" />
       </wux-grids>
+
+      <ad unit-id="adunit-ecd835a5ec9df5c1"></ad>
 
       <wux-divider text="联系作者" />
       <wux-row>

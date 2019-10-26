@@ -9,7 +9,8 @@
     "pages/mobilenet/index",
     "pages/posenet/index",
     "pages/body-pix/index",
-    "pages/coco-ssd/index"
+    "pages/coco-ssd/index",
+    "pages/teachable-machine/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

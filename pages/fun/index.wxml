@@ -22,6 +22,7 @@
       <wux-divider text="图像" />
       <wux-row>
         <wux-col span="10" push="1">
+          <wux-button block outline type="dark" data-dest="teachable-machine" bind:click="jumpTo">初识 AI</wux-button>
           <wux-button block outline type="dark" data-dest="treasure-hunt" bind:click="jumpTo" disabled>寻宝作战</wux-button>
           <wux-button block outline type="dark" data-dest="dance-game" bind:click="jumpTo" disabled>舞感测试</wux-button>
           <wux-button block outline type="dark" data-dest="cartoon-figure" bind:click="jumpTo" disabled>我的卡通形象</wux-button>
@@ -31,5 +32,6 @@
     </wux-wing-blank>
 
     <wux-white-space size="large" />
+    <ad unit-id="adunit-40665823848050a9"></ad>
   </view>
 </view>

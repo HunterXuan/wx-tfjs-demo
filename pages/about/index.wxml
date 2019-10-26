@@ -34,6 +34,7 @@
         </wux-row>
 
         <wux-white-space size="large" />
+        <ad unit-id="adunit-ccafe3620410a11b"></ad>
         <wux-divider text="改良优化" />
 
         <wux-row>
@@ -75,6 +76,7 @@
         </wux-row>
 
         <wux-white-space size="large" />
+        <ad unit-id="adunit-ccafe3620410a11b"></ad>
         <wux-divider text="关于我" />
 
         <wux-row>
@@ -143,6 +145,7 @@
         </wux-row>
 
         <wux-white-space size="large" />
+        <ad unit-id="adunit-ccafe3620410a11b"></ad>
         <wux-divider text="联系方式" />
 
         <wux-row>
@@ -152,7 +155,6 @@
               <wux-cell title="Email" extra="endpot@gmail.com"></wux-cell>
               <wux-cell title="GitHub" extra="github.com/HunterXuan"></wux-cell>
               <wux-cell title="公众号" extra="猎人杂货铺"></wux-cell>
-              <wux-cell title="知识星球" extra="猎人杂货铺"></wux-cell>
             </wux-cell-group>
           </wux-col>
         </wux-row>

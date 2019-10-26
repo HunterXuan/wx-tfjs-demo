@@ -1,0 +1,58 @@
+/* pages/teachable-machine/index.wxss */
+.camera {
+  width: 100vw;
+  height: 100vw;
+  z-index: 5;
+}
+
+.prediction-view {
+  z-index: 10;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 20rpx;
+  color: white;
+  background-color: #333300;
+}
+
+.action-block {
+  height: calc(100vh - 100vw); 
+}
+
+.action-tabs {
+  background: #eee !important;
+}
+
+.category-input-container .wux-input {
+  border: 1rpx solid #eee;
+}
+
+.category-input-container .wux-input__label {
+  color: #fff;
+  text-align: right;
+  padding: 10rpx;
+  background-color: #333300; 
+}
+
+.category-input-container .wux-input__control {
+  padding: 10rpx;
+  background-color: #eee; 
+}
+
+.segmented-control {
+  margin: 15rpx 0 !important;
+}
+
+.images-scroll-view {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.sample-image {
+  width: 25vw;
+  height: 25vw;
+}
+
+.sample-image + .sample-image {
+  margin-left: 1vw; 
+}
