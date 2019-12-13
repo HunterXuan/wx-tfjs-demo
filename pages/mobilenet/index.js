@@ -1,10 +1,14 @@
 //index.js
-import { Classifier } from '../../models/mobilenet/classifier'
+const fetchWechat = require('fetch-wechat')
+const tf = require('@tensorflow/tfjs-core')
+const plugin = requirePlugin('tfjsPlugin')
 
-//获取应用实例
-const app = getApp()
+import { Classifier } from '../../models/mobilenet/classifier.js'
 
 Page({
+
+  classifier: null,
+
   data: {
     predicting: false,
     predictionDuration: 0,
@@ -12,38 +16,59 @@ Page({
     result: ''
   },
 
-  classifier: null,
-
-  initClassifier() {
-    if (this.classifier == null) {
-      this.showLoadingToast()
-      const classifier = new Classifier(this)
-      classifier.load().then(() => {
-        this.classifier = classifier
-        this.hideLoadingToast()
-      })
-    }
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    plugin.configPlugin({
+      fetchFunc: fetchWechat.fetchFunc(),
+      tf,
+      canvas: wx.createOffscreenCanvas(),
+      backendName: 'wechat-webgl-' + Math.random()
+    })
   },
 
-  executeClassify(frame) {
-    if (this.classifier && !this.data.predicting) {
-      this.setData({
-        predicting: true
-      }, () => {
-        const start = Date.now()
-        const predictionResults = this.classifier.classify(
-          frame.data,
-          { width: frame.width, height: frame.height }
-        )
-        const end = Date.now()
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+    this.initClassifier()
 
-        this.setData({
-          predicting: false,
-          predictionDuration: end - start,
-          predictionResults: predictionResults
-        })
+    // Start the camera API to feed the captured images to the models.
+    const context = wx.createCameraContext(this)
+
+    let count = 0
+    const listener = context.onCameraFrame((frame) => {
+      count = count + 1
+      if (count === 3) {
+        count = 0
+        this.frame = frame
+
+        this.executeClassify(frame)
+      }
+    })
+    listener.start()
+  },
+
+  initClassifier() {
+    this.showLoadingToast()
+
+    const systemInfo = wx.getSystemInfoSync()
+
+    this.classifier = new Classifier('back', {
+      width: systemInfo.windowWidth,
+      height: systemInfo.windowWidth
+    })
+
+    this.classifier.load().then(_ => {
+      this.hideLoadingToast()
+    }).catch(err => {
+      console.log(err)
+      wx.showToast({
+        title: '网络连接异常',
+        icon: 'none'
       })
-    }
+    })
   },
 
   showLoadingToast() {
@@ -56,15 +81,22 @@ Page({
     wx.hideLoading()
   },
 
-  async onReady() {
-    this.initClassifier()
+  executeClassify: function (frame) {
+    if (this.classifier && this.classifier.isReady() && !this.data.predicting) {
+      this.setData({
+        predicting: true
+      }, () => {
+        const start = Date.now()
+        const predictionResults = this.classifier.classify(frame)
+        const end = Date.now()
 
-    // Start the camera API to feed the captured images to the models.
-    const context = wx.createCameraContext(this)
-    const listener = context.onCameraFrame((frame) => {
-      this.executeClassify(frame)
-    })
-    listener.start()
+        this.setData({
+          predicting: false,
+          predictionDuration: end - start,
+          predictionResults: predictionResults
+        })
+      })
+    }
   },
 
   onUnload() {

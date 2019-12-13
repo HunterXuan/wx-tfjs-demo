@@ -1,58 +1,89 @@
 // pages/body-pix/index.js
-import * as bodyPix from '@tensorflow-models/body-pix'
-bodyPix.checkpoints[0.25].url = 'https://ai.flypot.cn/models/body-pix/'
-bodyPix.checkpoints[0.5].url = 'https://ai.flypot.cn/models/body-pix/'
-bodyPix.checkpoints[0.75].url = 'https://ai.flypot.cn/models/body-pix/'
-bodyPix.checkpoints[1].url = 'https://ai.flypot.cn/models/body-pix/'
-//console.log(bodyPix)
+const fetchWechat = require('fetch-wechat')
+const tf = require('@tensorflow/tfjs-core')
+const plugin = requirePlugin('tfjsPlugin')
 
-import {
-  detectBodySegmentation,
-  toMaskImageData
-} from '../../models/body-pix/body-pix'
+import { Classifier } from '../../models/body-pix/classifier.js'
 
 const CANVAS_ID = 'canvas'
-const POSENET_URL = 'https://ai.flypot.cn/models/posenet/model.json'
 
 Page({
+
+  classifier: null,
 
   /**
    * Page initial data
    */
   data: {
-    predicting: false,
-    videoWidth: null,
-    videoHeight: null
+    predicting: false
   },
 
-  bodyPixModel: null,
+  /**
+  * 生命周期函数--监听页面加载
+  */
+  onLoad: function (options) {
+    plugin.configPlugin({
+      fetchFunc: fetchWechat.fetchFunc(),
+      tf,
+      canvas: wx.createOffscreenCanvas(),
+      backendName: 'wechat-webgl-' + Math.random()
+    });
+  },
 
-  canvas: null,
+  /**
+     * 生命周期函数--监听页面初次渲染完成
+     */
+  onReady: function () {
+    setTimeout(() => {
+      this.ctx = wx.createCanvasContext(CANVAS_ID)
+    }, 500)
 
-  segmentation: null,
+    this.initClassifier()
 
-  initModel: function() {
-    if (this.bodyPixModel == null) {
-      this.showLoadingToast()
+    const context = wx.createCameraContext(this)
+    const listener = context.onCameraFrame((frame) => {
+      this.executeClassify(frame)
+    })
+    listener.start()
+  },
 
-      bodyPix.load(0.5).then((model) => {
-        this.bodyPixModel = model
-
-        this.hideLoadingToast()
-      })
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+    if (this.classifier && this.classifier.isReady()) {
+      this.classifier.dispose()
     }
   },
 
-  executeModel: function(frame) {
-    if (this.bodyPixModel && !this.data.predicting) {
+  initClassifier() {
+    this.showLoadingToast()
+
+    const systemInfo = wx.getSystemInfoSync()
+
+    this.classifier = new Classifier('front', {
+      width: systemInfo.windowWidth,
+      height: systemInfo.windowHeight
+    })
+
+    this.classifier.load().then(() => {
+      this.hideLoadingToast()
+    }).catch(err => {
+      console.log(err)
+      wx.showToast({
+        title: '网络连接异常',
+        icon: 'none'
+      })
+    })
+  },
+
+  executeClassify: function(frame) {
+    if (this.classifier && this.classifier.isReady() && !this.data.predicting) {
       this.setData({
         predicting: true
       }, () => {
-        detectBodySegmentation(frame, this.data.videoWidth, this.data.videoHeight, this.bodyPixModel).then((segmentation) => {
-          //this.segmentation = segmentation
-          //console.log(segmentation)
-          const maskImageData = toMaskImageData(segmentation)
-          //console.log(maskImageData)
+        this.classifier.detectBodySegmentation(frame).then(segmentation => {
+          const maskImageData = this.classifier.toMaskImageData(segmentation)
           wx.canvasPutImageData({
             canvasId: CANVAS_ID,
             data: maskImageData.data,
@@ -66,8 +97,9 @@ Page({
               })
             }
           })
+        }).catch(err => {
+          console.log(err)
         })
-        //console.log(this.segmentation)
       })
     }
   },
@@ -82,40 +114,12 @@ Page({
     wx.hideLoading()
   },
 
-  initVideoSize: function() {
-    wx.getSystemInfo({
-      success: ({
-        windowWidth,
-        windowHeight
-      }) => {
-        this.setData({
-          videoHeight: windowHeight,
-          videoWidth: windowWidth
-        })
-      }
-    })
-  },
-
-  /**
-   * Lifecycle function--Called when page is initially rendered
-   */
-  onReady: async function() {
-    this.initVideoSize()
-    this.initModel()
-
-    const context = wx.createCameraContext(this)
-    const listener = context.onCameraFrame((frame) => {
-      this.executeModel(frame)
-    })
-    listener.start()
-  },
-
   /**
    * Lifecycle function--Called when page unload
    */
-  onUnload: function() {
-    if (this.bodyPixModel) {
-      this.bodyPixModel.dispose()
+  onUnload: function () {
+    if (this.classifier && this.classifier.isReady()) {
+      this.classifier.dispose()
     }
   },
 

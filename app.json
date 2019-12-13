@@ -53,7 +53,7 @@
   "sitemapLocation": "sitemap.json",
   "plugins": {
     "tfjsPlugin": {
-      "version": "0.0.6",
+      "version": "0.0.7",
       "provider": "wx6afed118d9e81df9"
     }
   }

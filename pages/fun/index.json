@@ -1,11 +1,11 @@
 {
   "navigationBarTitleText": "趣味篇",
   "usingComponents": {
-    "wux-row": "../../miniprogram_npm/wux-weapp/row/index",
-    "wux-col": "../../miniprogram_npm/wux-weapp/col/index",
-    "wux-divider": "../../miniprogram_npm/wux-weapp/divider/index",
-    "wux-button": "../../miniprogram_npm/wux-weapp/button/index",
-    "wux-wing-blank": "../../miniprogram_npm/wux-weapp/wing-blank/index",
-    "wux-white-space": "../../miniprogram_npm/wux-weapp/white-space/index"
+    "wux-row": "../../wux-weapp/row/index",
+    "wux-col": "../../wux-weapp/col/index",
+    "wux-divider": "../../wux-weapp/divider/index",
+    "wux-button": "../../wux-weapp/button/index",
+    "wux-wing-blank": "../../wux-weapp/wing-blank/index",
+    "wux-white-space": "../../wux-weapp/white-space/index"
   }
 }

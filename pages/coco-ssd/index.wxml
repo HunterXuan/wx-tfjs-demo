@@ -1,2 +1,12 @@
-<!--pages/coco-ssd/index.wxml-->
-<text>pages/coco-ssd/index.wxml</text>
+<view class="page">
+  <view class="page__bd page__bd_spacing">
+    <camera
+      device-position="back"
+      flash="off"
+      frame-size="medium"
+      class="camera"
+    >
+      <canvas id="canvas" canvas-id="canvas" class="canvas"></canvas>
+    </camera>
+  </view>
+</view>

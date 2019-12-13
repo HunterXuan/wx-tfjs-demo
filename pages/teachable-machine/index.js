@@ -1,9 +1,18 @@
 // pages/teachable-machine/index.js
-import { Squeezer } from '../../models/teachable-machine/squeezer.js'
-import * as knnClassifier from '../../models/teachable-machine/knn-classifier.js'
+const fetchWechat = require('fetch-wechat')
+const tf = require('@tensorflow/tfjs-core')
+const plugin = requirePlugin('tfjsPlugin')
+
+import { Classifier } from '../../models/teachable-machine/classifier.js'
 
 Page({
 
+  ctx: null,
+
+  frame: null,
+
+  classifier: null,
+  
   /**
    * 页面的初始数据
    */
@@ -27,45 +36,23 @@ Page({
     ]
   },
 
-  ctx: null,
-  frame: null,
-  squeezer: null,
-  knn: null,
-
-  initSqueezer() {
-    if (this.squeezer == null) {
-      this.showLoadingToast()
-      const squeezer = new Squeezer()
-      squeezer.load().then(() => {
-        this.squeezer = squeezer
-        this.hideLoadingToast()
-      })
-    }
-  },
-
-  showLoadingToast() {
-    wx.showLoading({
-      title: '拼命加载模型',
-    })
-  },
-
-  hideLoadingToast() {
-    wx.hideLoading()
-  },
-
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    plugin.configPlugin({
+      fetchFunc: fetchWechat.fetchFunc(),
+      tf,
+      canvas: wx.createOffscreenCanvas(),
+      backendName: 'wechat-webgl-' + Math.random()
+    });
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    this.knn = knnClassifier.create()
-    this.initSqueezer()
+    this.initClassifier()
 
     this.ctx = wx.createCameraContext(this)
 
@@ -83,38 +70,43 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    if (this.classifier && this.classifier.isReady()) {
+      this.classifier.dispose()
+    }
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
+  initClassifier() {
+    this.showLoadingToast()
 
+    const systemInfo = wx.getSystemInfoSync()
+
+    this.classifier = new Classifier('back', {
+      width: systemInfo.windowWidth,
+      height: systemInfo.windowWidth
+    })
+
+    this.classifier.load().then(_ => {
+      this.hideLoadingToast()
+    }).catch(err => {
+      console.log(err)
+      wx.showToast({
+        title: '网络连接异常',
+        icon: 'none'
+      })
+    })
   },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
+  showLoadingToast() {
+    wx.showLoading({
+      title: '拼命加载模型',
+    })
+  },
 
+  hideLoadingToast() {
+    wx.hideLoading()
   },
 
   onSegmentChange: function (e) {
@@ -149,44 +141,28 @@ Page({
       imageGroups: imageGroups
     })
 
-    this.knn.clearClass(this.data.currentSegment)
+    this.classifier.clearClass(this.data.currentSegment)
   },
 
   addSample: function(index) {
-    const tensor = this.squeezer.squeeze(
-      this.frame.data,
-      { width: this.frame.width, height: this.frame.height }
-    )
-
-    this.knn.addExample(tensor, index)
+    this.classifier.addExample(this.frame, index)
   },
 
-  executeClassify: function(frame) {
-    if (this.squeezer && this.knn && !this.data.predicting) {
-      if (this.knn.getNumClasses() === 3) {
-        this.setData({
-          predicting: true
-        }, () => {
-          const tensor = this.squeezer.squeeze(
-            frame.data,
-            { width: frame.width, height: frame.height }
-          )
+  executeClassify: function (frame) {
+    if (this.classifier && this.classifier.getNumClasses() == 3 && !this.data.predicting) {
+      this.setData({
+        predicting: true
+      }, () => {
 
-          // console.log(tensor)
-
-          this.knn.predictClass(tensor, 3).then((res) => {
-            // console.log(res)
-            this.setData({
-              predicting: false,
-              prediction: this.data.imageGroups[res.classIndex].label
-            })
+        this.classifier.predictClass(frame).then((res) => {
+          this.setData({
+            predicting: false,
+            prediction: this.data.imageGroups[res.classIndex].label
           })
+        }).catch((err) => {
+          console.log(err)
         })
-      } else {
-        this.setData({
-          prediction: '样本不足'
-        })
-      }
+      })
     }
   },
 

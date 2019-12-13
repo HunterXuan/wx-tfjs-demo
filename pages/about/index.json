@@ -1,16 +1,16 @@
 {
   "navigationBarTitleText": "关于",
   "usingComponents": {
-    "wux-row": "../../miniprogram_npm/wux-weapp/row/index",
-    "wux-col": "../../miniprogram_npm/wux-weapp/col/index",
-    "wux-divider": "../../miniprogram_npm/wux-weapp/divider/index",
-    "wux-button": "../../miniprogram_npm/wux-weapp/button/index",
-    "wux-wing-blank": "../../miniprogram_npm/wux-weapp/wing-blank/index",
-    "wux-white-space": "../../miniprogram_npm/wux-weapp/white-space/index",
-    "wux-tag": "../../miniprogram_npm/wux-weapp/tag/index",
-    "wux-tabs": "../../miniprogram_npm/wux-weapp/tabs/index",
-    "wux-tab": "../../miniprogram_npm/wux-weapp/tab/index",
-    "wux-cell-group": "../../miniprogram_npm/wux-weapp/cell-group/index",
-    "wux-cell": "../../miniprogram_npm/wux-weapp/cell/index"
+    "wux-row": "../../wux-weapp/row/index",
+    "wux-col": "../../wux-weapp/col/index",
+    "wux-divider": "../../wux-weapp/divider/index",
+    "wux-button": "../../wux-weapp/button/index",
+    "wux-wing-blank": "../../wux-weapp/wing-blank/index",
+    "wux-white-space": "../../wux-weapp/white-space/index",
+    "wux-tag": "../../wux-weapp/tag/index",
+    "wux-tabs": "../../wux-weapp/tabs/index",
+    "wux-tab": "../../wux-weapp/tab/index",
+    "wux-cell-group": "../../wux-weapp/cell-group/index",
+    "wux-cell": "../../wux-weapp/cell/index"
   }
 }
