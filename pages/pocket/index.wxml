@@ -25,7 +25,7 @@
           <wux-button block outline type="dark" data-dest="mobilenet" bind:click="jumpTo">常见物品识别</wux-button>
           <wux-button block outline type="dark" data-dest="posenet" bind:click="jumpTo">人体动作捕捉</wux-button>
           <wux-button block outline type="dark" data-dest="body-pix" bind:click="jumpTo">身体部位识别</wux-button>
-          <wux-button block outline type="dark" data-dest="coco-ssd" bind:click="jumpTo" disabled>简易物体分割</wux-button>
+          <wux-button block outline type="dark" data-dest="coco-ssd" bind:click="jumpTo">通用物体检测</wux-button>
         </wux-col>
       </wux-row>
     </wux-wing-blank>

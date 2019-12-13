@@ -1,55 +1,100 @@
-// pages/posnet/index.js
-import * as posenet from '@tensorflow-models/posenet'
-import { detectPoseInRealTime, drawPoses } from '../../models/posenet/posenet'
+// pages/body-pix/index.js
+const fetchWechat = require('fetch-wechat')
+const tf = require('@tensorflow/tfjs-core')
+const plugin = requirePlugin('tfjsPlugin')
+
+import { Classifier } from '../../models/posenet/classifier.js'
 
 const CANVAS_ID = 'canvas'
-const POSENET_URL = 'https://ai.flypot.cn/models/posenet/model.json'
 
 Page({
-  data: {
-    predicting: false
-  },
 
-  posenetModel: null,
-
-  canvas: null,
-
-  poses: null,
+  classifier: null,
 
   ctx: null,
 
-  initPosenet() {
-    if (this.posenetModel == null) {
-      this.showLoadingToast()
+  /**
+   * Page initial data
+   */
+  data: {
+    predicting: false,
+    videoWidth: null,
+    videoHeight: null
+  },
 
-      posenet
-        .load({
-          architecture: 'MobileNetV1',
-          outputStride: 16,
-          inputResolution: 193,
-          multiplier: 0.5,
-          modelUrl: POSENET_URL
-        })
-        .then((model) => {
-          this.posenetModel = model
+  /**
+  * 生命周期函数--监听页面加载
+  */
+  onLoad: function (options) {
+    plugin.configPlugin({
+      fetchFunc: fetchWechat.fetchFunc(),
+      tf,
+      canvas: wx.createOffscreenCanvas(),
+      backendName: 'wechat-webgl-' + Math.random()
+    });
+  },
 
-          this.hideLoadingToast()
-      });
+  /**
+     * 生命周期函数--监听页面初次渲染完成
+     */
+  onReady: function () {
+    setTimeout(() => {
+      this.ctx = wx.createCanvasContext(CANVAS_ID)
+    }, 500)
+
+    this.initClassifier()
+
+    const context = wx.createCameraContext(this)
+    const listener = context.onCameraFrame((frame) => {
+      this.executeClassify(frame)
+    })
+    listener.start()
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+    if (this.classifier && this.classifier.isReady()) {
+      this.classifier.dispose()
     }
   },
 
-  executePosenet(frame) {
-    if (this.posenetModel && !this.data.predicting) {
+  initClassifier() {
+    this.showLoadingToast()
+
+    const systemInfo = wx.getSystemInfoSync()
+
+    this.classifier = new Classifier('front', {
+      width: systemInfo.windowWidth,
+      height: systemInfo.windowHeight
+    })
+
+    this.classifier.load().then(() => {
+      this.hideLoadingToast()
+    }).catch(err => {
+      console.log(err)
+      wx.showToast({
+        title: '网络连接异常',
+        icon: 'none'
+      })
+    })
+  },
+
+  executeClassify(frame) {
+    if (this.classifier && this.classifier.isReady() && !this.data.predicting) {
       this.setData({
         predicting: true
       }, () => {
-        detectPoseInRealTime(frame, this.posenetModel, false)
-          .then((poses) => {
-            this.poses = poses
-            drawPoses(this.ctx, this.poses)
-            
+        this.classifier.detectSinglePose(frame)
+          .then((pose) => {
+            const nosePosition = pose.keypoints[0].position
+
+            this.classifier.drawSinglePose(this.ctx, pose)
+
             this.setData({
-              predicting: false
+              predicting: false,
+              nosePosition: Math.round(nosePosition.x) + ', ' + Math.round(nosePosition.y)
             })
           })
           .catch((err) => {
@@ -69,26 +114,12 @@ Page({
     wx.hideLoading()
   },
 
-  async onReady() {
-    // console.log('create canvas context for #image...')
-
-    setTimeout(() => {
-      this.ctx = wx.createCanvasContext(CANVAS_ID);
-      // console.log('ctx', this.ctx);
-    }, 500)
-
-    this.initPosenet()
-
-    const context = wx.createCameraContext(this)
-    const listener = context.onCameraFrame((frame) => {
-      this.executePosenet(frame)
-    })
-    listener.start()
-  },
-
-  onUnload() {
-    if (this.posenetModel) {
-      this.posenetModel.dispose()
+  /**
+   * Lifecycle function--Called when page unload
+   */
+  onUnload: function () {
+    if (this.classifier && this.classifier.isReady()) {
+      this.classifier.dispose()
     }
   },
 
@@ -97,7 +128,7 @@ Page({
    */
   onShareAppMessage: function () {
     return {
-      title: 'AI Pocket - 人体动作捕捉'
+      title: 'AI Pocket - 身体部位识别'
     }
   }
 })

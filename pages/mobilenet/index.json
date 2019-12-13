@@ -1,10 +1,10 @@
 {
   "navigationBarTitleText": "常见物品识别",
   "usingComponents": {
-    "wux-row": "../../miniprogram_npm/wux-weapp/row/index",
-    "wux-col": "../../miniprogram_npm/wux-weapp/col/index",
-    "wux-wing-blank": "../../miniprogram_npm/wux-weapp/wing-blank/index",
-    "wux-white-space": "../../miniprogram_npm/wux-weapp/white-space/index",
-    "wux-progress": "../../miniprogram_npm/wux-weapp/progress/index"
+    "wux-row": "../../wux-weapp/row/index",
+    "wux-col": "../../wux-weapp/col/index",
+    "wux-wing-blank": "../../wux-weapp/wing-blank/index",
+    "wux-white-space": "../../wux-weapp/white-space/index",
+    "wux-progress": "../../wux-weapp/progress/index"
   }
 }

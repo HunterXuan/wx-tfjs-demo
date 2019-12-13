@@ -1,9 +1,9 @@
 {
   "usingComponents": {
-    "wux-cell-group": "../../miniprogram_npm/wux-weapp/cell-group/index",
-    "wux-cell": "../../miniprogram_npm/wux-weapp/cell/index",
-    "wux-textarea": "../../miniprogram_npm/wux-weapp/textarea/index",
-    "wux-button": "../../miniprogram_npm/wux-weapp/button/index",
-    "wux-progress": "../../miniprogram_npm/wux-weapp/progress/index"
+    "wux-cell-group": "../../wux-weapp/cell-group/index",
+    "wux-cell": "../../wux-weapp/cell/index",
+    "wux-textarea": "../../wux-weapp/textarea/index",
+    "wux-button": "../../wux-weapp/button/index",
+    "wux-progress": "../../wux-weapp/progress/index"
   }
 }

@@ -1,2 +1,2 @@
 /**app.wxss**/
-@import './miniprogram_npm/wux-weapp/styles/index.wxss';
+@import './wux-weapp/styles/index.wxss';

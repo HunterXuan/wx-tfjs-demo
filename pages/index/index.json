@@ -1,13 +1,13 @@
 {
   "navigationBarTitleText": "AI Pocket",
   "usingComponents": {
-    "wux-row": "../../miniprogram_npm/wux-weapp/row/index",
-    "wux-col": "../../miniprogram_npm/wux-weapp/col/index",
-    "wux-divider": "../../miniprogram_npm/wux-weapp/divider/index",
-    "wux-button": "../../miniprogram_npm/wux-weapp/button/index",
-    "wux-wing-blank": "../../miniprogram_npm/wux-weapp/wing-blank/index",
-    "wux-white-space": "../../miniprogram_npm/wux-weapp/white-space/index",
-    "wux-grids": "../../miniprogram_npm/wux-weapp/grids/index",
-    "wux-grid": "../../miniprogram_npm/wux-weapp/grid/index"
+    "wux-row": "../../wux-weapp/row/index",
+    "wux-col": "../../wux-weapp/col/index",
+    "wux-divider": "../../wux-weapp/divider/index",
+    "wux-button": "../../wux-weapp/button/index",
+    "wux-wing-blank": "../../wux-weapp/wing-blank/index",
+    "wux-white-space": "../../wux-weapp/white-space/index",
+    "wux-grids": "../../wux-weapp/grids/index",
+    "wux-grid": "../../wux-weapp/grid/index"
   }
 }

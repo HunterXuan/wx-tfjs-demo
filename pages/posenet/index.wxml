@@ -7,9 +7,6 @@
       frame-size="medium"
       class="camera"
     >
-      <!--<cover-view class="result">
-        sss {{result}}
-      </cover-view>-->
       <canvas id="canvas" canvas-id="canvas" class="canvas"></canvas>
     </camera>
   </view>
