@@ -9,7 +9,7 @@ const color = 'aqua'
 const lineWidth = 2
 
 // 以下两个为 SSD 模型的地址，请下载放到自己的服务器，然后修改以下链接
-const SSD_NET_URL = 'http://ai.flypot.cn/models/coco-ssd/model.json'
+const SSD_NET_URL = 'https://ai.flypot.cn/models/coco-ssd/model.json'
 // const SSD_NET_BIN_URL = 'https://ai.flypot.cn/models/mobilenet/group1-shard1of1'
 
 export class Classifier {
