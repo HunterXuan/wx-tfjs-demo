@@ -10,4 +10,5 @@
       <canvas id="canvas" canvas-id="canvas" class="canvas"></canvas>
     </camera>
   </view>
+  <canvas type="webgl" id="myCanvas" hidden="{{ true }}"></canvas>
 </view>

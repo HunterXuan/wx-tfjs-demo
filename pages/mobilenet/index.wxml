@@ -17,7 +17,7 @@
           <wux-progress status="progress" percent="{{ item.value * 100 }}" />
         </view>
       </wux-wing-blank>
-      <!--<canvas canvas-id="mycanvas" class="mycanvas"></canvas>-->
+      <canvas type="webgl" id="myCanvas" hidden="{{ true }}"></canvas>
     </scroll-view>
   </view>
 </view>

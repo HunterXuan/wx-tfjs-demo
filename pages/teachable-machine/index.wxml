@@ -51,4 +51,5 @@
       </wux-wing-blank>
     </scroll-view>
   </view>
+  <canvas type="webgl" id="myCanvas" hidden="{{ true }}"></canvas>
 </view>
