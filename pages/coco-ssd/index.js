@@ -104,5 +104,14 @@ Page({
         })
       })
     }
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+    return {
+      title: 'AI Pocket - 通用物体检测'
+    }
   }
 })

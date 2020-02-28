@@ -25,7 +25,7 @@
 	},
 	"compileType": "miniprogram",
 	"projectname": "wx-tfjs-demo",
-	"libVersion": "2.9.4",
+	"libVersion": "2.10.0",
 	"appid": "your-app-id",
 	"debugOptions": {
 		"hidedInDevtools": []
