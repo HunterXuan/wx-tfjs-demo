@@ -1,0 +1,12 @@
+/* miniprogram/pages/about/story/index.wxss */
+.indent-text + .indent-text {
+  margin-top: 0.5rem;
+}
+
+.indent-text {
+  text-indent: 56rpx;
+}
+
+.tech-tag-container .cu-tag {
+  margin-bottom: 8px;
+}

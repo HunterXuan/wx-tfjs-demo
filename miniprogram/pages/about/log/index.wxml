@@ -1,0 +1,106 @@
+<!--miniprogram/pages/about/log/index.wxml-->
+<cu-custom bgColor="bg-gradual-green" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">更新日志</view>
+</cu-custom>
+<view class="cu-timeline">
+  <view class="cu-item text-green">
+    <view class="bg-green content shadow">
+      <view class="cu-capsule radius">
+        <view class="cu-tag bg-white text-green">v3.0.0</view>
+        <view class="cu-tag line-white">2020/05/22</view>
+      </view>
+      <view class="margin-top-sm text-content">
+        <view>1. 代码重构，使用小程序云开发</view>
+        <view>2. 页面重构，更加炫丽多彩</view>
+      </view>
+    </view>
+  </view>
+  <view class="cu-item text-green">
+    <view class="bg-green content shadow">
+      <view class="cu-capsule radius">
+        <view class="cu-tag bg-white text-green">v2.4.0</view>
+        <view class="cu-tag line-white">2020/02/29</view>
+      </view>
+      <view class="margin-top-sm text-content">
+        <view>1. 更新关于页面</view>
+        <view>2. 修复小程序新版本引进的 Bug</view>
+      </view>
+    </view>
+  </view>
+  <view class="cu-item text-green">
+    <view class="bg-green content shadow">
+      <view class="cu-capsule radius">
+        <view class="cu-tag bg-white text-green">v2.3.0</view>
+        <view class="cu-tag line-white">2019/12/13</view>
+      </view>
+      <view class="margin-top-sm text-content">
+        <view>1. 增加 SSD 模型</view>
+        <view>2. 优化模型加载代码</view>
+      </view>
+    </view>
+  </view>
+  <view class="cu-item text-green">
+    <view class="bg-green content shadow">
+      <view class="cu-capsule radius">
+        <view class="cu-tag bg-white text-green">v2.2.0</view>
+        <view class="cu-tag line-white">2019/10/21</view>
+      </view>
+      <view class="margin-top-sm text-content">
+        <view>1. 增加初识 AI</view>
+        <view>2. 修复物品识别的 Bug</view>
+      </view>
+    </view>
+  </view>
+  <view class="cu-item text-green">
+    <view class="bg-green content shadow">
+      <view class="cu-capsule radius">
+        <view class="cu-tag bg-white text-green">v2.1.0</view>
+        <view class="cu-tag line-white">2019/10/08</view>
+      </view>
+      <view class="margin-top-sm text-content">
+        <view>1. 增加页面分享功能</view>
+      </view>
+    </view>
+  </view>
+  <view class="cu-item text-green">
+    <view class="bg-green content shadow">
+      <view class="cu-capsule radius">
+        <view class="cu-tag bg-white text-green">v2.0.0</view>
+        <view class="cu-tag line-white">2019/08/13</view>
+      </view>
+      <view class="margin-top-sm text-content">
+        <view>1. 代码重构，改用 tfjs-wechat 插件</view>
+        <view>2. 使用 webgl 加速模型预测</view>
+        <view>3. 添加 posenet</view>
+        <view>4. 添加 bodypix</view>
+      </view>
+    </view>
+  </view>
+  <view class="cu-item text-green">
+    <view class="bg-green content shadow">
+      <view class="cu-capsule radius">
+        <view class="cu-tag bg-white text-green">v1.0.0</view>
+        <view class="cu-tag line-white">2019/05/11</view>
+      </view>
+      <view class="margin-top-sm text-content">
+        <view>1. 第一个可用版本</view>
+        <view>2. 添加实时成像功能</view>
+        <view>3. 添加拍照分类功能</view>
+      </view>
+    </view>
+  </view>
+  <view class="cu-item text-green">
+    <view class="bg-green content shadow">
+      <view class="cu-capsule radius">
+        <view class="cu-tag bg-white text-green">v0.0.1</view>
+        <view class="cu-tag line-white">2018/12/09</view>
+      </view>
+      <view class="margin-top-sm text-content">
+        <view>1. 创世版本</view>
+        <view>2. 魔改了 tfjs-core</view>
+        <view>3. 能够加载模型对本地图片进行分类</view>
+      </view>
+    </view>
+  </view>
+</view>

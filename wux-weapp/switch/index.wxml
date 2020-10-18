@@ -1,3 +1,0 @@
-<view class="wux-class {{ classes.wrap }}">
-    <view class="{{ classes.input }}" style="{{ inputChecked ? inputStyle : '' }}" bindtap="onTap"></view>
-</view>

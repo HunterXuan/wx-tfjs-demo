@@ -1,0 +1,12 @@
+<!--miniprogram/pages/game/home/index.wxml-->
+<scroll-view scroll-y class="scrollPage">
+  <image src='/images/game-bg.png' mode='widthFix' class='response'></image>
+  <view class='nav-list'>
+    <navigator hover-class='none' url="/pages/game/{{item.page}}/index" class="nav-li bg-{{item.color}}" wx:for="{{elements}}" wx:for-index="idx" wx:key="idx">
+      <view class="nav-title">{{item.title}}</view>
+      <view class="nav-name">{{item.name}}</view>
+      <text class='cuIcon-{{item.icon}}'></text>
+    </navigator>
+  </view>
+  <view class='cu-tabbar-height'></view>
+</scroll-view>

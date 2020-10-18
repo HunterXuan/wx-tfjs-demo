@@ -1,3 +1,0 @@
-<view class="wux-class {{ classes.wrap }}" style="{{ colStyle }}">
-    <slot></slot>
-</view>
