@@ -1,0 +1,250 @@
+<!--miniprogram/pages/about/story/index.wxml-->
+<cu-custom bgColor="bg-gradual-green" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">关于</view>
+</cu-custom>
+<scroll-view scroll-x class="bg-white nav text-center">
+  <view class="cu-item flex-sub {{currentTab === 'help'?'text-blue cur':''}}" bindtap="onTabChange" data-name="help">
+    常见问题
+  </view>
+  <view class="cu-item flex-sub {{currentTab === 'story'?'text-blue cur':''}}" bindtap="onTabChange" data-name="story">
+    开发故事
+  </view>
+  <view class="cu-item flex-sub {{currentTab === 'author'?'text-blue cur':''}}" bindtap="onTabChange" data-name="author">
+    作者简介
+  </view>
+  <view class="cu-item flex-sub {{currentTab === 'opportunity'?'text-blue cur':''}}" bindtap="onTabChange" data-name="opportunity">
+    合作交流
+  </view>
+</scroll-view>
+
+<view>
+
+<block wx:if="{{currentTab === 'help'}}">
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue"></text>简介
+    </view>
+  </view>
+  <view class="padding bg-white">
+    <view class="indent-text">
+      AI Pocket 是一款可以在手机上运行 TF 模型的小程序，支持包括但不限于文本分类、语音识别、图像识别等模型。
+    </view>
+    <view class="indent-text">
+      由于需要联网下载模型文件，为了保证体验效果，请在网络良好条件下使用。
+    </view>
+  </view>
+
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue"></text>特点
+    </view>
+  </view>
+  <view class="padding bg-white">
+    <view class="indent-text">
+      在需要使用机器学习算法（尤其涉及到神经网络模型时），通常的做法是前端（比如小程序）采集数据，通过网络调用后台提供的 API，从而实现模型预测。
+    </view>
+    <view class="indent-text">
+      AI Pocket 采用的是非主流做法：
+    </view>
+    <view class="indent-text">
+      1. 对训练得到的模型进行压缩，得到一个体积相对小、准确率尚可的模型；
+    </view>
+    <view class="indent-text">
+      2. 将模型缓存在 CDN 服务商的服务器上；
+    </view>
+    <view class="indent-text">
+      3. 在进行模型预测前，通过网络把模型下载到本机，然后在本地实时预测。
+    </view>
+  </view>
+</block>
+
+<block wx:if="{{currentTab === 'story'}}">
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue"></text>导火索
+    </view>
+  </view>
+  <view class="padding bg-white">
+    <view class="indent-text">
+      某一天，大佬和我聊到 Tfjs，问我有没可能搬到小程序上，说是没准可以做个爆款。
+    </view>
+    <view class="indent-text">
+      经过一番魔改，我成功把 tfjs 移植到了微信小程序上。然而，由于小程序 API 诸多的不完善，以及没有办法优雅地用上 webgl，模型预测速度实在太慢，就没有了爆款的下文。
+    </view>
+  </view>
+
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue"></text>首次开源
+    </view>
+  </view>
+  <view class="padding bg-white">
+    <view class="indent-text">
+      过了几个月，有人看到我写的一篇关于魔改 tfjs 的文章，留言表示很有兴趣，希望能开源。然后，我就整理了下旧代码并开源在了 GitHub 上。
+    </view>
+  </view>
+
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue"></text>改良优化
+    </view>
+  </view>
+  <view class="padding bg-white">
+    <view class="indent-text">
+      又过了几个月，同事给我分享了一篇文章，里面有提到 TensorFlow 官方对小程序的支持插件。我掐指一算，感觉可以继续搞搞。
+    </view>
+    <view class="indent-text">
+      我连夜瞄了 tfjs 最近的更新和小程序插件的代码，发现 tfjs 开始考虑对多平台的支持，而且小程序也开放了更多有利的 API。
+    </view>
+    <view class="indent-text">
+      于是，我就把之前开源的 Demo 再完善了下，用上了 webgl 加速，预测速度飞起，便有了现在的 AI Pocket。
+    </view>
+  </view>
+
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue"></text>把 AI 装进口袋
+    </view>
+  </view>
+  <view class="padding bg-white">
+    <view class="indent-text">
+      我希望把更多的 AI 模型装到 AI Pocket 上，在小程序上就可以跑机器学习/深度学习模型，打造一个「流弊」的 AI 口袋。
+    </view>
+  </view>
+</block>
+
+<block wx:if="{{currentTab === 'author'}}">
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue"></text>简而言之
+    </view>
+  </view>
+  <view class="padding bg-white">
+    <view class="indent-text">
+      只不过是一介码农，希望能和优秀的人共事，一起影响世界。
+    </view>
+  </view>
+
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue"></text>关于我
+    </view>
+  </view>
+  <view class="padding bg-white">
+    <view class="indent-text">
+      在校期间，我作为技术负责人和好友一同创建了 NYPT 站点，也因此结缘了诸多好友，大家都倾向叫我「猎人」。
+    </view>
+    <view class="indent-text">
+      某天心血来潮，我也开了个公众号「猎人杂货铺」，想分享一些工作上的技术积累、生活上的个人感悟等等。
+    </view>
+    <official-account></official-account>
+    <view class="indent-text" style="text-indent: 0;">
+      <official-account></official-account>
+    </view>
+    <view class="indent-text">
+      研究生毕业之后，我来到美丽的厦门，就职于网宿科技，先后从事流程引擎、智能客服相关的设计开发工作。很感谢在网宿的同事和领导们，给了很多包容以及成长的机会。
+    </view>
+    <view class="indent-text">
+      于网宿离职后，投身于 STEAM/K12 的教育创业项目中，希望能为我国的素质教育发展贡献点力量。然而因为资金不到位等问题，只好告一段落。
+    </view>
+    <view class="indent-text">
+      目前，我在鹅厂 WXG 微信支付线搬砖。有兴趣来鹅厂的欢迎联系，当然我也帮内推其它厂，前提是聊得来。
+    </view>
+  </view>
+
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue"></text>技能标签
+    </view>
+  </view>
+  <view class="padding bg-white tech-tag-container">
+    <view class="cu-tag bg-red">PHP</view>
+    <view class="cu-tag bg-orange">Python</view>
+    <view class="cu-tag bg-yellow">Vue</view>
+    <view class="cu-tag bg-olive">AI</view>
+    <view class="cu-tag bg-green">NLP</view>
+    <view class="cu-tag bg-cyan">Docker</view>
+    <view class="cu-tag bg-blue">Swarm</view>
+    <view class="cu-tag bg-purple">Laravel</view>
+    <view class="cu-tag bg-mauve">Camunda</view>
+    <view class="cu-tag bg-pink">MiniProgram</view>
+  </view>
+</block>
+
+<block wx:if="{{currentTab === 'opportunity'}}">
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue"></text>代码贡献
+    </view>
+  </view>
+  <view class="padding bg-white">
+    <view class="indent-text">
+      目前只有我一个人在折腾，代码将不定期更新到 GitHub 仓库 HunterXuan/wx-tfjs-demo 上。欢迎有兴趣的同学一起加功能 & DeBUG。
+    </view>
+  </view>
+
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue"></text>合作交流
+    </view>
+  </view>
+  <view class="padding bg-white">
+    <view class="indent-text">
+      本人在前后端开发、Docker 集群架构、持续部署、人工智能（尤其 NLP）领域均有积累，可以快速提供成套的解决方案。
+    </view>
+    <view class="indent-text">
+      欢迎通过各种途径与我交流，包括但不限于微信公众号、个人博客、GitHub 等。
+    </view>
+  </view>
+
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue"></text>联系方式
+    </view>
+  </view>
+  <view class="bg-white">
+    <view class="cu-list menu text-left solid-top">
+      <view class="cu-item">
+        <view class="content">
+          <text class="cuIcon-news"></text>
+          <text class="text-grey">Blog</text>
+        </view>
+        <view class="action">
+          <text class="text-grey">hunterx.xyz</text>
+        </view>
+      </view>
+
+      <view class="cu-item">
+        <view class="content">
+          <text class="cuIcon-mail"></text>
+          <text class="text-grey">Email</text>
+        </view>
+        <view class="action">
+          <text class="text-grey">endpot@gmail.com</text>
+        </view>
+      </view>
+
+      <view class="cu-item">
+        <view class="content">
+          <text class="cuIcon-github"></text>
+          <text class="text-grey">GitHub</text>
+        </view>
+        <view class="action">
+          <text class="text-grey">github.com/HunterXuan</text>
+        </view>
+      </view>
+
+      <view class="cu-item">
+        <view class="content">
+          <text class="cuIcon-weixin"></text>
+          <text class="text-grey">公众号</text>
+        </view>
+        <view class="action">
+          <text class="text-grey">猎人杂货铺</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</block>
+</view>

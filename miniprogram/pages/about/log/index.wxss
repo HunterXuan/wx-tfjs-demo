@@ -1,0 +1,4 @@
+/* miniprogram/pages/about/log/index.wxss */
+page {
+  background: #fff;
+}

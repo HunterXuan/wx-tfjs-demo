@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "身体部位识别",
-  "usingComponents": {
-    "wux-cell-group": "../../wux-weapp/cell-group/index",
-    "wux-cell": "../../wux-weapp/cell/index"
-  }
-}

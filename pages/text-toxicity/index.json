@@ -1,9 +1,0 @@
-{
-  "usingComponents": {
-    "wux-cell-group": "../../wux-weapp/cell-group/index",
-    "wux-cell": "../../wux-weapp/cell/index",
-    "wux-textarea": "../../wux-weapp/textarea/index",
-    "wux-button": "../../wux-weapp/button/index",
-    "wux-progress": "../../wux-weapp/progress/index"
-  }
-}

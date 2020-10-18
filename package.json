@@ -9,11 +9,13 @@
   "author": "HunterXuan",
   "license": "MIT",
   "dependencies": {
-    "@tensorflow-models/body-pix": "^2.0.4",
-    "@tensorflow-models/coco-ssd": "^2.0.1",
-    "@tensorflow-models/posenet": "2.2.1",
-    "@tensorflow/tfjs-converter": "1.4.0",
-    "@tensorflow/tfjs-core": "1.4.0",
+    "@tensorflow-models/body-pix": "^2.0.5",
+    "@tensorflow-models/coco-ssd": "^2.1.0",
+    "@tensorflow-models/posenet": "^2.2.1",
+    "@tensorflow/tfjs-backend-cpu": "^2.6.0",
+    "@tensorflow/tfjs-backend-webgl": "^2.6.0",
+    "@tensorflow/tfjs-converter": "^2.6.0",
+    "@tensorflow/tfjs-core": "^2.6.0",
     "fetch-wechat": "0.0.3"
   }
 }

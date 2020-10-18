@@ -1,0 +1,70 @@
+<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">初识 AI</view>
+</cu-custom>
+
+<view class="page">
+  <view class="page__bd page__bd_spacing">
+    <camera
+      device-position="back"
+      flash="off"
+      binderror="error"
+      frame-size="medium"
+      class="camera"
+    >
+      <cover-view class="prediction-view" hidden="{{ showHelpModal ? true : false }}">{{ prediction }}</cover-view>
+    </camera>
+
+    <scroll-view class="action-block bg-white" style="height: {{predictionBlockHeight}}px;" scroll-y>
+      <scroll-view scroll-x class="bg-white nav text-center">
+        <view class="cu-item flex-sub {{index==currentSegment?'text-blue cur':''}}" wx:for="{{imageGroups}}" wx:key="index" bindtap="onSegmentChange" data-index="{{index}}">
+          {{item['label']}}
+        </view>
+      </scroll-view>
+
+      <view class="flex solid-bottom padding-sm align-center">
+        <view class="flex-sub bg-black padding-xs margin-xs radius text-right">
+          <input value="分类别名" disabled></input>
+        </view>
+        <view class="flex-treble bg-gray padding-xs margin-xs radius">
+          <input value="{{ imageGroups[currentSegment]['label'] }}" bind:change="handleInputChange"></input>
+        </view>
+      </view>
+
+      <view class="flex p-xs mb-sm padding-sm">
+        <view class="flex flex-direction flex-twice" style="padding-right: 10rpx;">
+          <button class="cu-btn bg-blue" bindtap="takeSample">采集样本</button>
+        </view>
+        <view class="flex flex-direction flex-twice" style="padding-right: 10rpx;">
+          <button class="cu-btn bg-red" bindtap="cleanSample">清空样本</button>
+        </view>
+        <view class="flex flex-direction flex-sub">
+          <button class="cu-btn bg-black" bindtap="showHelp">帮助</button>
+        </view>
+      </view>
+
+      <scroll-view class="images-scroll-view padding-sm" scroll-x>
+        <block wx:for="{{ imageGroups[currentSegment]['images'] }}" wx:key="key">
+          <image class="sample-image" src="{{ item['imagePath'] }}"></image>
+        </block>
+      </scroll-view>
+    </scroll-view>
+  </view>
+
+  <view class="cu-modal {{showHelpModal?'show':''}}">
+    <view class="cu-dialog">
+      <view class="cu-bar bg-white justify-end">
+        <view class="content">使用帮助</view>
+        <view class="action" bindtap="hideHelp">
+          <text class="cuIcon-close text-red"></text>
+        </view>
+      </view>
+      <view class="padding-xl text-left">
+        <view>1. 修改各分类的「分类别名」</view>
+        <view>2. 点击「采集样本」按钮可以采集一张分类图像</view>
+        <view>3. 点击「清空样本」清空某个分类下的样本</view>
+        <view>4. 所有分类均采集样本后，会自动实时预测</view>
+      </view>
+    </view>
+  </view>
+</view>
