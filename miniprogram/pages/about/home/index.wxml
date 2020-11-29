@@ -50,6 +50,12 @@
         <text class="text-grey">意见反馈</text>
       </button>
     </view>
+    <view class="cu-item arrow">
+      <button class="cu-btn content" open-type="contact">
+        <text class="cuIcon-message text-brown"></text>
+        <text class="text-grey">联系作者</text>
+      </button>
+    </view>
   </view>
   <view class="cu-tabbar-height"></view>
 </scroll-view>

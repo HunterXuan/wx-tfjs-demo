@@ -7,7 +7,6 @@ import { getFrameSliceOptions } from '../utils/util'
 
 // 以下两个为 MobileNet 模型的地址，请下载放到自己的服务器，然后修改以下链接
 const MOBILE_NET_URL = 'https://ai.flypot.cn/models/mobilenet/model.json'
-const MOBILE_NET_BIN_URL = 'https://ai.flypot.cn/models/mobilenet/group1-shard1of1'
 
 export class Classifier {
   // 指明前置或后置 front|back

@@ -41,10 +41,15 @@ Component({
    */
   methods: {
     BackPage() {
-      wx.navigateBack({
-        delta: 1
-      });
+      if (getCurrentPages().length > 1) {
+        wx.navigateBack({
+          delta: 1
+        })
+      } else {
+        this.toHome()
+      }
     },
+
     toHome(){
       wx.reLaunch({
         url: '/pages/index/index',
