@@ -33,5 +33,13 @@ Page({
     wx.navigateTo({
       url: e.currentTarget.dataset.url
     })
+  },
+
+  goToCoupon: function (e) {
+    wx.navigateToMiniProgram({
+      "appId": "wxece3a9a4c82f58c9",
+      "extraData": {},
+      "path": "pages/sharePid/web/index?scene=https://s.click.ele.me/DQ8a1uu"
+    })
   }
 })

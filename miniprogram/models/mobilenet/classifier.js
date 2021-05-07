@@ -52,7 +52,11 @@ export class Classifier {
 
   classify(frame) {
     return tf.tidy(() => {
-      const temp = tf.tensor(new Uint8Array(frame.data), [frame.height, frame.width, 4])
+      const temp = tf.browser.fromPixels({
+        data: new Uint8Array(frame.data),
+        width: frame.width,
+        height: frame.height,
+      }, 4)
       const sliceOptions = getFrameSliceOptions(this.cameraPosition, frame.width, frame.height, this.displaySize.width, this.displaySize.height)
 
       const pixels = temp.slice(sliceOptions.start, sliceOptions.size).resizeBilinear([224, 224])

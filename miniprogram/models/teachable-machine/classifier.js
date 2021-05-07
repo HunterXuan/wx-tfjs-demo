@@ -89,7 +89,11 @@ export class Classifier {
   squeeze(ab, size) {
     // const data = new Uint8Array(ab)
     return tf.tidy(() => {
-      const temp = tf.tensor(new Uint8Array(ab), [size.height, size.width, 4])
+      const temp = tf.browser.fromPixels({
+        data: new Uint8Array(ab),
+        width: size.width,
+        height: size.height,
+      }, 4)
       const sliceOptions = getFrameSliceOptions(this.cameraPosition, size.width, size.height, 224, 224)
 
       const pixels = temp.slice(sliceOptions.start, sliceOptions.size).resizeBilinear([224, 224])
