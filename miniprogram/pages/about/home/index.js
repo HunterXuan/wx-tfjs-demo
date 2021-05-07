@@ -27,9 +27,9 @@ Page({
         })
       } else {
         this.setData({
-          starCount: this.coutNum(240),
-          forkCount: this.coutNum(46),
-          viewCount: this.coutNum(21000)
+          starCount: this.coutNum(259),
+          forkCount: this.coutNum(51),
+          viewCount: this.coutNum(25000)
         })
       }
     }

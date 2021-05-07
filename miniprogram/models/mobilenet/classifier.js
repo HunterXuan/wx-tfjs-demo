@@ -7,7 +7,6 @@ import { getFrameSliceOptions } from '../utils/util'
 
 // 以下两个为 MobileNet 模型的地址，请下载放到自己的服务器，然后修改以下链接
 const MOBILE_NET_URL = 'https://ai.flypot.cn/models/mobilenet/model.json'
-const MOBILE_NET_BIN_URL = 'https://ai.flypot.cn/models/mobilenet/group1-shard1of1'
 
 export class Classifier {
   // 指明前置或后置 front|back
@@ -53,7 +52,11 @@ export class Classifier {
 
   classify(frame) {
     return tf.tidy(() => {
-      const temp = tf.tensor(new Uint8Array(frame.data), [frame.height, frame.width, 4])
+      const temp = tf.browser.fromPixels({
+        data: new Uint8Array(frame.data),
+        width: frame.width,
+        height: frame.height,
+      }, 4)
       const sliceOptions = getFrameSliceOptions(this.cameraPosition, frame.width, frame.height, this.displaySize.width, this.displaySize.height)
 
       const pixels = temp.slice(sliceOptions.start, sliceOptions.size).resizeBilinear([224, 224])
