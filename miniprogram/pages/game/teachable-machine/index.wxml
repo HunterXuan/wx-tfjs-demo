@@ -1,7 +1,7 @@
-<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
+<custom-header bgColor="bg-gradual-pink" isBack="{{true}}">
   <view slot="backText">返回</view>
   <view slot="content">初识 AI</view>
-</cu-custom>
+</custom-header>
 
 <view class="page">
   <view class="page__bd page__bd_spacing">
@@ -33,13 +33,13 @@
 
       <view class="flex p-xs mb-sm padding-sm">
         <view class="flex flex-direction flex-twice" style="padding-right: 10rpx;">
-          <button class="cu-btn bg-blue" bindtap="takeSample">采集样本</button>
+          <button class="cu-btn bg-blue" bindtap="takeSample" style="width: 100%;">采集样本</button>
         </view>
         <view class="flex flex-direction flex-twice" style="padding-right: 10rpx;">
-          <button class="cu-btn bg-red" bindtap="cleanSample">清空样本</button>
+          <button class="cu-btn bg-red" bindtap="cleanSample" style="width: 100%;">清空样本</button>
         </view>
         <view class="flex flex-direction flex-sub">
-          <button class="cu-btn bg-black" bindtap="showHelp">帮助</button>
+          <button class="cu-btn bg-black" bindtap="showHelp" style="width: 100%;">帮助</button>
         </view>
       </view>
 

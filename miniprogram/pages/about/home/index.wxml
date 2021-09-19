@@ -1,4 +1,4 @@
-<!--miniprogram/pages/about/home/index.wxml-->
+<!--pages/about/home/index.wxml-->
 <scroll-view scroll-y class="scrollPage">
   <view class="UCenter-bg">
     <image src="/images/logo.png" class="png" mode="widthFix"></image>

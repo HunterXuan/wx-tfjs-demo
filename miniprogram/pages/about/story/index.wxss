@@ -1,4 +1,4 @@
-/* miniprogram/pages/about/story/index.wxss */
+/* pages/about/story/index.wxss */
 .indent-text + .indent-text {
   margin-top: 0.5rem;
 }

@@ -1,8 +1,8 @@
-<!--miniprogram/pages/about/story/index.wxml-->
-<cu-custom bgColor="bg-gradual-green" isBack="{{true}}">
+<!--pages/about/story/index.wxml-->
+<custom-header bgColor="bg-gradual-green" isBack="{{true}}">
   <view slot="backText">返回</view>
   <view slot="content">关于</view>
-</cu-custom>
+</custom-header>
 <scroll-view scroll-x class="bg-white nav text-center">
   <view class="cu-item flex-sub {{currentTab === 'help'?'text-blue cur':''}}" bindtap="onTabChange" data-name="help">
     常见问题

@@ -1,7 +1,7 @@
-<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+<custom-header bgColor="bg-gradual-blue" isBack="{{true}}">
   <view slot="backText">返回</view>
   <view slot="content">目标检测</view>
-</cu-custom>
+</custom-header>
 <camera
   device-position="back"
   flash="off"

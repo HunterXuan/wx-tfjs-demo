@@ -13,7 +13,7 @@
     "navigationStyle": "custom"
   },
   "usingComponents": {
-    "cu-custom": "/components/cu-custom/cu-custom"
+    "custom-header": "/components/custom-header/custom-header"
   },
   "tabBar": {
     "color": "#aaa",
@@ -47,11 +47,12 @@
       }
     ]
   },
-  "sitemapLocation": "sitemap.json",
   "plugins": {
     "tfjsPlugin": {
-      "version": "0.1.0",
+      "version": "0.2.0",
       "provider": "wx6afed118d9e81df9"
     }
-  }
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
 }

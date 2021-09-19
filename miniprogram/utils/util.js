@@ -1,1 +1,1 @@
-// Nothing
+"use strict";

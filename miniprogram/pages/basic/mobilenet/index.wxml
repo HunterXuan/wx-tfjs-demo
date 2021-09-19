@@ -1,7 +1,8 @@
-<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+<!--pages/basic/mobilenet/index.wxml-->
+<custom-header bgColor="bg-gradual-blue" isBack="{{true}}">
   <view slot="backText">返回</view>
   <view slot="content">物品识别</view>
-</cu-custom>
+</custom-header>
 <view class="page">
   <view class="page__bd">
     <camera
@@ -22,9 +23,9 @@
       <view class="padding bg-white">
         <view wx:for="{{ predictionResults }}" wx:for-item="item" wx:key="item">
           <view class=''>
-            <view>{{ item.label }}</view>
+            <view>{{ item.className }}</view>
             <view class="cu-progress round">
-              <view class='bg-red' style="width:{{item.value * 100}}%;"></view>
+              <view class='bg-red' style="width:{{item.probability * 100}}%;"></view>
             </view>
           </view>
         </view>
