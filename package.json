@@ -1,5 +1,5 @@
 {
-  "name": "ai-pocket",
+  "name": "wx-tfjs-demo",
   "version": "1.0.0",
   "description": "Demo of running tensorflow.js in wechat miniprogram",
   "scripts": {
@@ -23,7 +23,6 @@
     "@tensorflow/tfjs-backend-webgl": "3.5.0",
     "@tensorflow/tfjs-converter": "3.5.0",
     "@tensorflow/tfjs-core": "3.5.0",
-    "abab": "^2.0.5",
     "fetch-wechat": "^0.0.3"
   },
   "devDependencies": {

@@ -39,7 +39,6 @@
       "disablePlugins": [],
       "outputPath": ""
     },
-    "enableEngineNative": false,
     "bundle": true,
     "useIsolateContext": true,
     "useCompilerModule": true,
@@ -56,6 +55,6 @@
   },
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
-  "appid": "your-app-id",
+  "appid": "wx911bc2105f76d5d9",
   "condition": {}
 }
