@@ -1,1 +1,0 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});exports.getFrameSliceOptions=(e,t,s,i)=>{let r={start:[0,0,0],size:[-1,-1,3]};const a=i/s;return a>t/e?(r.start=[0,Math.ceil((e-Math.ceil(t/a))/2),0],r.size=[-1,Math.ceil(t/a),3]):(r.start=[Math.ceil((t-Math.floor(a*e))/2),0,0],r.size=[Math.ceil(a*e),-1,3]),r};

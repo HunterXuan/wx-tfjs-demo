@@ -1,1 +1,0 @@
-"use strict";Page({data:{elements:[{title:"初识 AI ",name:"Teach",page:"teachable-machine",color:"purple",icon:"magic"}]},onLoad:function(){},onReady:function(){},onShow:function(){},onHide:function(){},onUnload:function(){},onPullDownRefresh:function(){},onReachBottom:function(){},onShareAppMessage:function(){}});

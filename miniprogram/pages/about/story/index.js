@@ -1,1 +1,0 @@
-"use strict";Page({data:{currentTab:"help"},onLoad:function(){},onReady:function(){},onShow:function(){},onHide:function(){},onUnload:function(){},onPullDownRefresh:function(){},onReachBottom:function(){},onShareAppMessage:function(){},onTabChange:function(n){this.setData({currentTab:n.target.dataset.name})}});
