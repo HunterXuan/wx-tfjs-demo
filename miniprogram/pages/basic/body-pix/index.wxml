@@ -1,6 +1,6 @@
 <custom-header bgColor="bg-gradual-blue" isBack="{{true}}">
   <view slot="backText">返回</view>
-  <view slot="content">人体检测</view>
+  <view slot="content">人像分割</view>
 </custom-header>
 <camera
   device-position="front"

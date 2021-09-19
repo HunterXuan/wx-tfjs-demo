@@ -1,7 +1,7 @@
 <!--pages/basic/posenet/index.wxml-->
 <custom-header bgColor="bg-gradual-blue" isBack="{{true}}">
   <view slot="backText">返回</view>
-  <view slot="content">动作捕捉</view>
+  <view slot="content">姿势识别</view>
 </custom-header>
 <camera
   device-position="front"

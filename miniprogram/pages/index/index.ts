@@ -4,12 +4,12 @@ Page({
   data: {
     list: [
       {
-        title: '物品识别',
+        title: '图像分类',
         img: 'https://ai.flypot.cn/pocket/images/index-imagenet-bg.jpg',
         url: '/pages/basic/mobilenet/index'
       },
       {
-        title: '动作捕捉',
+        title: '姿势识别',
         img: 'https://ai.flypot.cn/pocket/images/index-posenet-bg.jpg',
         url: '/pages/basic/posenet/index'
       },

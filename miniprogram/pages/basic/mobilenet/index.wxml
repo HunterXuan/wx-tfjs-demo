@@ -1,7 +1,7 @@
 <!--pages/basic/mobilenet/index.wxml-->
 <custom-header bgColor="bg-gradual-blue" isBack="{{true}}">
   <view slot="backText">返回</view>
-  <view slot="content">物品识别</view>
+  <view slot="content">图像分类</view>
 </custom-header>
 <view class="page">
   <view class="page__bd">

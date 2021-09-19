@@ -95,7 +95,7 @@ Page({
    */
   onShareAppMessage: function () {
     return {
-      title: 'AI Pocket - 常见物品识别'
+      title: 'AI Pocket - 图像分类'
     };
   }
 });

@@ -107,7 +107,7 @@ Page({
    */
   onShareAppMessage: function () {
     return {
-      title: 'AI Pocket - 人体检测'
+      title: 'AI Pocket - 人像分割'
     }
   }
 })

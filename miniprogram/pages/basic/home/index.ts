@@ -6,12 +6,12 @@ Page({
    */
   data: {
     elements: [
-      { title: '物品识别', name: 'ImageNet', page: 'mobilenet', color: 'cyan', icon: 'scan' },
-      { title: '动作捕捉', name: 'PoseNet', page: 'posenet', color: 'blue', icon: 'light' },
-      { title: '人体检测', name: 'BodyPix', page: 'body-pix', color: 'purple', icon: 'people' },
+      { title: '图像分类', name: 'ImageNet', page: 'mobilenet', color: 'cyan', icon: 'scan' },
+      { title: '姿势识别', name: 'PoseNet', page: 'posenet', color: 'blue', icon: 'light' },
+      { title: '人像分割', name: 'BodyPix', page: 'body-pix', color: 'purple', icon: 'people' },
       { title: '目标检测', name: 'SSD', page: 'coco-ssd', color: 'mauve', icon: 'focus' },
       { title: '手势识别', name: 'HandPose', page: 'handpose', color: 'pink', icon: 'appreciate' },
-      { title: '人脸识别', name: 'Face', page: 'face', color: 'brown', icon: 'emoji' },
+      { title: '面部特征', name: 'Face', page: 'face', color: 'brown', icon: 'emoji' },
     ],
   },
 
