@@ -1,7 +1,3 @@
 node_modules
 miniprogram/miniprogram_npm
-miniprogram/components/*/*.js
-miniprogram/models/**/*.js
-miniprogram/pages/**/*.js
-miniprogram/utils/**/*.js
-miniprogram/chunks
+miniprogram/**/*.js
