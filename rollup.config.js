@@ -11,7 +11,7 @@ const chokidar = require('chokidar');
 const p = s => path.resolve(__dirname, s);
 const useCustom = process.argv.includes('--custom');
 const isDev = process.argv.includes('-w') || process.argv.includes('--watch');
-console.log(useCustom, isDev)
+
 function codeTransform() {
   return {
     transform(code, file) {
