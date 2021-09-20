@@ -6,11 +6,12 @@ import esbuild from 'rollup-plugin-esbuild';
 import { terser } from 'rollup-plugin-terser';
 import alias from '@rollup/plugin-alias';
 import multiInput from 'rollup-plugin-multi-input';
+const chokidar = require('chokidar');
 
 const p = s => path.resolve(__dirname, s);
 const useCustom = process.argv.includes('--custom');
-const isDev = process.argv.includes('-w');
-
+const isDev = process.argv.includes('-w') || process.argv.includes('--watch');
+console.log(useCustom, isDev)
 function codeTransform() {
   return {
     transform(code, file) {
@@ -82,13 +83,9 @@ const aliasPlugin = useCustom
 
 export default [
   {
-    input: useCustom
-      ? [
-        'miniprogram/**/*.ts',
-      ]
-      : [
-        'miniprogram/**/*.ts',
-      ],
+    input: [
+      'miniprogram/**/*.ts',
+    ],
     treeshake: true,
     output: {
       format: 'cjs',
@@ -97,24 +94,6 @@ export default [
       entryFileNames: (chunkInfo) => {
         return chunkInfo.facadeModuleId.replace(p('./miniprogram'), '').replace('.ts', '.js').substring(1);
       },
-      // manualChunks: useCustom
-      //   ? {
-      //     tfjs: [
-      //       './custom_tfjs/custom_ops_for_converter.js',
-      //       './custom_tfjs/custom_tfjs_core.js',
-      //       './custom_tfjs/custom_tfjs.js',
-      //     ],
-      //     // 'fetch-wechat' : 'fetch-wechat',
-      //     // 'tfjs-mobilenet': '@tensorflow-models/mobilenet',
-      //     // 'tfjs-posenet': '@tensorflow-models/posenet',
-      //   }
-      //   : {
-      //     tfjs: [
-      //       '@tensorflow/tfjs-backend-webgl',
-      //       '@tensorflow/tfjs-converter',
-      //       '@tensorflow/tfjs-core',
-      //     ],
-      //   },
     },
     plugins: [
       multiInput(),
@@ -139,5 +118,9 @@ export default [
         compress: !isDev,
       }),
     ],
+    watch: {
+      chokidar: true,
+      clearScreen: true
+    }
   },
 ];
