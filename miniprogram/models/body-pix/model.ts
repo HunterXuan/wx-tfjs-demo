@@ -14,6 +14,10 @@ export const load = async () => {
   await model.segmentMultiPerson(tf.zeros([73, 73, 3]))
 };
 
+export const dispose = () => {
+  model.dispose();
+};
+
 export const isReady = () => {
   return !!model;
 };

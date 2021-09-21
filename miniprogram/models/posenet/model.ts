@@ -20,6 +20,10 @@ export const isReady = () => {
   return !!model;
 };
 
+export const dispose = () => {
+  model.dispose();
+};
+
 export const detectSinglePose = async (frame: any, displaySize: {height: number, width: number}) => {
   const temp = tf.browser.fromPixels({
     data: new Uint8Array(frame.data),
