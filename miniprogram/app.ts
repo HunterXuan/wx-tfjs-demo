@@ -12,7 +12,7 @@ App<IAppOption>({
     systemInfo: {} as WechatMiniprogram.SystemInfo,
     openid: ''
   },
-  async onLaunch (options) {
+  async onLaunch () {
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力');
     } else {
@@ -34,18 +34,6 @@ App<IAppOption>({
     this.globalData.menuHeaderHeight = rect.bottom + rect.top - systemInfo.statusBarHeight;
     this.globalData.systemInfo = wx.getSystemInfoSync();
 
-    // OpenId
-    let loginRes = await wx.cloud.callFunction({
-      name: 'Login',
-      data: {
-        referrer: options.query['referrer'] || ''
-      }
-    });
-
-    // @ts-ignore
-    const openId = loginRes?.result?.openid || '';
-    this.globalData.openid = openId;
-
     // Debug: Cannot create a canvas in this context
     // Detect webgl version: https://stackoverflow.com/questions/51428435/how-to-determine-webgl-and-glsl-version
     // tf.ENV.flagRegistry.WEBGL_VERSION.evaluationFn = () => {return 1};
@@ -59,5 +47,19 @@ App<IAppOption>({
       // provide webgl canvas
       canvas: wx.createOffscreenCanvas(0, 0)
     });
-  }
+  },
+
+  async onShow (options) {
+    // OpenId
+    let loginRes = await wx.cloud.callFunction({
+      name: 'Login',
+      data: {
+        referrer: options.query.referrer || ''
+      }
+    });
+
+    // @ts-ignore
+    const openId = loginRes?.result?.openid || '';
+    this.globalData.openid = openId;
+  },
 })

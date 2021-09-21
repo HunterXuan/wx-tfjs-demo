@@ -225,15 +225,17 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
+    const shareTitle = this.avgPredictionScore ? ('敢来挑战我的' + this.avgPredictionScore + '分吗？') : 'AI Pocket - 算力比拼';
     return {
-      title: 'AI Pocket - 算力比拼',
+      title: shareTitle,
       path: '/pages/game/phone-ranking/index?referrer=' + app.globalData.openid
     };
   },
 
   onShareTimeline: function () {
+    const shareTitle = this.avgPredictionScore ? ('敢来挑战我的' + this.avgPredictionScore + '分吗？') : 'AI Pocket - 算力比拼';
     return {
-      title: 'AI Pocket - 算力比拼',
+      title: shareTitle,
       query: 'referrer=' + app.globalData.openid
     };
   },

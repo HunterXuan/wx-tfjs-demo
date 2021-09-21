@@ -5,7 +5,7 @@
 <view class="page">
   <view class="page__bd page__bd_spacing">
     <view class="flex solid-bottom padding-xl justify-center solid-bottom shadow bubble-bg">
-      <view class="cu-avatar round bg-white ranking shadow shadow-blur shadow-lg">
+      <view class="cu-avatar round bg-white ranking shadow shadow-blur shadow-lg" bindtap="handleRankingBtnClick">
         <text class="cuIcon-magic text-orange" wx:if="{{btnStatus == 'waiting'}}"></text>
         <text class="cuIcon-loading1 text-orange" wx:if="{{btnStatus == 'loading'}}" style="animation: cuIcon-spin 1.5s infinite ease;"></text>
         <text class="avatar-text text-orange" wx:if="{{btnStatus == 'predicting' || btnStatus == 'done'}}">{{btnText}}</text>
