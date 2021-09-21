@@ -21,6 +21,15 @@ exports.main = async (event, context) => {
 const addShareLink = async (openid, referrer) => {
   if (referrer) {
     const db = cloud.database();
+
+    const queryRes = await db.collection('share_links').where({
+      openid: db.command.eq(openid),
+      referrer: db.command.eq(referrer),
+    }).get();
+    if (queryRes.data.length) {
+      return;
+    }
+
     await db.collection('share_links').add({
       data: {
         openid,

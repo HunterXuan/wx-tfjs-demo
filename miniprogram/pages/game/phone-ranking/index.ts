@@ -147,9 +147,8 @@ Page({
 
       this.setData({
         btnText,
-      }, async () => {
-        this.processPredictionScore();
       });
+      this.processPredictionScore();
     }
   },
 
@@ -159,7 +158,7 @@ Page({
     // this.genRankingPicture();
     await this.initRankingList();
     wx.showToast({
-      title: '好啦！分享给好友比拼下吧~',
+      title: '结束啦！',
       icon: 'success',
       duration: 5000
     });
