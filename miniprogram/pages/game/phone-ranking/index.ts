@@ -158,11 +158,16 @@ Page({
     await this.uploadAvgPredictionScore();
     // this.genRankingPicture();
     await this.initRankingList();
+    wx.showToast({
+      title: '好啦！分享给好友比拼下吧~',
+      icon: 'success',
+      duration: 5000
+    });
   },
 
   calAvgPredictionScore: function () {
     let total = 0;
-    this.predicionScoreList.forEach(score => {
+    this.predicionScoreList.forEach((score: number) => {
       total = total + score;
     });
 
@@ -225,17 +230,15 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    const shareTitle = this.avgPredictionScore ? ('敢来挑战我的' + this.avgPredictionScore + '分吗？') : 'AI Pocket - 算力比拼';
     return {
-      title: shareTitle,
+      title: '一起来算力比拼！',
       path: '/pages/game/phone-ranking/index?referrer=' + app.globalData.openid
     };
   },
 
   onShareTimeline: function () {
-    const shareTitle = this.avgPredictionScore ? ('敢来挑战我的' + this.avgPredictionScore + '分吗？') : 'AI Pocket - 算力比拼';
     return {
-      title: shareTitle,
+      title: '一起来算力比拼！',
       query: 'referrer=' + app.globalData.openid
     };
   },
