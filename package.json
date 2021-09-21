@@ -6,8 +6,8 @@
     "clean": "rimraf miniprogram/chunks miniprogram/**/*.js",
     "make:profile": "node ./profile.js",
     "make:custom": "node ./node_modules/@tensorflow/tfjs/dist/tools/custom_module/cli.js --config tfjs_config.json",
-    "dev": "npm run clean && rollup -c --dev --watch",
-    "dev:custom": "npm run clean && rollup -c --custom --dev --watch",
+    "dev": "npm run clean && rollup -c --watch",
+    "dev:custom": "npm run clean && rollup -c --custom --watch",
     "build": "npm run clean && rollup -c",
     "build:custom": "npm run clean && rollup -c --custom"
   },
@@ -32,7 +32,6 @@
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@rollup/plugin-sucrase": "^4.0.0",
     "@tensorflow/tfjs": "^3.9.0",
-    "chokidar": "^3.5.2",
     "esbuild": "^0.12.25",
     "miniprogram-api-typings": "^3.4.3",
     "rimraf": "^3.0.2",

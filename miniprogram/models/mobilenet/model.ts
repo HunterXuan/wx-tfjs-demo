@@ -8,12 +8,16 @@ const app = getApp();
 let model: mobilenet.MobileNet;
 
 export const load = async () => {
+  if (isReady()) {
+    return;
+  }
+
   model = await mobilenet.load({
     version: 1,
     alpha: 0.25,
   });
 
-  await model.infer(tf.zeros([1, 224, 224, 3]));
+  await warmUp();
 };
 
 export const isReady = () => {
@@ -47,6 +51,10 @@ export const classify = async (frame: any, topK = 10) => {
   logits.dispose();
 
   return result;
+};
+
+export const warmUp = async () => {
+  await model.infer(tf.randomNormal([1, 224, 224, 3]));
 };
 
 const getTopKClasses = async (logits: tf.Tensor2D, topK: number):

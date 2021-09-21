@@ -51,6 +51,10 @@
     "tfjsPlugin": {
       "version": "0.2.0",
       "provider": "wx6afed118d9e81df9"
+    },
+    "poster": {
+      "version": "1.0.13",
+      "provider": "wx8a6f7c4b3d410554"
     }
   },
   "style": "v2",

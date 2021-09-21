@@ -7,7 +7,7 @@ Page({
   data: {
     elements: [
       { title: '初识 AI ', name: 'Teach', page: 'teachable-machine', color: 'purple', icon: 'magic' },
-      // { title: '算力比拼', name: 'Race', page: 'compute', color: 'mauve', icon: 'crown' },
+      { title: '算力比拼', name: 'Ranking', page: 'phone-ranking', color: 'mauve', icon: 'crown' },
     ],
   },
 

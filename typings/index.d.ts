@@ -6,5 +6,6 @@ interface IAppOption {
     statusBarHeight: number,
     menuHeaderHeight: number,
     systemInfo: WechatMiniprogram.SystemInfo,
+    openid: string,
   }
 }

@@ -6,7 +6,6 @@ import esbuild from 'rollup-plugin-esbuild';
 import { terser } from 'rollup-plugin-terser';
 import alias from '@rollup/plugin-alias';
 import multiInput from 'rollup-plugin-multi-input';
-const chokidar = require('chokidar');
 
 const p = s => path.resolve(__dirname, s);
 const useCustom = process.argv.includes('--custom');
@@ -118,9 +117,5 @@ export default [
         compress: !isDev,
       }),
     ],
-    watch: {
-      chokidar: true,
-      clearScreen: true
-    }
   },
 ];

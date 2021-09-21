@@ -10,9 +10,9 @@ App<IAppOption>({
     statusBarHeight: 0,
     menuHeaderHeight: 0,
     systemInfo: {} as WechatMiniprogram.SystemInfo,
+    openid: ''
   },
-  onLaunch() {
-
+  async onLaunch (options) {
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力');
     } else {
@@ -26,16 +26,25 @@ App<IAppOption>({
       });
     }
 
-    wx.getSystemInfo({
-      success: e => {
-        let rect = wx.getMenuButtonBoundingClientRect();
+    // SystemInfo
+    const systemInfo = wx.getSystemInfoSync();
+    let rect = wx.getMenuButtonBoundingClientRect();
+    this.globalData.menuButtonBoundingRect = rect;
+    this.globalData.statusBarHeight = systemInfo.statusBarHeight;
+    this.globalData.menuHeaderHeight = rect.bottom + rect.top - systemInfo.statusBarHeight;
+    this.globalData.systemInfo = wx.getSystemInfoSync();
 
-        this.globalData.menuButtonBoundingRect = rect;
-        this.globalData.statusBarHeight = e.statusBarHeight;
-        this.globalData.menuHeaderHeight = rect.bottom + rect.top - e.statusBarHeight;
-        this.globalData.systemInfo = wx.getSystemInfoSync();
+    // OpenId
+    let loginRes = await wx.cloud.callFunction({
+      name: 'Login',
+      data: {
+        referrer: options.query['referrer'] || ''
       }
     });
+
+    // @ts-ignore
+    const openId = loginRes?.result?.openid || '';
+    this.globalData.openid = openId;
 
     // Debug: Cannot create a canvas in this context
     // Detect webgl version: https://stackoverflow.com/questions/51428435/how-to-determine-webgl-and-glsl-version
@@ -50,5 +59,5 @@ App<IAppOption>({
       // provide webgl canvas
       canvas: wx.createOffscreenCanvas(0, 0)
     });
-  },
+  }
 })
