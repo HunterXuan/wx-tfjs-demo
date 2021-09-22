@@ -5,7 +5,7 @@ import * as model from '../../../models/mobilenet/model';
 
 Page({
 
-  maxPredictRound: 100,
+  maxPredictRound: 50,
 
   avgPredictionScore: 0,
 
@@ -111,7 +111,13 @@ Page({
         this.setData(this.data);
 
         if (model.isReady()) {
-          await this.processPredictionScore();
+          while (this.predicionScoreList.length < this.maxPredictRound) {
+            await this.processPredictionScore();
+            // slow down
+            await new Promise(resolve => {
+              setTimeout(resolve, 200);
+            });
+          }
           await this.processAvgPredictionScore();
         }
 
@@ -136,22 +142,19 @@ Page({
   },
 
   processPredictionScore: async function () {
-    if (this.predicionScoreList.length < this.maxPredictRound) {
-      const randomTensor = model.getRandomTensor();
-      const start = Date.now();
-      await model.warmUp(randomTensor);
-      const end = Date.now();
-      randomTensor.dispose();
-      const predictionScore = Math.round(100 * 1000 / (end - start));
-      const btnText = predictionScore.toString();
+    const randomTensor = model.getRandomTensor();
+    const start = Date.now();
+    await model.warmUp(randomTensor);
+    const end = Date.now();
+    randomTensor.dispose();
+    const predictionScore = Math.round(100 * 1000 / (end - start));
+    const btnText = predictionScore.toString();
+    this.predicionScoreList.push(predictionScore);
 
-      this.predicionScoreList.push(predictionScore);
+    this.setData({
+      btnText,
+    });
 
-      this.setData({
-        btnText,
-      });
-      this.processPredictionScore();
-    }
   },
 
   processAvgPredictionScore: async function () {
@@ -180,7 +183,8 @@ Page({
   },
 
   uploadAvgPredictionScore: async function () {
-    if (app.globalData.systemInfo.platform in ['devtools', 'microsoft', 'mac', 'windows']) {
+    // @ts-ignore
+    if (['devtools', 'microsoft', 'mac', 'windows'].includes(app.globalData.systemInfo.platform)) {
       return;
     }
 
