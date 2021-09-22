@@ -180,7 +180,7 @@ Page({
   },
 
   uploadAvgPredictionScore: async function () {
-    if (app.globalData.systemInfo.platform === 'devtools') {
+    if (app.globalData.systemInfo.platform in ['devtools', 'microsoft', 'mac', 'windows']) {
       return;
     }
 
