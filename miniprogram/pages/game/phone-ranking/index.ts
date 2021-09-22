@@ -115,7 +115,7 @@ Page({
             await this.processPredictionScore();
             // slow down
             await new Promise(resolve => {
-              setTimeout(resolve, 200);
+              setTimeout(resolve, 100);
             });
           }
           await this.processAvgPredictionScore();
