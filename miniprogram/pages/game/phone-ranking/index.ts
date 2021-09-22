@@ -137,9 +137,11 @@ Page({
 
   processPredictionScore: async function () {
     if (this.predicionScoreList.length < this.maxPredictRound) {
+      const randomTensor = model.getRandomTensor();
       const start = Date.now();
-      await model.warmUp();
+      await model.warmUp(randomTensor);
       const end = Date.now();
+      randomTensor.dispose();
       const predictionScore = Math.round(100 * 1000 / (end - start));
       const btnText = predictionScore.toString();
 

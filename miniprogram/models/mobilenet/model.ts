@@ -17,7 +17,7 @@ export const load = async () => {
     alpha: 0.25,
   });
 
-  await warmUp();
+  await warmUp(null);
 };
 
 export const isReady = () => {
@@ -53,8 +53,14 @@ export const classify = async (frame: any, topK = 10) => {
   return result;
 };
 
-export const warmUp = async () => {
-  await model.infer(tf.randomNormal([1, 224, 224, 3]));
+export const getRandomTensor = () => {
+  return tf.randomNormal([1, 224, 224, 3]);
+};
+
+export const warmUp = async (tensor: any) => {
+  await tf.tidy(() => {
+    return model.infer(tensor || getRandomTensor());
+  });
 };
 
 const getTopKClasses = async (logits: tf.Tensor2D, topK: number):
