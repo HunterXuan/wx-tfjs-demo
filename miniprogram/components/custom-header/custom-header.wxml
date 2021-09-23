@@ -1,0 +1,16 @@
+<view class="cu-custom" style="height:{{menuHeaderHeight}}px">
+  <view class="cu-bar fixed {{bgImage!=''?'none-bg text-white bg-img':''}} {{bgColor}}" style="height:{{menuHeaderHeight}}px;padding-top:{{statusBarHeight}}px;{{bgImage?'background-image:url(' + bgImage+')':''}}">
+    <view class="action" bindtap="BackPage" wx:if="{{isBack}}">
+      <text class="cuIcon-back"></text>
+      <slot name="backText"></slot>
+    </view>
+    <view class="action border-custom"  wx:if="{{isCustom}}" style="width:{{menuButtonBoundingRect.width}}px;height:{{menuButtonBoundingRect.height}}px;margin-left:calc(750rpx - {{menuButtonBoundingRect.right}}px)">
+      <text class="cuIcon-back" bindtap="BackPage"></text>
+      <text class="cuIcon-homefill" bindtap="toHome"></text>
+    </view>
+    <view class="content" style="top:{{statusBarHeight}}px">
+      <slot name="content"></slot>
+    </view>
+    <slot name="right"></slot>
+  </view>
+</view>

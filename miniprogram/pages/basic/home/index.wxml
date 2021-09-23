@@ -1,6 +1,6 @@
-<!--miniprogram/pages/basic/home/index.wxml-->
+<!--pages/basic/home/index.wxml-->
 <scroll-view scroll-y class="scrollPage">
-  <image src='/images/basic-bg.png' mode='widthFix' class='png' style='width:100%; height:486rpx'></image>
+  <image src='https://ai.flypot.cn/pocket/images/basic-bg.png' mode='widthFix' class='png' style='width:100%; height:486rpx'></image>
   <view class='nav-list'>
     <navigator open-type="navigate" hover-class='none' url="/pages/basic/{{item.page}}/index" class="nav-li bg-{{item.color}}" wx:for="{{elements}}" wx:for-index="idx" wx:key="idx">
       <view class="nav-title">{{item.title}}</view>

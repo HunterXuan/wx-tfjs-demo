@@ -1,4 +1,4 @@
-/* pages/index/index.wxss */
+/* pages/basic/mobilenet/index.wxss */
 .camera {
   width: 100vw;
   height: 100vw;

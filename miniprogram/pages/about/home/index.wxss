@@ -1,4 +1,4 @@
-/* miniprogram/pages/about/home/index.wxss */
+/* pages/about/home/index.wxss */
 .UCenter-bg {
   background-image: url(https://ai.flypot.cn/pocket/images/about-bg.jpg);
   background-size: cover;

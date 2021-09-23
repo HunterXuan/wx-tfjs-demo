@@ -1,7 +1,34 @@
 # wx-tfjs-demo
-微信小程序运行 TensorFlow 的 Demo，代码与小程序「AI Pocket」同步更新。
+微信小程序运行 TensorFlow 的 Demo，代码与小程序「AI Pocket」不定期同步更新。
 
-# 实现思路
+# 如何运行
+
+## 运行环境要求
+
+系统：Linux/MacOS 或 Windows 下使用 WSL
+
+NodeJS：>= 12
+
+微信基础库版本：>= 2.15.0
+
+微信开发者工具：>= v1.03.2012120
+
+微信开发者工具的项目配置：
+
+* 勾选「ES6 转 ES5」
+* 勾选「增强编译」
+* 测试时请勾选「不校验合法域名……」
+
+## 使用方式
+
+1. 克隆代码到本地
+2. 修改 project.config.json 中的 `appid` 配置
+3. 在小程序管理后台的“设置-第三方服务-插件管理”中，通过 appid [wx6afed118d9e81df9] 查找并添加
+4. `npm i` 安装依赖
+5. `npm run build` 编译依赖
+6. 手机扫描开发者工具的预览码
+
+# TLDR
 
 ## 早期实现方式
 
@@ -39,4 +66,3 @@
 **关注公众号，留言获取「AI Pocket 交流群」的二维码，方便交流！~**
 
 ![猎人杂货铺 • 微信公众号](https://i.endpot.com/image/V4NUH/%E6%89%AB%E7%A0%81-%E7%8C%8E%E4%BA%BA%E6%9D%82%E8%B4%A7%E9%93%BA.png)
-

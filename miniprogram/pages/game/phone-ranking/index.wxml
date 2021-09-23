@@ -1,0 +1,122 @@
+<custom-header bgColor="bg-orange" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">算力比拼</view>
+</custom-header>
+<view class="page">
+  <view class="page__bd page__bd_spacing">
+    <view class="flex solid-bottom padding-xl justify-center solid-bottom shadow bubble-bg">
+      <view class="cu-avatar round bg-white ranking shadow shadow-blur shadow-lg" bindtap="handleRankingBtnClick">
+        <text class="cuIcon-magic text-orange" wx:if="{{btnStatus == 'waiting'}}"></text>
+        <text class="cuIcon-loading1 text-orange" wx:if="{{btnStatus == 'loading'}}" style="animation: cuIcon-spin 1.5s infinite ease;"></text>
+        <text class="avatar-text text-orange" wx:if="{{btnStatus == 'predicting' || btnStatus == 'done'}}">{{btnText}}</text>
+      </view>
+    </view>
+
+    <view class="padding flex text-center text-grey bg-white shadow-warp">
+      <view class="flex flex-sub flex-direction solid-right">
+        <view class="margin-top-xs margin-bottom-xs" bindtap="handleRankingBtnClick">
+          <text class="cuIcon-playfill"></text> 开始比拼</view>
+      </view>
+      <view class="flex flex-sub flex-direction solid-right">
+        <view class="margin-top-xs margin-bottom-xs" bindtap="handleRankingBtnClick">
+          <text class="cuIcon-refresh"></text> 再来一次</view>
+      </view>
+      <view class="flex flex-sub flex-direction" bindtap="showRank">
+        <view class="margin-top-xs margin-bottom-xs">
+          <text class="cuIcon-rankfill"></text> 好友排行</view>
+      </view>
+    </view>
+
+    <view class="padding-xs">
+      <view class="text-center text-shadow text-orange padding-sm text-lg">
+        <text class="cuIcon-all"></text>
+        硬件信息
+        <text class="cuIcon-all"></text>
+      </view>
+    </view>
+
+    <view class="cu-list menu card-menu">
+      <view class="cu-item">
+        <view class="content">
+          <text class="text-grey">操作系统</text>
+        </view>
+        <view class="action">
+          <text class="text-orange text-sm">{{phoneInfo.system}}</text>
+        </view>
+      </view>
+
+      <view class="cu-item">
+        <view class="content">
+          <text class="text-grey">设备品牌</text>
+        </view>
+        <view class="action">
+          <text class="text-orange text-sm">{{phoneInfo.brand}}</text>
+        </view>
+      </view>
+
+      <view class="cu-item">
+        <view class="content">
+          <text class="text-grey">设备型号</text>
+        </view>
+        <view class="action">
+          <text class="text-orange text-sm">{{phoneInfo.model}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="padding-xs">
+      <view class="text-center text-shadow text-orange padding-sm text-lg">
+        <text class="cuIcon-rank"></text>
+        排行榜
+        <text class="cuIcon-rank"></text>
+      </view>
+    </view>
+
+    <view class="cu-list menu card-menu">
+      <view class="cu-item" wx:for="{{ rankingList }}" wx:for-item="item" wx:key="item">
+        <view class="content padding-tb-sm">
+          <view>{{ item.model }}</view>
+          <view class="cu-progress radius striped sm">
+            <view class='bg-orange' style="width:{{item.normalized_score}}%;">
+              {{ item.score }}
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="padding"></view>
+
+    <view class="cu-modal {{showRankModal?'show':''}}">
+      <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+          <view class="content">好友排行</view>
+          <view class="action" bindtap="hideRank">
+            <text class="cuIcon-close text-red"></text>
+          </view>
+        </view>
+        <view class="padding-xl text-left">
+          <view>暂未开放，敬请期待</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="cu-modal {{posterModalVisible?'show':''}}">
+  <view class="cu-dialog" style="background-color: transparent;">
+    <view class="bg-img">
+      <view class="cu-bar justify-end text-white">
+        <view class="action" bindtap="hidePosterModal">
+          <text class="cuIcon-close "></text>
+        </view>
+      </view>
+      <image src="{{posterUrl}}" style="width: 100%;" mode="widthFix"></image>
+    </view>
+    <view class="cu-bar bg-red">
+      <view class="action margin-0 flex-sub solid-left">右上角分享</view>
+    </view>
+  </view>
+</view>
+
+<poster id="poster" hide-loading="{{true}}" config="{{posterConfig}}" bind:success="onPosterSuccess" bind:fail="onPosterFail"></poster>

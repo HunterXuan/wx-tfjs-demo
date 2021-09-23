@@ -1,21 +1,46 @@
 {
-  "name": "tfjs-wechat-demo",
+  "name": "wx-tfjs-demo",
   "version": "1.0.0",
   "description": "Demo of running tensorflow.js in wechat miniprogram",
-  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rimraf miniprogram/chunks miniprogram/**/*.js",
+    "make:profile": "node ./profile.js",
+    "make:custom": "node ./node_modules/@tensorflow/tfjs/dist/tools/custom_module/cli.js --config tfjs_config.json",
+    "dev": "npm run clean && rollup -c --watch",
+    "dev:custom": "npm run clean && rollup -c --custom --watch",
+    "build": "npm run clean && rollup -c",
+    "build:custom": "npm run clean && rollup -c --custom"
   },
+  "keywords": [],
   "author": "HunterXuan",
   "license": "MIT",
   "dependencies": {
-    "@tensorflow-models/body-pix": "^2.0.5",
-    "@tensorflow-models/coco-ssd": "^2.1.0",
-    "@tensorflow-models/posenet": "^2.2.1",
-    "@tensorflow/tfjs-backend-cpu": "^2.6.0",
-    "@tensorflow/tfjs-backend-webgl": "^2.6.0",
-    "@tensorflow/tfjs-converter": "^2.6.0",
-    "@tensorflow/tfjs-core": "^2.6.0",
-    "fetch-wechat": "0.0.3"
+    "@tensorflow-models/body-pix": "^2.2.0",
+    "@tensorflow-models/coco-ssd": "^2.2.2",
+    "@tensorflow-models/face-landmarks-detection": "^0.0.3",
+    "@tensorflow-models/handpose": "^0.0.7",
+    "@tensorflow-models/mobilenet": "^2.1.0",
+    "@tensorflow-models/posenet": "^2.2.2",
+    "@tensorflow/tfjs-backend-webgl": "3.5.0",
+    "@tensorflow/tfjs-converter": "3.5.0",
+    "@tensorflow/tfjs-core": "3.5.0",
+    "fetch-wechat": "^0.0.3"
+  },
+  "devDependencies": {
+    "@rollup/plugin-alias": "^3.1.5",
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "@rollup/plugin-sucrase": "^4.0.0",
+    "@tensorflow/tfjs": "^3.9.0",
+    "esbuild": "^0.12.25",
+    "miniprogram-api-typings": "^3.4.3",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.56.3",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-esbuild": "^4.5.0",
+    "rollup-plugin-multi-input": "^1.3.1",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.4.2"
   }
 }
