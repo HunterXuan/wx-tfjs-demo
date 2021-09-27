@@ -161,8 +161,8 @@
   <view class="padding bg-white tech-tag-container">
     <view class="cu-tag bg-red">PHP</view>
     <view class="cu-tag bg-orange">Python</view>
-    <view class="cu-tag bg-orange">GoLang</view>
-    <view class="cu-tag bg-orange">NodeJS</view>
+    <view class="cu-tag bg-black">GoLang</view>
+    <view class="cu-tag bg-pink">NodeJS</view>
     <view class="cu-tag bg-olive">AI</view>
     <view class="cu-tag bg-green">NLP</view>
     <view class="cu-tag bg-cyan">Docker</view>
