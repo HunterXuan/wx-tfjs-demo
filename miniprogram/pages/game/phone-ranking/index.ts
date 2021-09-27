@@ -188,12 +188,13 @@ Page({
       return;
     }
 
+    // 简化逻辑，一个用户仅保存最新比分
     const db = wx.cloud.database();
-    await db.collection('phone_rankings').add({
+    await db.collection('phone_rankings').doc(app.globalData.openid).set({
       data: {
         phone: this.data.phoneInfo,
         score: this.avgPredictionScore,
-        created_at: new Date().getTime(),
+        updated_at: new Date().getTime(),
       }
     });
   },
@@ -261,6 +262,8 @@ Page({
           updated_at: new Date().getTime(),
         }
       });
+
+      this.showRank();
     } else {
       wx.showToast({
         title: '查看排行榜发生错误',
