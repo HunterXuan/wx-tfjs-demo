@@ -21,7 +21,7 @@
         <view class="margin-top-xs margin-bottom-xs" bindtap="handleRankingBtnClick">
           <text class="cuIcon-refresh"></text> 再来一次</view>
       </view>
-      <view class="flex flex-sub flex-direction" bindtap="showRank">
+      <view class="flex flex-sub flex-direction" bindtap="handleFriendsRankBtnClick">
         <view class="margin-top-xs margin-bottom-xs">
           <text class="cuIcon-rankfill"></text> 好友排行</view>
       </view>

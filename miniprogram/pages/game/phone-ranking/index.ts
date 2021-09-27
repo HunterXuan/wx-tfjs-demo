@@ -192,7 +192,8 @@ Page({
     await db.collection('phone_rankings').add({
       data: {
         phone: this.data.phoneInfo,
-        score: this.avgPredictionScore
+        score: this.avgPredictionScore,
+        created_at: new Date().getTime(),
       }
     });
   },
@@ -246,6 +247,26 @@ Page({
       title: '一起来算力比拼！',
       query: 'referrer=' + app.globalData.openid
     };
+  },
+
+  handleFriendsRankBtnClick: async function () {
+    const userProfile = await wx.getUserProfile({
+      desc: '用于生成好友排行榜'
+    });
+    if (userProfile.userInfo) {
+      const db = wx.cloud.database();
+      await db.collection('user_info').doc(app.globalData.openid).set({
+        data: {
+          ...userProfile.userInfo,
+          updated_at: new Date().getTime(),
+        }
+      });
+    } else {
+      wx.showToast({
+        title: '查看排行榜发生错误',
+        icon: 'error'
+      });
+    }
   },
 
   showRank: function () {
