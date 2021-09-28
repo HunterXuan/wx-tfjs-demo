@@ -89,15 +89,37 @@
 
     <view class="cu-modal {{showRankModal?'show':''}}">
       <view class="cu-dialog">
-        <view class="cu-bar bg-white justify-end">
-          <view class="content">好友排行</view>
+        <view class="cu-bar bg-gradual-orange justify-end">
+          <view class="content">
+            <text class="cuIcon-rankfill"></text>
+            好友排行
+            <text class="cuIcon-rankfill"></text>
+          </view>
           <view class="action" bindtap="hideRank">
-            <text class="cuIcon-close text-red"></text>
+            <text class="cuIcon-close text-white"></text>
           </view>
         </view>
-        <view class="padding-xl text-left">
-          <view>暂未开放，敬请期待</view>
-        </view>
+        <scroll-view scroll-y class="scroll-friends-rank text-left">
+          <view class="cu-list menu-avatar">
+            <view class="cu-item solid-bottom" wx:for="{{ friendRankList }}" wx:for-item="item" wx:key="item">
+              <view class="cu-avatar radius lg bg-orange" style="background-image:url({{ item.user_info ? item.user_info.avatarUrl : '' }});">
+                <text class="cuIcon-people" wx:if="{{ !item.user_info }}"></text>
+                <view class="cu-tag badge" wx:if="{{ index + 1 == myRank }}"><text class="cuIcon-medal"></text></view>
+              </view>
+
+              <view class="content">
+                <text class="text-orange text-xl text-shadow" style="font-weight: bolder;">{{ item.score_record.score }}</text>
+                <view class="text-gray text-sm flex">
+                  <text class="text-cut">{{ item.score_record.phone.model }}</text>
+                </view>
+              </view>
+
+              <view class="action">
+                <view class="cu-tag round bg-grey sm">{{ index + 1 }}</view>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
       </view>
     </view>
   </view>
