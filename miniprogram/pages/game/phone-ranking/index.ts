@@ -30,6 +30,7 @@ Page({
     // 好友排行榜
     showRankModal: false,
     friendRankList: [],
+    myRank: 0,
     // 分享海报
     posterUrl: '',
     posterConfig: {},
@@ -188,11 +189,13 @@ Page({
       return;
     }
 
+    // 简化逻辑，一个用户仅保存最新比分
     const db = wx.cloud.database();
-    await db.collection('phone_rankings').add({
+    await db.collection('phone_rankings').doc(app.globalData.openid).set({
       data: {
         phone: this.data.phoneInfo,
-        score: this.avgPredictionScore
+        score: this.avgPredictionScore,
+        updated_at: new Date().getTime(),
       }
     });
   },
@@ -246,6 +249,55 @@ Page({
       title: '一起来算力比拼！',
       query: 'referrer=' + app.globalData.openid
     };
+  },
+
+  handleFriendsRankBtnClick: async function () {
+    const userProfile = await wx.getUserProfile({
+      desc: '用于生成好友排行榜'
+    });
+    if (userProfile.userInfo) {
+      wx.showLoading({
+        title: '加载中'
+      });
+
+      const db = wx.cloud.database();
+      await db.collection('user_info').doc(app.globalData.openid).set({
+        data: {
+          ...userProfile.userInfo,
+          updated_at: new Date().getTime(),
+        }
+      });
+
+      const friendRankRes = await wx.cloud.callFunction({
+        name: 'GetFriendsRank'
+      });
+      // @ts-ignore
+      const friendRankList = friendRankRes?.result?.list;
+
+      wx.hideLoading();
+
+      if (friendRankList.length) {
+        let myRank = 0;
+        for (let i = 0; i < friendRankList.length; i++) {
+          if (friendRankList[i].openid === app.globalData.openid) {
+            myRank = i + 1;
+          }
+        }
+
+        this.setData({
+          myRank,
+          friendRankList,
+        });
+
+        this.showRank();
+        return;
+      }
+    }
+
+    wx.showToast({
+      title: '发生错误',
+      icon: 'error'
+    });
   },
 
   showRank: function () {

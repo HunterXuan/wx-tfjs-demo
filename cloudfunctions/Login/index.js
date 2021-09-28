@@ -25,6 +25,7 @@ const addShareLink = async (openid, referrer) => {
     const queryRes = await db.collection('share_links').where({
       openid: db.command.eq(openid),
       referrer: db.command.eq(referrer),
+      created_at: new Date().getTime(),
     }).get();
     if (queryRes.data.length) {
       return;

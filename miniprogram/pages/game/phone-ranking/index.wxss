@@ -40,3 +40,7 @@
   right: 0;
   z-index: 20;
 }
+
+.scroll-friends-rank {
+  max-height: 65vh;
+}
