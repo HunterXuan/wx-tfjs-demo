@@ -1,7 +1,8 @@
 import * as face from '@tensorflow-models/face-landmarks-detection';
 import * as tf from '@tensorflow/tfjs-core'
 import { getFrameSliceOptions } from '../utils/util';
-import { drawKeypoints } from './util';
+import { lipsLowerPointSeries, lipsUpperPointSeries } from './annotations';
+import { drawKeyAreaByPoints, drawKeypoints } from './util';
 
 let model: face.FaceLandmarksDetector;
 
@@ -49,6 +50,19 @@ export const drawFaces = (ctx: WechatMiniprogram.CanvasContext, faces: face.Face
 
   faces.forEach(face => {
     drawKeypoints(face.scaledMesh as [number, number, number][], ctx);
+  })
+
+  ctx.draw();
+}
+
+export const drawLipstick = (ctx: WechatMiniprogram.CanvasContext, faces: face.FaceLandmarksPrediction[], color: string) => {
+  if (!ctx || !faces) {
+    return;
+  }
+
+  faces.forEach(face => {
+    drawKeyAreaByPoints(lipsUpperPointSeries.map(point => (face.scaledMesh as [number, number, number][])[point]), ctx, color);
+    drawKeyAreaByPoints(lipsLowerPointSeries.map(point => (face.scaledMesh as [number, number, number][])[point]), ctx, color);
   })
 
   ctx.draw();

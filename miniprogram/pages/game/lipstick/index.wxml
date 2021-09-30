@@ -1,0 +1,42 @@
+<custom-header bgColor="bg-gradual-pink" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">口红试色</view>
+</custom-header>
+
+<view class="page">
+  <view class="page__bd page__bd_spacing">
+    <camera
+      device-position="front"
+      flash="off"
+      binderror="error"
+      frame-size="medium"
+      class="camera"
+    >
+      <canvas id="canvas" canvas-id="canvas" class="canvas"></canvas>
+    </camera>
+  </view>
+
+  <scroll-view class="action-block bg-white" style="height: {{colorPanelBlockHeight}}px;" scroll-y>
+    <view class="cu-bar bg-white solid-bottom">
+      <view class="action">
+        <text class="cuIcon-title text-blue"></text>颜色：{{colorList[colorIndex].name}}
+      </view>
+    </view>
+    <view class="grid col-5 padding-sm">
+      <view class="margin-tb-sm text-center" wx:for="{{colorList}}" wx:key="item">
+        <button bindtap="handleColorChange" data-index="{{index}}" class="cu-btn lipstick-btn round text-white shadow" style="background: rgb({{item.r}},{{item.g}},{{item.b}});">{{ colorIndex == index ? '✔' : '' }}</button>
+      </view>
+    </view>
+
+    <view class="cu-bar margin-top bg-white solid-bottom">
+      <view class="action">
+        <text class="cuIcon-title text-blue"></text>浓度：{{alphaList[alphaIndex]}}
+      </view>
+    </view>
+    <view class="grid col-5 padding-sm">
+      <view class="margin-tb-sm text-center" wx:for="{{alphaList}}" wx:key="item">
+        <button bindtap="handleAlphaChange" data-index="{{index}}" class="cu-btn lipstick-btn round text-white shadow" style="background: rgba({{currentColor.r}},{{currentColor.g}},{{currentColor.b}},{{item}});">{{ alphaIndex == index ? '✔' : item * 10 }}</button>
+      </view>
+    </view>
+  </scroll-view>
+</view>
