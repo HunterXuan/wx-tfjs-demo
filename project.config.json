@@ -6,7 +6,7 @@
   "miniprogramRoot": "miniprogram/",
   "cloudfunctionRoot": "cloudfunctions/",
   "compileType": "miniprogram",
-  "libVersion": "2.15.0",
+  "libVersion": "2.19.6",
   "projectname": "AI%20Pocket",
   "scripts": {
     "beforeCompile": "",
