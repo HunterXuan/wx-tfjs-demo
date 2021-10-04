@@ -54,7 +54,7 @@ function codeTransform() {
         );
 
       // body-pix
-      code = code.replace(/function getInputSize\(e\){/g, 'function getInputSize(e){return [e.shape[0], e.shape[1]];')
+      code = code.replace(/function getInputSize\(e\){/g, 'function getInputSize(e){return [e.shape[0], e.shape[1]];').replace('webgl2', 'webgl');
       
       return { code };
     },

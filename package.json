@@ -27,6 +27,7 @@
     "@tensorflow/tfjs-core": "3.5.0",
     "fetch-wechat": "^0.0.3",
     "ml-matrix": "^6.8.0",
+    "three-platformize": "^1.129.0",
     "tinyqueue": "^2.0.3"
   },
   "devDependencies": {
