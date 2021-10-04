@@ -1,7 +1,7 @@
 import { Controller } from './controller';
 import { Compiler } from './compiler';
 
-module.exports = {
+export {
   Controller,
   Compiler
 }

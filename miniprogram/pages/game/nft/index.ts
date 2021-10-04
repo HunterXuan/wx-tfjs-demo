@@ -1,9 +1,9 @@
 // pages/game/nft/index.ts
 const app = getApp<IAppOption>();
 
-import * as nft from '../../../models/nft';
+import { Controller as ARController } from '../../../models/nft';
 
-console.log(nft)
+console.log(ARController)
 
 const CANVAS_ID = 'canvas'
 
@@ -11,7 +11,7 @@ Page({
 
   ctx: null as any,
 
-  arController: null,
+  arController: null as unknown as ARController,
 
   /**
    * Page initial data
@@ -67,13 +67,15 @@ Page({
 
   executeClassify: async function (frame: any) {
     if (!this.arController) {
-      this.arController = new nft.default.ARControllerNFT(frame.width, frame.height, '', {});
-      this.arController.addEventListener('getNFTMarker', (evt: any) => {console.log('getNFTMarker', evt)});
-      this.arController.addEventListener('lostNFTMarker', (evt: any) => {console.log('lostNFTMarker', evt)});
-      await this.arController.loadNFTMarker('https://626c-blog-541fe4-1257925894.tcb.qcloud.la/nft/pinball');
+      this.arController = new ARController({inputWidth: frame.width, inputHeight: frame.height});
+      await this.arController.addImageTargets('https://626c-blog-541fe4-1257925894.tcb.qcloud.la/nft/card.mind');
+      // this.arController = new nft.default.ARControllerNFT(frame.width, frame.height, '', {});
+      // this.arController.addEventListener('getNFTMarker', (evt: any) => {console.log('getNFTMarker', evt)});
+      // this.arController.addEventListener('lostNFTMarker', (evt: any) => {console.log('lostNFTMarker', evt)});
+      // await this.arController.loadNFTMarker('https://626c-blog-541fe4-1257925894.tcb.qcloud.la/nft/pinball');
     }
 
-    this.arController.process(frame);
+    console.log(await this.arController.detect(frame));
   },
 
   showLoadingToast() {

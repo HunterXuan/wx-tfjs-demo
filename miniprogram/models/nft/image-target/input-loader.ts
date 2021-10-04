@@ -14,43 +14,36 @@ export class InputLoader {
   tempPixelHandle: any;
 
   constructor(width: number, height: number) {
-    this.width = width;
-    this.height = height;
-    this.texShape = [height, width];
+    // this.width = width;
+    // this.height = height;
+    // this.texShape = [height, width];
 
-    const context = document.createElement('canvas').getContext('2d');
-    context.canvas.width = width;
-    context.canvas.height = height;
-    this.context = context;
+    // const context = document.createElement('canvas').getContext('2d');
+    // context.canvas.width = width;
+    // context.canvas.height = height;
+    // this.context = context;
 
-    this.program = this.buildProgram(width, height);
+    // this.program = this.buildProgram(width, height);
 
-    const backend = tf.backend();
-    this.tempPixelHandle = backend.makeTensorInfo(this.texShape, 'int32');
-    // warning!!!
-    // usage type should be TextureUsage.PIXELS, but tfjs didn't export this enum type, so we hard-coded 2 here 
-    //   i.e. backend.texData.get(tempPixelHandle.dataId).usage = TextureUsage.PIXELS;
-    backend.texData.get(this.tempPixelHandle.dataId).usage = 2;
+    // const backend = tf.backend();
+    // this.tempPixelHandle = backend.makeTensorInfo(this.texShape, 'int32');
+    // // warning!!!
+    // // usage type should be TextureUsage.PIXELS, but tfjs didn't export this enum type, so we hard-coded 2 here 
+    // //   i.e. backend.texData.get(tempPixelHandle.dataId).usage = TextureUsage.PIXELS;
+    // backend.texData.get(this.tempPixelHandle.dataId).usage = 2;
   }
 
   // input is instance of HTMLVideoElement or HTMLImageElement
   loadInput(input) {
-    if (input.width && input.height && input.data) {
-      return tf.browser.fromPixels({
+    return tf.tidy(() => {
+      let inputImage = tf.browser.fromPixels({
         data: new Uint8Array(input.data),
         width: input.width,
         height: input.height,
-      }, 4);
-    }
-    this.context.drawImage(input, 0, 0, this.width, this.height);
-
-    const backend = tf.backend();
-    backend.gpgpu.uploadPixelDataToTexture(backend.getTexture(this.tempPixelHandle.dataId), this.context.canvas);
-
-    //const res = backend.compileAndRun(this.program, [this.tempPixelHandle], 'float32');
-    const res = this._compileAndRun(this.program, [this.tempPixelHandle], 'float32');
-    //backend.disposeData(tempPixelHandle.dataId);
-    return res;
+      });
+      inputImage = tf.mean(inputImage, 2);
+      return inputImage;
+    });
   }
 
   buildProgram(width: number, height: number) {

@@ -1012,7 +1012,7 @@ export class Detector {
 
   _differenceImageBinomial(image1, image2) {
     return tf.tidy(() => {
-      return image1.sub(image2);
+			return tf.sub(image1, image2);
     });
   }
 

@@ -1,5 +1,5 @@
 import * as tf from '@tensorflow/tfjs-core';
-import {buildModelViewProjectionTransform, computeScreenCoordiate} from '../estimation/utils.js';
+import {buildModelViewProjectionTransform, computeScreenCoordiate} from '../estimation/utils';
 
 const AR2_DEFAULT_TS = 6;
 const AR2_DEFAULT_TS_GAP = 1;

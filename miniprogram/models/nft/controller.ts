@@ -1,5 +1,5 @@
 import * as tf from '@tensorflow/tfjs-core';
-import * as Worker from './controller.worker';
+import { Worker } from './controller.worker';
 import { Tracker } from './image-target/tracker/tracker';
 import { Detector } from './image-target/detector/detector';
 import { InputLoader } from './image-target/input-loader';

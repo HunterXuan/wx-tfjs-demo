@@ -1,6 +1,6 @@
 import { Matrix, inverse } from 'ml-matrix';
-import { createRandomizer } from '../utils/randomizer.js';
-import { quadrilateralConvex, matrixInverse33, smallestTriangleArea, multiplyPointHomographyInhomogenous, checkThreePointsConsistent, checkFourPointsConsistent, determinant } from '../utils/geometry.js';
+import { createRandomizer } from '../utils/randomizer';
+import { quadrilateralConvex, matrixInverse33, smallestTriangleArea, multiplyPointHomographyInhomogenous, checkThreePointsConsistent, checkFourPointsConsistent, determinant } from '../utils/geometry';
 import { solveHomography } from '../utils/homography';
 
 const EPSILON = 0.0000000000001;

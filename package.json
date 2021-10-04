@@ -15,6 +15,7 @@
   "author": "HunterXuan",
   "license": "MIT",
   "dependencies": {
+    "@msgpack/msgpack": "^2.7.1",
     "@tensorflow-models/body-pix": "^2.2.0",
     "@tensorflow-models/coco-ssd": "^2.2.2",
     "@tensorflow-models/face-landmarks-detection": "^0.0.3",
