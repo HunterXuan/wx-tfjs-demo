@@ -20,7 +20,7 @@ export class CropDetector {
   }
 
   detect(inputImageT) {
-    return  this.detector.detect(inputImageT);
+    return {featurePoints: this.detector.detect(inputImageT), debugExtra: null};
     // crop center
     const startY = Math.floor(this.height / 2 - this.cropSize / 2);
     const startX = Math.floor(this.width / 2 - this.cropSize / 2);
@@ -33,7 +33,7 @@ export class CropDetector {
   }
 
   detectMoving(inputImageT) { // loop a few locations around center
-    return this.detector.detect(inputImageT);
+    return {featurePoints: this.detector.detect(inputImageT), debugExtra: null};
     const dx = this.lastRandomIndex % 3;
     const dy = Math.floor(this.lastRandomIndex / 3);
 

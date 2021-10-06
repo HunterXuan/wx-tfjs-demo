@@ -22,15 +22,14 @@ export class Worker {
     const {data} = msg;
 
     if (data.type === 'setup') {
+      console.log('worker setup', data);
       projectionTransform = data.projectionTransform;
       matchingDataList = data.matchingDataList;
       debugMode = data.debugMode;
       matcher = new Matcher(data.inputWidth, data.inputHeight, debugMode);
       estimator = new Estimator(data.projectionTransform);
-
-      console.log('setup, matchingDataList', matchingDataList)
     } else if (data.type === 'match') {
-      console.log('match, matchingDataList', matchingDataList)
+      // console.log('worker match', data);
       
       const interestedTargetIndexes = data.targetIndexes;
 
@@ -42,6 +41,7 @@ export class Worker {
         const matchingIndex = interestedTargetIndexes[i];
 
         const {keyframeIndex, screenCoords, worldCoords, debugExtra} = matcher.matchDetection(matchingDataList[matchingIndex], data.featurePoints);
+        console.log('matchDetection', keyframeIndex, screenCoords, worldCoords, debugExtra)
         matchedDebugExtra = debugExtra;
 
         if (keyframeIndex !== -1) {

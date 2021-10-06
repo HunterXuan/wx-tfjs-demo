@@ -12,6 +12,7 @@ const HAMMING_THRESHOLD = 0.7;
 
 // match list of querpoints against pre-built list of keyframes
 export const match = ({keyframe, querypoints, querywidth, queryheight, debugMode}) => {
+  console.log('match', keyframe, querypoints, querywidth, queryheight)
   let debugExtra = {};
 
   const matches = [];

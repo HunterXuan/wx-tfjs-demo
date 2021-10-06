@@ -191,6 +191,7 @@ export class Controller {
           }
 
           const {targetIndex: matchedTargetIndex, modelViewTransform} = await this._detectAndMatch(inputT, matchingIndexes);
+          console.log('_detectAndMatch', matchedTargetIndex, modelViewTransform)
 
           if (matchedTargetIndex !== -1) {
             this.trackingStates[matchedTargetIndex].isTracking = true;
@@ -287,9 +288,9 @@ export class Controller {
     return featurePoints;
   }
 
-  async match(featurePoints) {
-    const {targetIndex, modelViewTransform, debugExtras} = await this._workerMatch(featurePoints, []);
-    return {modelViewTransform, debugExtras};
+  async match(featurePoints, targetIndex) {
+    const {modelViewTransform, debugExtra} = await this._workerMatch(featurePoints, [targetIndex]);
+    return {modelViewTransform, debugExtra};
   }
 
   async track(input, modelViewTransforms, targetIndex) {
@@ -316,12 +317,12 @@ export class Controller {
     return modelViewTransform2;
   }
 
-  _workerMatch(featurePoints, skipTargetIndexes) {
+  _workerMatch(featurePoints, targetIndexes) {
     return new Promise(async (resolve, reject) => {
       this.workerMatchDone = (data) => {
-        resolve({targetIndex: data.targetIndex, modelViewTransform: data.modelViewTransform, debugExtras: data.debugExtras});
+        resolve({targetIndex: data.targetIndex, modelViewTransform: data.modelViewTransform, debugExtra: data.debugExtra});
       }
-      this.worker.postMessage({type: 'match', featurePoints: featurePoints, skipTargetIndexes});
+      this.worker.postMessage({type: 'match', featurePoints: featurePoints, targetIndexes});
     });
   }
 
