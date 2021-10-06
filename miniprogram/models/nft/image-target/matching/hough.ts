@@ -2,7 +2,7 @@ const kHoughBinDelta = 1;
 
 // mathces [querypointIndex:x, keypointIndex: x]
 export const computeHoughMatches = (options: { keypoints: any; querypoints: any; keywidth: any; keyheight: any; querywidth: any; queryheight: any; matches: any; }) => {
-  const {keypoints, querypoints, keywidth, keyheight, querywidth, queryheight, matches} = options;
+  const {keywidth, keyheight, querywidth, queryheight, matches} = options;
 
   const maxX = querywidth * 1.2;
   const minX = -maxX;
@@ -21,8 +21,8 @@ export const computeHoughMatches = (options: { keypoints: any; querypoints: any;
   // compute numXBins and numYBins based on matches
   const projectedDims = [];
   for (let i = 0; i < matches.length; i++) {
-    const queryscale = querypoints[matches[i].querypointIndex].scale;
-    const keyscale = keypoints[matches[i].keypointIndex].scale;
+    const queryscale = matches[i].querypoint.scale;
+    const keyscale = matches[i].keypoint.scale;
     if (keyscale == 0) console.log("ERROR divide zero");
     const scale = queryscale / keyscale;
     projectedDims.push( scale * maxDim );
@@ -43,10 +43,10 @@ export const computeHoughMatches = (options: { keypoints: any; querypoints: any;
   // do voting
   const querypointValids = [];
   const querypointBinLocations = [];
-  const votes = {} as any;
+  const votes = {};
   for (let i = 0; i < matches.length; i++) {
-    const querypoint = querypoints[matches[i].querypointIndex];
-    const keypoint = keypoints[matches[i].keypointIndex];
+    const querypoint = matches[i].querypoint;
+    const keypoint = matches[i].keypoint;
 
     const {x, y, scale, angle} = _mapCorrespondence({querypoint, keypoint, keycenterX, keycenterY, scaleOneOverLogK});
 
@@ -89,9 +89,7 @@ export const computeHoughMatches = (options: { keypoints: any; querypoints: any;
 
             const binIndex = binX2 + binY2 * numXBins + binAngle2 * numXYBins + binScale2 * numXYAngleBins;
 
-            if (votes[binIndex] === undefined) {
-              votes[binIndex] = 0;
-            }
+            if (votes[binIndex] === undefined) votes[binIndex] = 0;
             votes[binIndex] += 1;
           }
         }
@@ -105,7 +103,6 @@ export const computeHoughMatches = (options: { keypoints: any; querypoints: any;
   Object.keys(votes).forEach((index) => {
     if (votes[index] > maxVotes) {
       maxVotes = votes[index];
-      // @ts-ignore
       maxVoteIndex = index;
     }
   });

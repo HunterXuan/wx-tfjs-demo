@@ -1,14 +1,15 @@
 import { Worker } from './compiler.worker';
 import { Detector } from './image-target/detector/detector';
-import { buildImageList } from './image-target/image-list';
+import { buildImageList, buildTrackingImageList } from './image-target/image-list';
 import {build as hierarchicalClusteringBuild} from './image-target/matching/hierarchical-clustering';
 import * as msgpack from '@msgpack/msgpack';
 import * as tf from '@tensorflow/tfjs-core';
 // TODO: better compression method. now grey image saved in pixels, which could be largere than original image
 
-const CURRENT_VERSION = 1;
+const CURRENT_VERSION = 2;
 
 export class Compiler {
+  data: null;
   constructor() {
     this.data = null;
   }
@@ -41,38 +42,43 @@ export class Compiler {
       let percent = 0.0;
       this.data = [];
       for (let i = 0; i < targetImages.length; i++) {
-	const targetImage = targetImages[i];
-	const imageList = buildImageList(targetImage);
-	const percentPerAction = percentPerImage / imageList.length;
-	const matchingData = await _extractMatchingFeatures(imageList, () => {
-	  percent += percentPerAction;
-	  progressCallback(percent);
-	});
-	this.data.push({
-	  targetImage: targetImage,
-	  imageList: imageList,
-	  matchingData: matchingData
-	});
+        const targetImage = targetImages[i];
+        const imageList = buildImageList(targetImage);
+        const percentPerAction = percentPerImage / imageList.length;
+        const matchingData = await _extractMatchingFeatures(imageList, () => {
+          percent += percentPerAction;
+          progressCallback(percent);
+        });
+        this.data.push({
+          targetImage: targetImage,
+          imageList: imageList,
+          matchingData: matchingData
+        });
+      }
+
+      for (let i = 0; i < targetImages.length; i++) {
+        const trackingImageList = buildTrackingImageList(targetImages[i]);
+        this.data[i].trackingImageList = trackingImageList; 
       }
 
       // compute tracking data with worker: 50% progress
       const compileTrack = () => {
-	return new Promise((resolve, reject) => {
-	  const worker = new Worker();
-	  worker.onmessage = (e) => {
-	    if (e.data.type === 'progress') {
-	      progressCallback(50 + e.data.percent);
-	    } else if (e.data.type === 'compileDone') {
-	      resolve(e.data.list);
-	    }
-	  };
-	  worker.postMessage({type: 'compile', targetImages});
-	});
+	      return new Promise((resolve, reject) => {
+          const worker = new Worker();
+          worker.onmessage = (e) => {
+            if (e.data.type === 'progress') {
+              progressCallback(50 + e.data.percent);
+            } else if (e.data.type === 'compileDone') {
+              resolve(e.data.list);
+            }
+          };
+          worker.postMessage({type: 'compile', targetImages});
+        });
       }
 
       const trackingDataList = await compileTrack();
       for (let i = 0; i < targetImages.length; i++) {
-	this.data[i].trackingData = trackingDataList[i];
+	      this.data[i].trackingData = trackingDataList[i];
       }
       resolve(this.data);
     });
@@ -83,7 +89,11 @@ export class Compiler {
     const dataList = [];
     for (let i = 0; i < this.data.length; i++) {
       dataList.push({
-        targetImage: this.data[i].targetImage,
+        //targetImage: this.data[i].targetImage,
+        targetImage: {
+          width: this.data[i].targetImage.width,
+          height: this.data[i].targetImage.height,
+        },
         trackingData: this.data[i].trackingData,
         matchingData: this.data[i].matchingData
       });
@@ -97,23 +107,13 @@ export class Compiler {
 
   importData(buffer) {
     const content = msgpack.decode(new Uint8Array(buffer));
-    //console.log("import", content);
 
     if (!content.v || content.v !== CURRENT_VERSION) {
       console.error("Your compiled .mind might be outdated. Please recompile");
       return [];
     }
-    const {dataList} = content;
-    this.data = [];
-    for (let i = 0; i < dataList.length; i++) {
-      const imageList = buildImageList(dataList[i].targetImage);
-      this.data.push({
-        imageList: imageList,
-        targetImage: dataList[i].targetImage,
-        trackingData: dataList[i].trackingData,
-        matchingData: dataList[i].matchingData
-      });
-    }
+    const { dataList } = content;
+    this.data = dataList;
     return this.data;
   }
 }
@@ -127,16 +127,24 @@ const _extractMatchingFeatures = async (imageList, doneCallback) => {
 
     await tf.nextFrame();
     tf.tidy(() => {
-      const inputT = tf.tensor(image.data, [image.data.length]).reshape([image.height, image.width]);
+      //const inputT = tf.tensor(image.data, [image.data.length]).reshape([image.height, image.width]);
+      const inputT = tf.tensor(image.data, [image.data.length], 'float32').reshape([image.height, image.width]);
       //const ps = detector.detectImageData(image.data);
-      const ps = detector.detect(inputT);
-      const pointsCluster = hierarchicalClusteringBuild({points: ps});
+      const {featurePoints: ps} = detector.detect(inputT);
+
+      const maximaPoints = ps.filter((p) => p.maxima); 
+      const minimaPoints = ps.filter((p) => !p.maxima); 
+      const maximaPointsCluster = hierarchicalClusteringBuild({points: maximaPoints});
+      const minimaPointsCluster = hierarchicalClusteringBuild({points: minimaPoints});
+
       keyframes.push({
-	points: ps,
-	pointsCluster,
-	width: image.width,
-	height: image.height,
-	scale: image.scale
+        maximaPoints,
+        minimaPoints,
+        maximaPointsCluster,
+        minimaPointsCluster,
+        width: image.width,
+        height: image.height,
+        scale: image.scale
       });
       doneCallback(i);
     });

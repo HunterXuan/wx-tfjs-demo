@@ -1,11 +1,11 @@
 import { Matcher } from './image-target/matching/matcher';
 import { Estimator } from './image-target/estimation/estimator';
 
-let projectionTransform = null;
-let matchingDataList = null;
-let debugMode = false;
-let matcher = null;
-let estimator = null;
+var projectionTransform = null;
+var matchingDataList: string | any[] = [];
+var debugMode = false;
+var matcher = null;
+var estimator = null;
 
 const postMessage = (data, callback) => {
   callback({data});
@@ -27,45 +27,42 @@ export class Worker {
       debugMode = data.debugMode;
       matcher = new Matcher(data.inputWidth, data.inputHeight, debugMode);
       estimator = new Estimator(data.projectionTransform);
-    }
-    else if (data.type === 'match') {
-      const skipTargetIndexes = data.skipTargetIndexes;
+
+      console.log('setup, matchingDataList', matchingDataList)
+    } else if (data.type === 'match') {
+      console.log('match, matchingDataList', matchingDataList)
+      
+      const interestedTargetIndexes = data.targetIndexes;
 
       let matchedTargetIndex = -1;
       let matchedModelViewTransform = null;
-      let debugExtras = null;
+      let matchedDebugExtra = null;
 
-      if (debugMode) {
-        debugExtras = [];
-      }
+      for (let i = 0; i < interestedTargetIndexes.length; i++) {
+        const matchingIndex = interestedTargetIndexes[i];
 
-      for (let i = 0; i < matchingDataList.length; i++) {
-        if (skipTargetIndexes.includes(i)) continue;
+        const {keyframeIndex, screenCoords, worldCoords, debugExtra} = matcher.matchDetection(matchingDataList[matchingIndex], data.featurePoints);
+        matchedDebugExtra = debugExtra;
 
-        const {keyframeIndex, screenCoords, worldCoords, debugExtra} = matcher.matchDetection(matchingDataList[i], data.featurePoints);
+        if (keyframeIndex !== -1) {
+          const modelViewTransform = estimator.estimate({screenCoords, worldCoords});
 
-        if (debugMode) {
-          debugExtras.push(debugExtra);
+          if (modelViewTransform) {
+            matchedTargetIndex = matchingIndex;
+            matchedModelViewTransform = modelViewTransform;
+          }
+          break;
         }
-
-        if (keyframeIndex === -1) continue;
-
-        const modelViewTransform = estimator.estimate({screenCoords, worldCoords});
-        if (modelViewTransform === null) continue;
-
-        matchedTargetIndex = i;
-        matchedModelViewTransform = modelViewTransform;
-        break;
       }
 
       postMessage({
         type: 'matchDone',
         targetIndex: matchedTargetIndex,
         modelViewTransform: matchedModelViewTransform,
-        debugExtras
+        debugExtra: matchedDebugExtra
       }, this.onmessage);
-    }
-    else if (data.type === 'trackUpdate') {
+
+    } else if (data.type === 'trackUpdate') {
       const {modelViewTransform, worldCoords, screenCoords} = data;
       const finalModelViewTransform = estimator.refineEstimate({initialModelViewTransform: modelViewTransform, worldCoords, screenCoords});
       postMessage({
