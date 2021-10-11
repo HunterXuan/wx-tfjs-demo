@@ -41,7 +41,7 @@ export class Worker {
         const matchingIndex = interestedTargetIndexes[i];
 
         const {keyframeIndex, screenCoords, worldCoords, debugExtra} = matcher.matchDetection(matchingDataList[matchingIndex], data.featurePoints);
-        console.log('matchDetection', keyframeIndex, screenCoords, worldCoords, debugExtra)
+        // console.log('matchDetection', matchingDataList[matchingIndex], keyframeIndex, screenCoords, worldCoords, debugExtra)
         matchedDebugExtra = debugExtra;
 
         if (keyframeIndex !== -1) {

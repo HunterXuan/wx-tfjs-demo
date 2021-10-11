@@ -12,7 +12,6 @@ const HAMMING_THRESHOLD = 0.7;
 
 // match list of querpoints against pre-built list of keyframes
 export const match = ({keyframe, querypoints, querywidth, queryheight, debugMode}) => {
-  console.log('match', keyframe, querypoints, querywidth, queryheight)
   let debugExtra = {};
 
   const matches = [];
@@ -202,14 +201,14 @@ const _query = ({node, keypoints, querypoint, queue, keypointIndexes, numPop}) =
 };
 
 const _findInlierMatches = (options: { querypoints: any; keypoints: any; H: any; matches: any; threshold: any; }) => {
-  const {keypoints, querypoints, H, matches, threshold} = options;
+  const {H, matches, threshold} = options;
 
   const threshold2 = threshold * threshold;
 
   const goodMatches = [];
   for (let i = 0; i < matches.length; i++) {
-    const querypoint = querypoints[matches[i].querypointIndex];
-    const keypoint = keypoints[matches[i].keypointIndex];
+    const querypoint = matches[i].querypoint;
+    const keypoint = matches[i].keypoint;
     const mp = multiplyPointHomographyInhomogenous([keypoint.x, keypoint.y], H);
     const d2 = (mp[0] - querypoint.x) * (mp[0] - querypoint.x) + (mp[1] - querypoint.y) * (mp[1] - querypoint.y);
     if (d2 <= threshold2) {

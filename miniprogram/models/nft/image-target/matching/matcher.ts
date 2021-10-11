@@ -18,7 +18,6 @@ export class Matcher {
     for (let i = 0; i < keyframes.length; i++) {
       const {H, matches, debugExtra: frameDebugExtra} = match({keyframe: keyframes[i], querypoints: featurePoints, querywidth: this.queryWidth, queryheight: this.queryHeight, debugMode: this.debugMode});
       debugExtra.frames.push(frameDebugExtra);
-// console.log('match', H, matches)
       if (H) {
         if (bestResult === null || bestResult.matches.length < matches.length) {
           bestResult = {keyframeIndex: i, H, matches};

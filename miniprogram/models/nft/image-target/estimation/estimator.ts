@@ -1,4 +1,5 @@
 import { estimate } from './estimate';
+import {refineEstimate} from './refine-estimate';
 
 export class Estimator {
   projectionTransform: any;
@@ -18,5 +19,10 @@ export class Estimator {
   }) {
     const modelViewTransform = estimate({screenCoords, worldCoords, projectionTransform: this.projectionTransform});
     return modelViewTransform;
+  }
+
+  refineEstimate({initialModelViewTransform, worldCoords, screenCoords}) {
+    const updatedModelViewTransform = refineEstimate({initialModelViewTransform, worldCoords, screenCoords, projectionTransform: this.projectionTransform});
+    return updatedModelViewTransform;
   }
 }

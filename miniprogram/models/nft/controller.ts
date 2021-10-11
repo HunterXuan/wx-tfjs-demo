@@ -118,6 +118,17 @@ export class Controller {
 
     this.markerDimensions = dimensions;
 
+    this.trackingStates = [];
+    for (let i = 0; i < this.markerDimensions.length; i++) {
+      this.trackingStates.push({
+        showing: false,
+        isTracking: false,
+        currentModelViewTransform: null,
+        trackCount: 0,
+        trackMiss: 0
+      });
+    }
+
     return {dimensions: dimensions, matchingDataList, trackingDataList};
   }
 
@@ -155,17 +166,6 @@ export class Controller {
 
     this.processingVideo = true;
 
-    this.trackingStates = [];
-    for (let i = 0; i < this.markerDimensions.length; i++) {
-      this.trackingStates.push({
-        showing: false,
-        isTracking: false,
-        currentModelViewTransform: null,
-        trackCount: 0,
-        trackMiss: 0
-      });
-    }
-
     const startProcessing = async() => {
       {
 	      if (!this.processingVideo) return;
@@ -191,7 +191,7 @@ export class Controller {
           }
 
           const {targetIndex: matchedTargetIndex, modelViewTransform} = await this._detectAndMatch(inputT, matchingIndexes);
-          console.log('_detectAndMatch', matchedTargetIndex, modelViewTransform)
+          // console.log('_detectAndMatch', matchedTargetIndex, modelViewTransform)
 
           if (matchedTargetIndex !== -1) {
             this.trackingStates[matchedTargetIndex].isTracking = true;
@@ -256,7 +256,7 @@ export class Controller {
               trackingState.trackingMatrix = worldMatrix;
             } else {
               for (let j = 0; j < worldMatrix.length; j++) {
-          trackingState.trackingMatrix[j] = trackingState.trackingMatrix[j] + (worldMatrix[j] - trackingState.trackingMatrix[j]) / INTERPOLATION_FACTOR;
+                trackingState.trackingMatrix[j] = trackingState.trackingMatrix[j] + (worldMatrix[j] - trackingState.trackingMatrix[j]) / INTERPOLATION_FACTOR;
               }
             }
             const clone = [];
@@ -265,6 +265,7 @@ export class Controller {
             }
             this.onUpdate && this.onUpdate({type: 'updateMatrix', targetIndex: i, worldMatrix: clone});
           }
+          // this.trackingStates[i] = trackingState;
         }
 
         inputT.dispose();

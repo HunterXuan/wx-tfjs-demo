@@ -129,15 +129,21 @@ Page({
         if (data.type === 'updateMatrix') {
           console.log('onUpdate:', data);
           const {targetIndex, worldMatrix} = data;
-      
+
           for (let i = 0; i < this.arModels.length; i++) {
             if (i === targetIndex) {
-              this.arModels[i].scene.visible = worldMatrix !== null;
-              if (worldMatrix !== null) {
-                const m = new THREE.Matrix4();
-                m.elements = worldMatrix;
-                m.multiply(this.postMatrixList[i]);
-                this.arModels[i].scene.matrix = m;
+              try {
+                this.arModels[i].visible = worldMatrix !== null;
+                if (worldMatrix !== null) {
+                  const m = new THREE.Matrix4();
+                  m.elements = worldMatrix;
+                  // console.log('m', m, i, this.postMatrixList)
+                  m.multiply(this.postMatrixList[i]);
+                  this.arModels[i].matrix = m;
+                }
+                console.log('scene', this.scene)
+              } catch (e) {
+                console.error('updateMatrix', e)
               }
             }
           }
@@ -151,6 +157,8 @@ Page({
     const far = proj[14] / (proj[10] + 1.0);
     const ratio = proj[5] / proj[0]; // (r-l) / (t-b)
 
+    this.scene = new THREE.Scene();
+
     wx.createSelectorQuery()
     .select('#gl')
     .node()
@@ -161,37 +169,49 @@ Page({
       this.platform = platform;
       THREE.PLATFORM.set(platform);
 
-      const scene = new THREE.Scene();
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
       const camera = new THREE.PerspectiveCamera(fov, canvas.width / canvas.height, near, far);
-      const gltfLoader = new GLTFLoader();
 
-      const controls = new OrbitControls(camera, canvas);
-      controls.enableDamping = true;
-
-      const arModel = await gltfLoader.loadAsync('https://626c-blog-541fe4-1257925894.tcb.qcloud.la/nft/card.glb');
-      arModel.scene.visible = false;
-      arModel.scene.matrixAutoUpdate = false;
-      this.arModels.push(arModel);
-      console.log('arModels:', this.arModels);
+      // const controls = new OrbitControls(camera, canvas);
+      // controls.enableDamping = true;
 
       camera.position.z = 15;
       renderer.outputEncoding = THREE.sRGBEncoding;
-      scene.add(new THREE.AmbientLight(0xffffff, 1.0))
-      scene.add(new THREE.DirectionalLight(0xffffff, 1.0))
+      this.scene.add(new THREE.AmbientLight(0xffffff, 1.0))
+      this.scene.add(new THREE.DirectionalLight(0xffffff, 1.0))
       renderer.setSize(canvas.width, canvas.height);
       renderer.setPixelRatio(THREE.$window.devicePixelRatio);
 
+      this.renderer = renderer;
+      this.camera = camera;
+
       const render = () => {
         if (!this.disposing) this.frameId = THREE.$requestAnimationFrame(render);
-        controls.update();
-        renderer.render(scene, camera);
-      }
-      render()
+        // controls.update();
+        this.renderer.render(this.scene, this.camera);
+      };
+      render();
     })
 
     const { dimensions } = await this.arController.addImageTargets('https://626c-blog-541fe4-1257925894.tcb.qcloud.la/nft/card.mind');
     console.log('dimentions', dimensions)
+
+    const gltfLoader = new GLTFLoader();
+    const gltf = await gltfLoader.loadAsync('https://626c-blog-541fe4-1257925894.tcb.qcloud.la/nft/card.glb');
+    const arModel = gltf.scene;
+    arModel.visible = false;
+    arModel.matrixAutoUpdate = false;
+    this.arModels.push(arModel);
+
+    // arModel.parser = null;
+    this.scene.add(arModel);
+    console.log('add model scene', this.scene);
+    // this.scene.scale.set(1, 1, 1);
+    // arModel.scene.position.y = -10;
+    
+    
+    console.log('arModels:', this.arModels);
+
     for (let i = 0; i < this.arModels.length; i++) {
       const [markerWidth, markerHeight] = dimensions[i];
       const position = new THREE.Vector3();
@@ -203,14 +223,9 @@ Page({
       scale.y = markerWidth;
       scale.z = markerWidth;
 
-      this.arModels[i].scene.position.x = markerWidth / 2;
-      this.arModels[i].scene.position.y = markerWidth / 2 + (markerHeight - markerWidth) / 2;
-      this.arModels[i].scene.scale.x = markerWidth;
-      this.arModels[i].scene.scale.y = markerWidth;
-      this.arModels[i].scene.scale.z = markerWidth;
-
       this.postMatrixList[i] = new THREE.Matrix4();
       this.postMatrixList[i].compose(position, quaternion, scale);
+      console.log('postMatrixList', this.postMatrixList)
     }
 
     console.log('dummyRun')
@@ -218,7 +233,8 @@ Page({
   },
 
   onTX(e: any) {
-    // this.platform.dispatchTouchEvent(e)
+    this.platform.dispatchTouchEvent(e)
+    console.log('scene', this.scene)
   },
 
   executeClassify: async function (frame: any) {
