@@ -21,12 +21,14 @@ const OCCUPANCY_SIZE = 24 * 2 / 3;
  * @param {int} options.width image width
  * @param {int} options.height image height
  */
-export const extract = (image) => {
-  const {data: imageData, width, height, scale} = image;
+export const extract = (image: { data: any; width: any; height: any; scale: any; }) => {
+  const {data: imageData, width, height} = image;
 
   // Step 1 - filter out interesting points. Interesting points have strong pixel value changed across neighbours
-  const isPixelSelected = [width * height];
-  for (let i = 0; i < isPixelSelected.length; i++) isPixelSelected[i] = false;
+  const isPixelSelected: any[] = [width * height];
+  for (let i = 0; i < isPixelSelected.length; i++) {
+    isPixelSelected[i] = false;
+  }
 
   // Step 1.1 consider a pixel at position (x, y). compute:
   //   dx = ((data[x+1, y-1] - data[x-1, y-1]) + (data[x+1, y] - data[x-1, y]) + (data[x+1, y+1] - data[x-1, y-1])) / 256 / 3
@@ -63,6 +65,7 @@ export const extract = (image) => {
   const dValueHist = new Uint32Array(1000); // histogram of dvalue scaled to [0, 1000)
   for (let i = 0; i < 1000; i++) dValueHist[i] = 0;
   const neighbourOffsets = [-1, 1, -width, width];
+  // @ts-ignore
   let allCount = 0;
   for (let i = 1; i < width-1; i++) {
     for (let j = 1; j < height-1; j++) {
@@ -161,9 +164,9 @@ export const extract = (image) => {
   return coords;
 }
 
-const _selectFeature = (options) => {
+const _selectFeature = (options: { image: any; featureMap: any; templateSize: any; searchSize: any; occSize: any; maxSimThresh: any; minSimThresh: any; sdThresh: any; imageDataCumsum: any; imageDataSqrCumsum: any; }) => {
   let {image, featureMap, templateSize, searchSize, occSize, maxSimThresh, minSimThresh, sdThresh, imageDataCumsum, imageDataSqrCumsum} = options;
-  const {data: imageData, width, height, scale} = image;
+  const {data: imageData, width, height} = image;
 
   //console.log("params: ", templateSize, templateSize, occSize, maxSimThresh, minSimThresh, sdThresh);
 
@@ -258,7 +261,21 @@ const _selectFeature = (options) => {
 }
 
 // compute variances of the pixels, centered at (cx, cy)
-const _templateVar = ({image, cx, cy, sdThresh, imageDataCumsum, imageDataSqrCumsum}) => {
+const _templateVar = ({
+  image,
+  cx,
+  cy,
+  sdThresh,
+  imageDataCumsum,
+  imageDataSqrCumsum
+}: {
+  image: any,
+  cx: any,
+  cy: any,
+  sdThresh: any,
+  imageDataCumsum: any,
+  imageDataSqrCumsum: any
+}) => {
   if (cx - TEMPLATE_SIZE < 0 || cx + TEMPLATE_SIZE >= image.width) return null;
   if (cy - TEMPLATE_SIZE < 0 || cy + TEMPLATE_SIZE >= image.height) return null;
 
@@ -280,7 +297,7 @@ const _templateVar = ({image, cx, cy, sdThresh, imageDataCumsum, imageDataSqrCum
   return vlen;
 }
 
-const _getSimilarity = (options) => {
+const _getSimilarity = (options: { image: any; cx: any; cy: any; vlen: any; tx: any; ty: any; imageDataCumsum: any; imageDataSqrCumsum: any; }) => {
   const {image, cx, cy, vlen, tx, ty, imageDataCumsum, imageDataSqrCumsum} = options;
   const {data: imageData, width, height} = image;
   const templateSize = TEMPLATE_SIZE;

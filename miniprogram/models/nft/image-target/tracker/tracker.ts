@@ -23,11 +23,15 @@ export class Tracker {
 	featurePointsListT: any[];
 	imagePixelsListT: any[];
 	imagePropertiesListT: any[];
-	kernelCaches: {};
+	kernelCaches: {
+		computeMatching: any,
+		_computeColoredProjection: any,
+		computeProjection: any
+	};
 	markerDimensions: any;
 	trackingKeyframeList: any;
 
-  constructor(markerDimensions, trackingDataList, projectionTransform, inputWidth, inputHeight, debugMode=false) {
+  constructor(markerDimensions: any[][], trackingDataList: string | any[], projectionTransform: number[][], inputWidth: any, inputHeight: any, debugMode=false) {
     this.markerDimensions = markerDimensions;
     this.trackingDataList = trackingDataList;
     this.projectionTransform = projectionTransform;
@@ -54,10 +58,14 @@ export class Tracker {
       this.imagePropertiesListT[i] = imageProperties;
     }
 
-    this.kernelCaches = {};
+    this.kernelCaches = {
+			computeMatching: null,
+			_computeColoredProjection: null,
+			computeProjection: null
+		};
   }
 
-  dummyRun(inputT) {
+  dummyRun(inputT: tf.Tensor3D) {
     let transform = [[1,1,1,1], [1,1,1,1], [1,1,1,1]];
     for (let targetIndex = 0; targetIndex < this.featurePointsListT.length; targetIndex++) {
       for (let i = 0; i < this.featurePointsListT[targetIndex].length; i++) {
@@ -71,9 +79,11 @@ export class Tracker {
     const modelViewProjectionTransformT = this._buildAdjustedModelViewTransform(modelViewProjectionTransform);
     const projectedImageT = this._computeColoredProjection(modelViewProjectionTransformT, inputImageT, targetIndex, captureWidth, captureHeight);
 
+		// @ts-ignore
     const projectedImage = projectedImageT.arraySync();
 
     modelViewProjectionTransformT.dispose();
+		// @ts-ignore
     projectedImageT.dispose();
 
     return projectedImage;
@@ -85,10 +95,10 @@ export class Tracker {
     const modelViewProjectionTransform = buildModelViewProjectionTransform(this.projectionTransform, lastModelViewTransform);
     const modelViewProjectionTransformT = this._buildAdjustedModelViewTransform(modelViewProjectionTransform);
 
-    const markerWidth = this.markerDimensions[targetIndex][0];
-    const markerHeight = this.markerDimensions[targetIndex][1];
-    const keyframeWidth = this.trackingKeyframeList[targetIndex].width; 
-    const keyframeHeight = this.trackingKeyframeList[targetIndex].height; 
+    // const markerWidth = this.markerDimensions[targetIndex][0];
+    // const markerHeight = this.markerDimensions[targetIndex][1];
+    // const keyframeWidth = this.trackingKeyframeList[targetIndex].width; 
+    // const keyframeHeight = this.trackingKeyframeList[targetIndex].height; 
 
     const featurePointsT = this.featurePointsListT[targetIndex];
     const imagePixelsT = this.imagePixelsListT[targetIndex];
@@ -96,10 +106,13 @@ export class Tracker {
 
     const projectedImageT = this._computeProjection(modelViewProjectionTransformT, inputImageT, targetIndex);
 
+		// @ts-ignore
     const {matchingPointsT, simT} = this._computeMatching(featurePointsT, imagePixelsT, imagePropertiesT, projectedImageT);
 
-    const matchingPoints = matchingPointsT.arraySync();
-    const sim = simT.arraySync();
+		// @ts-ignore
+    const matchingPoints = matchingPointsT.arraySync() as number[][];
+		// @ts-ignore
+    const sim = simT.arraySync() as number[];
 		// console.log('sim', sim, matchingPoints)
 
     const trackingFrame = this.trackingKeyframeList[targetIndex];
@@ -118,7 +131,9 @@ export class Tracker {
 
     if (this.debugMode) {
       debugExtra = {
+				// @ts-ignore
 				projectedImage: projectedImageT.arraySync(),
+				// @ts-ignore
 				matchingPoints: matchingPointsT.arraySync(),
 				goodTrack,
 				trackedPoints: screenCoords
@@ -127,14 +142,17 @@ export class Tracker {
 
     // tensors cleanup
     modelViewProjectionTransformT.dispose();
+		// @ts-ignore
     projectedImageT.dispose();
+		// @ts-ignore
     matchingPointsT.dispose();
+		// @ts-ignore
     simT.dispose();
 
     return {worldCoords, screenCoords, debugExtra};
   }
 
-  _computeMatching(featurePointsT, imagePixelsT, imagePropertiesT, projectedImageT) {
+  _computeMatching(featurePointsT: { shape: any[]; }, imagePixelsT: any, imagePropertiesT: any, projectedImageT: tf.Tensor<tf.Rank>) {
     const templateOneSize = AR2_DEFAULT_TS;
     const templateSize = templateOneSize * 2 + 1;
     const templateGap = AR2_DEFAULT_TS_GAP;
@@ -247,6 +265,7 @@ export class Tracker {
     return tf.tidy(() => {
       const programs = this.kernelCaches.computeMatching;
       const allSims = this._compileAndRun(programs[0], [featurePointsT, imagePixelsT, imagePropertiesT, projectedImageT]);
+			// @ts-ignore
       const maxIndex = tf.argMax(allSims, 1);
       const matchingPointsT = this._compileAndRun(programs[1], [featurePointsT, imagePropertiesT, maxIndex]);
       const simT = this._compileAndRun(programs[2], [allSims, maxIndex]);
@@ -254,7 +273,7 @@ export class Tracker {
     });
   }
 
-  _computeProjection(modelViewProjectionTransformT, inputImageT, targetIndex) {
+  _computeProjection(modelViewProjectionTransformT: tf.Tensor<tf.Rank>, inputImageT: any, targetIndex: number) {
     const markerWidth = this.trackingKeyframeList[targetIndex].width;
     const markerHeight = this.trackingKeyframeList[targetIndex].height;
     const markerScale = this.trackingKeyframeList[targetIndex].scale;
@@ -303,9 +322,9 @@ export class Tracker {
     });
   }
 
-  _computeColoredProjection(modelViewProjectionTransformT, inputImageT, targetIndex, captureWidth, captureHeight) {
+  _computeColoredProjection(modelViewProjectionTransformT: tf.Tensor<tf.Rank>, inputImageT: any, targetIndex: number, captureWidth: number, captureHeight: string) {
     const markerWidth = this.trackingKeyframeList[targetIndex].width;
-    const markerHeight = this.trackingKeyframeList[targetIndex].height;
+    // const markerHeight = this.trackingKeyframeList[targetIndex].height;
     const markerScale = this.trackingKeyframeList[targetIndex].scale;
 
     const captureScale = markerScale * captureWidth / markerWidth;
@@ -355,9 +374,9 @@ export class Tracker {
     });
   }
   
-  _buildAdjustedModelViewTransform(modelViewProjectionTransform) {
+  _buildAdjustedModelViewTransform(modelViewProjectionTransform: number[][]) {
     return tf.tidy(() => {
-      let modelViewProjectionTransformAdjusted = [];
+      let modelViewProjectionTransformAdjusted: number[][] = [];
       for (let i = 0; i < modelViewProjectionTransform.length; i++) {
 				modelViewProjectionTransformAdjusted.push([]);
 				for (let j = 0; j < modelViewProjectionTransform[i].length; j++) {
@@ -402,9 +421,11 @@ export class Tracker {
     });
   }
 
-  _compileAndRun(program, inputs) {
+	// @ts-ignore
+  _compileAndRun(program: any, inputs: any[]) {
 		try {
 			const backend = tf.backend();
+			// @ts-ignore
 			const outInfo = backend.compileAndRun(program, inputs);
 			return tf.engine().makeTensorFromDataId(outInfo.dataId, outInfo.shape, outInfo.dtype);
 		} catch (e) {

@@ -1,5 +1,6 @@
 // simpler version of upsampling. better performance
-const _upsampleBilinear = ({image, padOneWidth, padOneHeight}) => {
+// @ts-ignore
+const _upsampleBilinear = ({image, padOneWidth, padOneHeight}: {image: any, padOneWidth: any, padOneHeight: any}) => {
   const {width, height, data} = image;
   const dstWidth = image.width * 2 + (padOneWidth?1:0);
   const dstHeight = image.height * 2 + (padOneHeight?1:0);
@@ -21,7 +22,7 @@ const _upsampleBilinear = ({image, padOneWidth, padOneHeight}) => {
 }
 
 // artoolkit version. slower. is it necessary?
-export const upsampleBilinear = ({image, padOneWidth, padOneHeight}) => {
+export const upsampleBilinear = ({image, padOneWidth, padOneHeight}: {image: any, padOneWidth: any, padOneHeight: any}) => {
   const {width, height, data} = image;
 
   const dstWidth = image.width * 2 + (padOneWidth?1:0);
@@ -54,7 +55,7 @@ export const upsampleBilinear = ({image, padOneWidth, padOneHeight}) => {
   return {data: temp, width: dstWidth, height: dstHeight};
 }
 
-export const downsampleBilinear = ({image}) => {
+export const downsampleBilinear = ({image}: {image: any}) => {
   const {data, width, height} = image;
 
   const dstWidth = Math.floor(width / 2);
@@ -77,7 +78,7 @@ export const downsampleBilinear = ({image}) => {
   return {data: temp, width: dstWidth, height: dstHeight};
 }
 
-export const resize = ({image, ratio}) => {
+export const resize = ({image, ratio}: {image: any, ratio: any}) => {
   const width = Math.round(image.width * ratio);
   const height = Math.round(image.height * ratio);
 

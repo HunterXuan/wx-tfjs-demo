@@ -28,7 +28,7 @@ export const buildImageList = (inputImage: { width: number; height: number; }) =
   return imageList;
 }
 
-export const buildTrackingImageList = (inputImage) => {
+export const buildTrackingImageList = (inputImage: { data?: Uint8Array; height: any; width: any; }) => {
   const minDimension = Math.min(inputImage.width, inputImage.height);
   const scaleList = [];
   const imageList = [];

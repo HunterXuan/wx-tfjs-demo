@@ -49,7 +49,7 @@ export const applyModelViewProjectionTransform = (modelViewProjectionTransform: 
   return {x: ux, y: uy, z: uz};
 }
 
-export const computeScreenCoordiate = (modelViewProjectionTransform: number[][], x: number, y: number, z: any) => {
+export const computeScreenCoordiate = (modelViewProjectionTransform: number[][], x: number, y: number, z?: any) => {
   const {x: ux, y: uy, z: uz} = applyModelViewProjectionTransform(modelViewProjectionTransform, x, y, z);
   //if( Math.abs(uz) < 0.000001 ) return null;
   return {x: ux/uz, y: uy/uz};
