@@ -1,10 +1,7 @@
-import { Matrix, inverse } from 'ml-matrix';
 import { createRandomizer } from '../utils/randomizer';
-import { quadrilateralConvex, matrixInverse33, smallestTriangleArea, multiplyPointHomographyInhomogenous, checkThreePointsConsistent, checkFourPointsConsistent, determinant } from '../utils/geometry';
+import { quadrilateralConvex, matrixInverse33, smallestTriangleArea, multiplyPointHomographyInhomogenous, checkThreePointsConsistent, checkFourPointsConsistent } from '../utils/geometry';
 import { solveHomography } from '../utils/homography';
 
-const EPSILON = 0.0000000000001;
-const SQRT2 = 1.41421356237309504880;
 const HOMOGRAPHY_DEFAULT_CAUCHY_SCALE = 0.01;
 const HOMOGRAPHY_DEFAULT_NUM_HYPOTHESES = 1024;
 //const HOMOGRAPHY_DEFAULT_MAX_TRIALS = 1064;
@@ -13,7 +10,7 @@ const HOMOGRAPHY_DEFAULT_MAX_TRIALS = 100;
 const HOMOGRAPHY_DEFAULT_CHUNK_SIZE = 50;
 
 // Using RANSAC to estimate homography
-export const computeHomography = (options) => {
+export const computeHomography = (options: { srcPoints: any; dstPoints: any; keyframe: any; }) => {
   const {srcPoints, dstPoints, keyframe} = options;
 
   // testPoints is four corners of keyframe
@@ -108,7 +105,7 @@ export const computeHomography = (options) => {
   return finalH;
 }
 
-const _checkHeuristics = ({H, testPoints, keyframe}) => {
+const _checkHeuristics = ({H, testPoints, keyframe}: {H: any, testPoints: any, keyframe: any}) => {
   const HInv = matrixInverse33(H, 0.00001);
   // console.log("final H Inv: ", HInv);
   if (HInv === null) return false;
@@ -126,7 +123,7 @@ const _checkHeuristics = ({H, testPoints, keyframe}) => {
   return true;
 }
 
-const _normalizeHomography = ({inH}) => {
+const _normalizeHomography = ({inH}:{inH: any}) => {
   const oneOver = 1.0 / inH[8];
 
   const H = [];
@@ -137,7 +134,17 @@ const _normalizeHomography = ({inH}) => {
   return H;
 }
 
-const _cauchyProjectiveReprojectionCost = ({H, srcPoint, dstPoint, oneOverScale2}) => {
+const _cauchyProjectiveReprojectionCost = ({
+  H,
+  srcPoint,
+  dstPoint,
+  oneOverScale2
+}: {
+  H: any,
+  srcPoint: any,
+  dstPoint: any,
+  oneOverScale2: any,
+}) => {
   const x = multiplyPointHomographyInhomogenous(srcPoint, H);
   const f =[
     x[0] - dstPoint[0],
@@ -146,7 +153,7 @@ const _cauchyProjectiveReprojectionCost = ({H, srcPoint, dstPoint, oneOverScale2
   return Math.log(1 + (f[0]*f[0]+f[1]*f[1]) * oneOverScale2);
 }
 
-const _checkHomographyPointsGeometricallyConsistent = ({H, testPoints}) => {
+const _checkHomographyPointsGeometricallyConsistent = ({H, testPoints}: {H: any, testPoints: any}) => {
   const mappedPoints = [];
   for (let i = 0; i < testPoints.length; i++) {
     mappedPoints[i] = multiplyPointHomographyInhomogenous(testPoints[i], H);

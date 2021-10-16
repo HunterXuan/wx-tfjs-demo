@@ -1,7 +1,7 @@
 const kHoughBinDelta = 1;
 
 // mathces [querypointIndex:x, keypointIndex: x]
-export const computeHoughMatches = (options: { keypoints: any; querypoints: any; keywidth: any; keyheight: any; querywidth: any; queryheight: any; matches: any; }) => {
+export const computeHoughMatches = (options: { keypoints?: any; querypoints?: any; keywidth: any; keyheight: any; querywidth: any; queryheight: any; matches: any; }) => {
   const {keywidth, keyheight, querywidth, queryheight, matches} = options;
 
   const maxX = querywidth * 1.2;
@@ -43,7 +43,7 @@ export const computeHoughMatches = (options: { keypoints: any; querypoints: any;
   // do voting
   const querypointValids = [];
   const querypointBinLocations = [];
-  const votes = {};
+  const votes: {[key: number | string]: number} = {};
   for (let i = 0; i < matches.length; i++) {
     const querypoint = matches[i].querypoint;
     const keypoint = matches[i].keypoint;
@@ -99,7 +99,7 @@ export const computeHoughMatches = (options: { keypoints: any; querypoints: any;
   }
 
   let maxVotes = 0;
-  let maxVoteIndex = -1;
+  let maxVoteIndex: any = -1;
   Object.keys(votes).forEach((index) => {
     if (votes[index] > maxVotes) {
       maxVotes = votes[index];
@@ -141,7 +141,19 @@ export const computeHoughMatches = (options: { keypoints: any; querypoints: any;
   return houghMatches;
 }
 
-const _mapCorrespondence = ({querypoint, keypoint, keycenterX, keycenterY, scaleOneOverLogK}) => {
+const _mapCorrespondence = ({
+  querypoint,
+  keypoint,
+  keycenterX,
+  keycenterY,
+  scaleOneOverLogK
+}: {
+  querypoint: any,
+  keypoint: any,
+  keycenterX: any,
+  keycenterY: any,
+  scaleOneOverLogK: any
+}) => {
   // map angle to (-pi, pi]
   let angle = querypoint.angle - keypoint.angle;
   if (angle <= -Math.PI) angle += 2*Math.PI;

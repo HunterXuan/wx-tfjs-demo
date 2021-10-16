@@ -12,13 +12,14 @@ export class Matcher {
   }
 
   matchDetection(keyframes: { [x: string]: any; }, featurePoints: { [x: string]: { y: any; }; }[]) {
-    let debugExtra = {frames: []};
+    let debugExtra: {frames: any[]} = {frames: []};
 
-    let bestResult = null;
+    let bestResult: any = null;
     for (let i = 0; i < keyframes.length; i++) {
       const {H, matches, debugExtra: frameDebugExtra} = match({keyframe: keyframes[i], querypoints: featurePoints, querywidth: this.queryWidth, queryheight: this.queryHeight, debugMode: this.debugMode});
       debugExtra.frames.push(frameDebugExtra);
       if (H) {
+        // @ts-ignore
         if (bestResult === null || bestResult.matches.length < matches.length) {
           bestResult = {keyframeIndex: i, H, matches};
         }

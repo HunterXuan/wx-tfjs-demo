@@ -11,8 +11,20 @@ const CLUSTER_MAX_POP = 8;
 const HAMMING_THRESHOLD = 0.7;
 
 // match list of querpoints against pre-built list of keyframes
-export const match = ({keyframe, querypoints, querywidth, queryheight, debugMode}) => {
-  let debugExtra = {};
+export const match = ({
+  keyframe,
+  querypoints,
+  querywidth,
+  queryheight,
+  debugMode
+}: {
+  keyframe: any,
+  querypoints: any,
+  querywidth: any,
+  queryheight: any,
+  debugMode: any
+}) => {
+  let debugExtra: any = {};
 
   const matches = [];
   for (let j = 0; j < querypoints.length; j++) {
@@ -22,8 +34,8 @@ export const match = ({keyframe, querypoints, querywidth, queryheight, debugMode
 
     const rootNode = querypoint.maxima? keyframe.maximaPointsCluster.rootNode: keyframe.minimaPointsCluster.rootNode;
 
-    const keypointIndexes = [];
-    const queue = new TinyQueue([], (a1, a2) => {return a1.d - a2.d});
+    const keypointIndexes: string | any[] = [];
+    const queue = new TinyQueue([], (a1: any, a2: any) => {return a1.d - a2.d});
 
     // query all potential keypoints
     _query({node: rootNode, keypoints, querypoint, queue, keypointIndexes, numPop: 0});
@@ -161,7 +173,21 @@ export const match = ({keyframe, querypoints, querywidth, queryheight, debugMode
   return {H: H2, matches: inlierMatches2, debugExtra};
 };
 
-const _query = ({node, keypoints, querypoint, queue, keypointIndexes, numPop}) => {
+const _query = ({
+  node,
+  keypoints,
+  querypoint,
+  queue,
+  keypointIndexes,
+  numPop
+}: {
+  node: any,
+  keypoints: any,
+  querypoint: any,
+  queue: any,
+  keypointIndexes: any,
+  numPop: any
+}) => {
   if (node.leaf) {
     for (let i = 0; i < node.pointIndexes.length; i++) {
       keypointIndexes.push(node.pointIndexes[i]);
@@ -200,7 +226,7 @@ const _query = ({node, keypoints, querypoint, queue, keypointIndexes, numPop}) =
   }
 };
 
-const _findInlierMatches = (options: { querypoints: any; keypoints: any; H: any; matches: any; threshold: any; }) => {
+const _findInlierMatches = (options: { querypoints?: any; keypoints?: any; H: any; matches: any; threshold: any; }) => {
   const {H, matches, threshold} = options;
 
   const threshold2 = threshold * threshold;

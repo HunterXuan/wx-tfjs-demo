@@ -57,7 +57,7 @@ export const matrixMul33 = (A: number[], B: number[]) => {
   return C;
 }
 
-export const multiplyPointHomographyInhomogenous = (x: number[], H: number[]) => {
+export const multiplyPointHomographyInhomogenous = (x: number[], H: number[] | any) => {
   const w = H[6]*x[0] + H[7]*x[1] + H[8];
   const xp = [];
   xp[0] = (H[0]*x[0] + H[1]*x[1] + H[2])/w;

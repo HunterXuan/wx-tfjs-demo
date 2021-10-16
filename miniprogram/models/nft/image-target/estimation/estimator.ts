@@ -21,7 +21,15 @@ export class Estimator {
     return modelViewTransform;
   }
 
-  refineEstimate({initialModelViewTransform, worldCoords, screenCoords}) {
+  refineEstimate({
+    initialModelViewTransform,
+    worldCoords,
+    screenCoords
+  }:{
+    initialModelViewTransform: any,
+    worldCoords: any,
+    screenCoords: any
+  }) {
     const updatedModelViewTransform = refineEstimate({initialModelViewTransform, worldCoords, screenCoords, projectionTransform: this.projectionTransform});
     return updatedModelViewTransform;
   }
