@@ -1,19 +1,28 @@
 import {Matrix, inverse} from 'ml-matrix';
-import {normalizePoints, applyModelViewProjectionTransform, buildModelViewProjectionTransform, computeScreenCoordiate} from './utils';
+import {applyModelViewProjectionTransform, buildModelViewProjectionTransform, computeScreenCoordiate} from './utils';
 
 const TRACKING_THRESH = 5.0; // default
 const K2_FACTOR = 4.0; // Question: should it be relative to the size of the screen instead of hardcoded?
 const ICP_MAX_LOOP = 10;
 const ICP_BREAK_LOOP_ERROR_THRESH = 0.1;
 const ICP_BREAK_LOOP_ERROR_RATIO_THRESH = 0.99;
-const ICP_BREAK_LOOP_ERROR_THRESH2 = 4.0;
 
 // some temporary/intermediate variables used later. Declare them beforehand to reduce new object allocations
-let mat = [[],[],[]]; 
-let J_U_Xc = [[],[]]; // 2x3
-let J_Xc_S = [[],[],[]]; // 3x6
+let mat: number[][] = [[],[],[]]; 
+let J_U_Xc: number[][] = [[],[]]; // 2x3
+let J_Xc_S: number[][] = [[],[],[]]; // 3x6
 
-export const refineEstimate = ({initialModelViewTransform, projectionTransform, worldCoords, screenCoords}) => {
+export const refineEstimate = ({
+  initialModelViewTransform,
+  projectionTransform,
+  worldCoords,
+  screenCoords
+}: {
+  initialModelViewTransform: number[][],
+  projectionTransform: any,
+  worldCoords: any,
+  screenCoords: any
+}) => {
   // Question: shall we normlize the screen coords as well?
   // Question: do we need to normlize the scale as well, i.e. make coords from -1 to 1
   //
@@ -33,7 +42,7 @@ export const refineEstimate = ({initialModelViewTransform, projectionTransform, 
     normalizedWorldCoords.push({x: worldCoords[i].x - dx, y: worldCoords[i].y - dy, z: worldCoords[i].z});
   }
 
-  const diffModelViewTransform = [[],[],[]];
+  const diffModelViewTransform: number[][] = [[],[],[]];
   for (let j = 0; j < 3; j++) {
     for (let i = 0; i < 3; i++) {
       diffModelViewTransform[j][i] = initialModelViewTransform[j][i];
@@ -72,7 +81,19 @@ export const refineEstimate = ({initialModelViewTransform, projectionTransform, 
 
 // ICP iteration
 // Question: can someone provide theoretical reference / mathematical proof for the following computations?
-const _doICP = ({initialModelViewTransform, projectionTransform, worldCoords, screenCoords, inlierProb}) => {
+const _doICP = ({
+  initialModelViewTransform,
+  projectionTransform,
+  worldCoords,
+  screenCoords,
+  inlierProb
+}: {
+  initialModelViewTransform: number[][],
+  projectionTransform: number[][],
+  worldCoords: {x: number, y: number, z: number}[],
+  screenCoords: {x: number, y: number}[],
+  inlierProb: number
+}) => {
   const isRobustMode = inlierProb < 1;
 
   let modelViewTransform = initialModelViewTransform;
@@ -98,7 +119,7 @@ const _doICP = ({initialModelViewTransform, projectionTransform, worldCoords, sc
       E[n] = (dx * dx + dy * dy);
     }
 
-    let K2; // robust mode only
+    let K2:number = 0; // robust mode only
     err1 = 0.0;
     if (isRobustMode) {
       const inlierNum = Math.max(3, Math.floor(worldCoords.length * inlierProb) - 1);
@@ -119,10 +140,7 @@ const _doICP = ({initialModelViewTransform, projectionTransform, worldCoords, sc
     }
     err1 /= worldCoords.length;
 
-    //console.log("icp loop", inlierProb, l, err1);
-
     if (err1 < ICP_BREAK_LOOP_ERROR_THRESH) break;
-    //if (l > 0 && err1 < ICP_BREAK_LOOP_ERROR_THRESH2 && err1/err0 > ICP_BREAK_LOOP_ERROR_RATIO_THRESH) break;
     if (l > 0 && err1/err0 > ICP_BREAK_LOOP_ERROR_RATIO_THRESH) break;
     if (l === ICP_MAX_LOOP) break;
 
@@ -135,7 +153,7 @@ const _doICP = ({initialModelViewTransform, projectionTransform, worldCoords, sc
         continue;
       }
 
-      const J_U_S = _getJ_U_S({modelViewProjectionTransform, modelViewTransform, projectionTransform, worldCoord: worldCoords[n]});
+      const J_U_S = _getJ_U_S({modelViewProjectionTransform, modelViewTransform, projectionTransform, worldCoord: worldCoords[n]}) as number[][];
 
       if (isRobustMode) {
         const W = (1.0 - E[n]/K2)*(1.0 - E[n]/K2);
@@ -165,7 +183,7 @@ const _doICP = ({initialModelViewTransform, projectionTransform, worldCoords, sc
   return {modelViewTransform, err: err1};
 }
 
-const _updateModelViewTransform = ({modelViewTransform, dS}) => {
+const _updateModelViewTransform = ({modelViewTransform, dS}: {modelViewTransform: any, dS: any}) => {
   /**
    * dS has 6 paragrams, first half is rotation, second half is translation
    * rotation is expressed in angle-axis, 
@@ -204,7 +222,7 @@ const _updateModelViewTransform = ({modelViewTransform, dS}) => {
   mat[2][3] = dS[5];
 
   // the updated transform is the original transform x delta transform
-  const mat2 = [[],[],[]];
+  const mat2: number[][] = [[],[],[]];
   for (let j = 0; j < 3; j++ ) {
     for (let i = 0; i < 4; i++ ) {
       mat2[j][i] = modelViewTransform[j][0] * mat[0][i]
@@ -216,7 +234,7 @@ const _updateModelViewTransform = ({modelViewTransform, dS}) => {
   return mat2;
 }
 
-const _getDeltaS = ({dU, J_U_S}) => {
+const _getDeltaS = ({dU, J_U_S}: {dU: any, J_U_S: any}) => {
   const J = new Matrix(J_U_S);
   const U = new Matrix(dU);
 
@@ -235,7 +253,17 @@ const _getDeltaS = ({dU, J_U_S}) => {
   return S.to1DArray();
 }
 
-const _getJ_U_S = ({modelViewProjectionTransform, modelViewTransform, projectionTransform, worldCoord}) => {
+const _getJ_U_S = ({
+  modelViewProjectionTransform,
+  modelViewTransform,
+  projectionTransform,
+  worldCoord
+}:{
+  modelViewProjectionTransform: any,
+  modelViewTransform: any,
+  projectionTransform: any,
+  worldCoord: any
+}) => {
   const T = modelViewTransform;
   const {x, y, z} = worldCoord;
 
@@ -285,7 +313,7 @@ const _getJ_U_S = ({modelViewProjectionTransform, modelViewTransform, projection
   J_Xc_S[2][4] = T[2][1];
   J_Xc_S[2][5] = T[2][2];
 
-  const J_U_S = [[], []];
+  const J_U_S: number[][] = [[], []];
   for (let j = 0; j < 2; j++) {
     for (let i = 0; i < 6; i++) {
       J_U_S[j][i] = 0.0;
