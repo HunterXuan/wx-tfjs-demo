@@ -11,6 +11,7 @@ const EDGE_HESSIAN_THRESHOLD = ((EDGE_THRESHOLD+1) * (EDGE_THRESHOLD+1) / EDGE_T
 
 const NUM_BUCKETS_PER_DIMENSION = 10;
 const MAX_FEATURES_PER_BUCKET = 5;
+// @ts-ignore
 const NUM_BUCKETS = NUM_BUCKETS_PER_DIMENSION * NUM_BUCKETS_PER_DIMENSION;
 // total max feature points = NUM_BUCKETS * MAX_FEATURES_PER_BUCKET
 
@@ -31,11 +32,30 @@ export class Detector {
 
 	numOctaves: number;
 
-	tensorCaches: {};
+	tensorCaches: {
+		_computeExtremaFreak: any,
+		computeFreakDescriptors: any,
+		orientationHistograms: any,
+	};
 
-	kernelCaches: {};
+	kernelCaches: {
+		_computeExtremaFreak: any,
+		computeFreakDescriptors: any,
+		computeExtremaAngles: any,
+		computeOrientationHistograms: any,
+		smoothHistograms: any,
+		computeLocalization: any,
+		applyPrune: any,
+		buildExtremas: any,
+		applyFilter: any,
+		upsampleBilinear: any,
+		downsampleBilinear: any,
+	};
 
-  constructor(width: number, height: number) {
+	debugMode: boolean;
+
+  constructor(width: number, height: number, debugMode=false) {
+		this.debugMode = debugMode;
     this.width = width;
     this.height = height;
 
@@ -120,9 +140,9 @@ export class Detector {
     // compute the binary descriptors
     const freakDescriptorsT = this._computeFreakDescriptors(extremaFreaksT);
 
-    const prunedExtremasArr = prunedExtremasT.arraySync();
-    const extremaAnglesArr = extremaAnglesT.arraySync();
-    const freakDescriptorsArr = freakDescriptorsT.arraySync();
+    const prunedExtremasArr = prunedExtremasT.arraySync() as number[][];
+    const extremaAnglesArr = extremaAnglesT.arraySync() as number[][];
+    const freakDescriptorsArr = freakDescriptorsT.arraySync() as number[][];
 
     if (this.debugMode) {
       debugExtra = {
@@ -148,7 +168,9 @@ export class Detector {
     const featurePoints = [];
 
     for (let i = 0; i < prunedExtremasArr.length; i++) {
-      if (prunedExtremasArr[i][0] == 0) continue; 
+      if (prunedExtremasArr[i][0] == 0) {
+				continue; 
+			}
 
       const descriptors = [];
       for (let m = 0; m < freakDescriptorsArr[i].length; m+=4) {
@@ -185,17 +207,21 @@ export class Detector {
     return {featurePoints, debugExtra};
   }
 
-	_computeFreakDescriptors(extremaFreaks) {
+	_computeFreakDescriptors(extremaFreaks: tf.Tensor) {
     if (!this.tensorCaches.computeFreakDescriptors) {
       const in1Arr = [];
       const in2Arr = [];
+			// @ts-ignore
       for (let k1 = 0; k1 < extremaFreaks.shape[1]; k1++) {
+				// @ts-ignore
 				for (let k2 = k1+1; k2 < extremaFreaks.shape[1]; k2++) {
 					in1Arr.push(k1);
 					in2Arr.push(k2);
 				}
       }
+			// @ts-ignore
       const in1 = tf.tensor(in1Arr, [in1Arr.length]).cast('int32');
+			// @ts-ignore
       const in2 = tf.tensor(in2Arr, [in2Arr.length]).cast('int32');
 
       this.tensorCaches.computeFreakDescriptors = {
@@ -242,7 +268,7 @@ export class Detector {
     });
   }
 
-	_computeExtremaFreak(pyramidImagesT, prunedExtremas, prunedExtremasAngles) {
+	_computeExtremaFreak(pyramidImagesT: any[], prunedExtremas: tf.Tensor<tf.Rank>, prunedExtremasAngles: tf.Tensor<tf.Rank>) {
     if (!this.tensorCaches._computeExtremaFreak) {
       tf.tidy(() => {
 				const freakPoints = tf.tensor(FREAKPOINTS);
@@ -253,7 +279,7 @@ export class Detector {
     }
     const {freakPointsT} = this.tensorCaches._computeExtremaFreak;
 
-    const gaussianImagesT = [];
+    const gaussianImagesT: any[] = [];
     for (let i = 1; i < pyramidImagesT.length; i++) {
       //gaussianImagesT.push(pyramidImagesT[i][0]);
       gaussianImagesT.push(pyramidImagesT[i][1]); // better
@@ -327,7 +353,7 @@ export class Detector {
     });
   }
 
-  _computeExtremaAngles(histograms) {
+  _computeExtremaAngles(histograms: { shape: any[]; }) {
     if (!this.kernelCaches.computeExtremaAngles) {
       const kernel = {
 				variableNames: ['histogram'],
@@ -386,10 +412,10 @@ export class Detector {
   }
 
   // TODO: maybe can try just using average momentum, instead of histogram method. histogram might be overcomplicated
-  _computeOrientationHistograms(prunedExtremasT, pyramidImagesT) {
+  _computeOrientationHistograms(prunedExtremasT: tf.Tensor<tf.Rank>, pyramidImagesT: string | any[]) {
     const oneOver2PI = 0.159154943091895;
 
-    const gaussianImagesT = [];
+    const gaussianImagesT: any[] = [];
     for (let i = 1; i < pyramidImagesT.length; i++) {
       gaussianImagesT.push(pyramidImagesT[i][1]);
     }
@@ -519,7 +545,7 @@ export class Detector {
   }
 
   // The histogram is smoothed with a Gaussian, with sigma = 1
-  _smoothHistograms(histograms) {
+  _smoothHistograms(histograms: tf.Tensor<tf.Rank>) {
     if (!this.kernelCaches.smoothHistograms) {
       const kernel = {
 				variableNames: ['histogram'],
@@ -547,7 +573,7 @@ export class Detector {
     });
   }
 
-  _computeLocalization(prunedExtremasList, dogPyramidImagesT) {
+  _computeLocalization(prunedExtremasList: any[], dogPyramidImagesT: any[]) {
     if (!this.kernelCaches.computeLocalization) {
       const dogVariableNames = [];
 
@@ -592,9 +618,9 @@ export class Detector {
       const prunedExtremasT = tf.tensor(prunedExtremasList, [prunedExtremasList.length, prunedExtremasList[0].length], 'int32');
 
       const pixelsT = this._compileAndRun(program, [...dogPyramidImagesT.slice(1), prunedExtremasT]);
-      const pixels = pixelsT.arraySync();
+      const pixels = pixelsT.arraySync() as number[][][];
 
-      const result = [];
+      const result: any[] = [];
       for (let i = 0; i < pixels.length; i++) {
 				result.push([]);
 				for (let j = 0; j < pixels[i].length; j++) {
@@ -644,7 +670,7 @@ export class Detector {
   // faster to do it in CPU
   // if we do in gpu, we probably need to use tf.topk(), which seems to be run in CPU anyway (no gpu operation for that)
   //  TODO: research adapative maximum supression method
-  _applyPrune(extremasResultsT) {
+  _applyPrune(extremasResultsT: any[]) {
     const nBuckets = NUM_BUCKETS_PER_DIMENSION * NUM_BUCKETS_PER_DIMENSION;
     const nFeatures = MAX_FEATURES_PER_BUCKET;
 
@@ -694,8 +720,8 @@ export class Detector {
 
     // combine results into a tensor of:
     //   nBuckets x nFeatures x [score, octave, y, x]
-    const curAbsScores = [];
-    const result = [];
+    const curAbsScores: number[][] = [];
+    const result: any[][] = [];
     for (let i = 0; i < nBuckets; i++) {
       result.push([]);
       curAbsScores.push([]);
@@ -714,9 +740,9 @@ export class Detector {
 
 				const octave = k + 1; // extrema starts from second octave
 
-				const reduced = reducedT.arraySync();
-				const height = reducedT.shape[0];
-				const width = reducedT.shape[1];
+				const reduced = reducedT.arraySync() as number[][];
+				const height = reducedT.shape[0] as number;
+				const width = reducedT.shape[1] as number;
 
 				const bucketWidth = width * 2 / NUM_BUCKETS_PER_DIMENSION;
 				const bucketHeight = height * 2/ NUM_BUCKETS_PER_DIMENSION;
@@ -773,9 +799,9 @@ export class Detector {
     return list;
   }
 
-  _buildExtremas(image0, image1, image2) {
+  _buildExtremas(image0: tf.Tensor<tf.Rank>, image1: tf.Tensor<tf.Rank>, image2: tf.Tensor<tf.Rank>) {
     const imageHeight = image1.shape[0];
-    const imageWidth = image1.shape[1];
+    const imageWidth = image1.shape[1] as number;
 
     const kernelKey = 'w' + imageWidth;
 
@@ -854,14 +880,14 @@ export class Detector {
     });
   }
 
-  _differenceImageBinomial(image1, image2) {
+  _differenceImageBinomial(image1: tf.Tensor<tf.Rank>, image2: tf.Tensor<tf.Rank>) {
     return tf.tidy(() => {
       return tf.sub(image1, image2);
     });
   }
 
   // 4th order binomail filter [1,4,6,4,1] X [1,4,6,4,1]
-  _applyFilter(image) {
+  _applyFilter(image: tf.Tensor<tf.Rank>) {
     const imageHeight = image.shape[0];
     const imageWidth = image.shape[1];
 
@@ -915,7 +941,8 @@ export class Detector {
     });
   }
 
-  _upsampleBilinear(image, targetImage) {
+  _upsampleBilinear(image: tf.Tensor<tf.Rank>, targetImage: tf.Tensor<tf.Rank>) {
+		// @ts-ignore
     const imageHeight = image.shape[0];
     const imageWidth = image.shape[1];
 
@@ -961,7 +988,7 @@ export class Detector {
     });
   }
 
-  _downsampleBilinear(image) {
+  _downsampleBilinear(image: tf.Tensor<tf.Rank>) {
     const imageHeight = image.shape[0];
     const imageWidth = image.shape[1];
 
@@ -996,12 +1023,14 @@ export class Detector {
     });
   }
 
-  _compileAndRun(program, inputs) {
+  _compileAndRun(program: any, inputs: any[]) {
+		// @ts-ignore
     const outInfo = tf.backend().compileAndRun(program, inputs);
     return tf.engine().makeTensorFromDataId(outInfo.dataId, outInfo.shape, outInfo.dtype);
   }
 
-  _runWebGLProgram(program, inputs, outputType) {
+  _runWebGLProgram(program: any, inputs: any[], outputType: string) {
+		// @ts-ignore
     const outInfo = tf.backend().runWebGLProgram(program, inputs, outputType);
     return tf.engine().makeTensorFromDataId(outInfo.dataId, outInfo.shape, outInfo.dtype);
   }

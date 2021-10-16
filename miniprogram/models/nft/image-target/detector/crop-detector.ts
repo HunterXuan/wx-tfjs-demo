@@ -1,9 +1,23 @@
-// import * as tf from '@tensorflow/tfjs-core';
+import * as tf from '@tensorflow/tfjs-core';
 import { Detector } from './detector';
-// import {buildModelViewProjectionTransform, computeScreenCoordiate} from '../estimation/utils';
 
 export class CropDetector {
-  constructor(width, height, debugMode=false) {
+
+  width: number;
+
+  height: number;
+
+  debugMode: boolean;
+
+  cropSize: number;
+
+  detector: Detector;
+
+  kernelCaches: {};
+
+  lastRandomIndex: number;
+
+  constructor(width: number, height: number, debugMode=false) {
     this.debugMode = debugMode;
     this.width = width;
     this.height = height;
@@ -19,21 +33,22 @@ export class CropDetector {
     this.lastRandomIndex = 4;
   }
 
-  detect(inputImageT) {
-    return this.detector.detect(inputImageT);
+  detect(inputImageT: tf.Tensor3D) {
     // crop center
     const startY = Math.floor(this.height / 2 - this.cropSize / 2);
     const startX = Math.floor(this.width / 2 - this.cropSize / 2);
     const result = this._detect(inputImageT, startX, startY);
 
     if (this.debugMode) {
+      // @ts-ignore
       result.debugExtra.crop = {startX, startY, cropSize: this.cropSize}; 
     }
+
     return result;
   }
 
-  detectMoving(inputImageT) { // loop a few locations around center
-    return this.detector.detect(inputImageT);
+  detectMoving(inputImageT: tf.Tensor3D) {
+    // loop a few locations around center
     const dx = this.lastRandomIndex % 3;
     const dy = Math.floor(this.lastRandomIndex / 3);
 
@@ -51,16 +66,19 @@ export class CropDetector {
     return result;
   }
 
-  _detect(inputImageT, startX, startY) {
-    const cropInputImageT = inputImageT.slice([startY, startX], [this.cropSize, this.cropSize]);
+  _detect(inputImageT: tf.Tensor3D, startX: number, startY: number) {
+    const cropInputImageT = tf.slice(inputImageT, [startY, startX], [this.cropSize, this.cropSize]);
     const {featurePoints, debugExtra} = this.detector.detect(cropInputImageT);
     featurePoints.forEach((p) => {
       p.x += startX;
       p.y += startY;
     });
+
     if (this.debugMode) {
+      // @ts-ignore
       debugExtra.projectedImage = cropInputImageT.arraySync();
     }
+
     cropInputImageT.dispose();
     return {featurePoints: featurePoints, debugExtra};
   }

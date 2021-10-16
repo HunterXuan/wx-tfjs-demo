@@ -149,15 +149,21 @@ export class Controller {
   }
 
   async _detectAndMatch(inputT, targetIndexes) {
+let startTime = new Date().getTime();
     const {featurePoints} = this.cropDetector.detectMoving(inputT);
+console.log('detectMoving', new Date().getTime()-startTime)
     const {targetIndex: matchedTargetIndex, modelViewTransform} = await this._workerMatch(featurePoints, targetIndexes);
+console.log('_workerMatch', new Date().getTime()-startTime)
     return {targetIndex: matchedTargetIndex, modelViewTransform}
   }
 
   async _trackAndUpdate(inputT, lastModelViewTransform, targetIndex) {
+    const startTime = new Date().getTime();
     const {worldCoords, screenCoords} = this.tracker.track(inputT, lastModelViewTransform, targetIndex);
+    console.log('tracker track', new Date().getTime() - startTime)
     if (worldCoords.length < 4) return null;
     const modelViewTransform = await this._workerTrackUpdate(lastModelViewTransform, {worldCoords, screenCoords});
+    console.log('_workerTrackUpdate', new Date().getTime() - startTime)
     return modelViewTransform;
   }
 
@@ -171,7 +177,6 @@ export class Controller {
 	      if (!this.processingVideo) return;
 
         const inputT = this.inputLoader.loadInput(input);
-
         let shouldCapture = false;
 
         const nTracking = this.trackingStates.reduce((acc, s) => {
@@ -192,7 +197,6 @@ export class Controller {
 
           const {targetIndex: matchedTargetIndex, modelViewTransform} = await this._detectAndMatch(inputT, matchingIndexes);
           // console.log('_detectAndMatch', matchedTargetIndex, modelViewTransform)
-
           if (matchedTargetIndex !== -1) {
             this.trackingStates[matchedTargetIndex].isTracking = true;
             this.trackingStates[matchedTargetIndex].currentModelViewTransform = modelViewTransform;
@@ -247,7 +251,6 @@ export class Controller {
               trackingState.trackMiss = 0;
             }
           }
-          
           // if showing, then call onUpdate, with world matrix
           if (trackingState.showing) {
             const worldMatrix = this._glModelViewMatrix(trackingState.currentModelViewTransform, i);
@@ -265,7 +268,6 @@ export class Controller {
             }
             this.onUpdate && this.onUpdate({type: 'updateMatrix', targetIndex: i, worldMatrix: clone});
           }
-          // this.trackingStates[i] = trackingState;
         }
 
         inputT.dispose();

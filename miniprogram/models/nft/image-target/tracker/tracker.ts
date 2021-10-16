@@ -247,7 +247,6 @@ export class Tracker {
     return tf.tidy(() => {
       const programs = this.kernelCaches.computeMatching;
       const allSims = this._compileAndRun(programs[0], [featurePointsT, imagePixelsT, imagePropertiesT, projectedImageT]);
-			console.log('allSims', allSims?.arraySync())
       const maxIndex = tf.argMax(allSims, 1);
       const matchingPointsT = this._compileAndRun(programs[1], [featurePointsT, imagePropertiesT, maxIndex]);
       const simT = this._compileAndRun(programs[2], [allSims, maxIndex]);

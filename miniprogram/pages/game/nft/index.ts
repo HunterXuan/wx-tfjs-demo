@@ -56,11 +56,12 @@ Page({
     const context = wx.createCameraContext();
     let count = 0;
     const listener = context.onCameraFrame((frame) => {
-      count = count + 1;
-      if (count === 3) {
-        count = 0;
-        this.executeClassify(frame);
-      }
+      this.executeClassify(frame);
+      // count = count + 1;
+      // if (count === 3) {
+      //   count = 0;
+      //   this.executeClassify(frame);
+      // }
     })
     listener.start();
   },
@@ -72,53 +73,53 @@ Page({
     THREE.PLATFORM.dispose();
   },
 
-  initModel: async function () {
-    // this.showLoadingToast();
+  // initModel: async function () {
+  //   // this.showLoadingToast();
 
-    // this.hideLoadingToast();
-    wx.createSelectorQuery()
-      .select('#gl')
-      .node()
-      .exec((res) => {
-        const canvas = res[0].node;
-        // console.log('canvas', canvas);
-        const platform = new WechatPlatform(canvas);
-        platform.enableDeviceOrientation('game'); // 开启DeviceOrientation
-        this.platform = platform;
-        THREE.PLATFORM.set(platform);
+  //   // this.hideLoadingToast();
+  //   wx.createSelectorQuery()
+  //     .select('#gl')
+  //     .node()
+  //     .exec((res) => {
+  //       const canvas = res[0].node;
+  //       // console.log('canvas', canvas);
+  //       const platform = new WechatPlatform(canvas);
+  //       platform.enableDeviceOrientation('game'); // 开启DeviceOrientation
+  //       this.platform = platform;
+  //       THREE.PLATFORM.set(platform);
 
-        const scene = new THREE.Scene();
-        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-        const camera = new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 1000);
-        const gltfLoader = new GLTFLoader();
+  //       const scene = new THREE.Scene();
+  //       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  //       const camera = new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 1000);
+  //       const gltfLoader = new GLTFLoader();
 
-        const controls = new OrbitControls(camera, canvas);
-        controls.enableDamping = true;
+  //       const controls = new OrbitControls(camera, canvas);
+  //       controls.enableDamping = true;
 
-        gltfLoader.loadAsync('https://626c-blog-541fe4-1257925894.tcb.qcloud.la/nft/card.glb').then((gltf: GLTF) => {
-          // @ts-ignore
-          gltf.parser = null;
-          gltf.scene.position.y = -2;
-          scene.add(gltf.scene);
-          scene.scale.set(1, 1, 1);
-          console.log('gltf', gltf);
-        });
+  //       gltfLoader.loadAsync('https://626c-blog-541fe4-1257925894.tcb.qcloud.la/nft/card.glb').then((gltf: GLTF) => {
+  //         // @ts-ignore
+  //         gltf.parser = null;
+  //         gltf.scene.position.y = -2;
+  //         scene.add(gltf.scene);
+  //         scene.scale.set(1, 1, 1);
+  //         console.log('gltf', gltf);
+  //       });
 
-        camera.position.z = 15;
-        renderer.outputEncoding = THREE.sRGBEncoding;
-        scene.add(new THREE.AmbientLight(0xffffff, 1.0))
-        scene.add(new THREE.DirectionalLight(0xffffff, 1.0))
-        renderer.setSize(canvas.width, canvas.height);
-        renderer.setPixelRatio(THREE.$window.devicePixelRatio);
+  //       camera.position.z = 15;
+  //       renderer.outputEncoding = THREE.sRGBEncoding;
+  //       scene.add(new THREE.AmbientLight(0xffffff, 1.0))
+  //       scene.add(new THREE.DirectionalLight(0xffffff, 1.0))
+  //       renderer.setSize(canvas.width, canvas.height);
+  //       renderer.setPixelRatio(THREE.$window.devicePixelRatio);
 
-        const render = () => {
-          if (!this.disposing) this.frameId = THREE.$requestAnimationFrame(render);
-          controls.update();
-          renderer.render(scene, camera);
-        }
-        render()
-      })
-  },
+  //       const render = () => {
+  //         if (!this.disposing) this.frameId = THREE.$requestAnimationFrame(render);
+  //         controls.update();
+  //         renderer.render(scene, camera);
+  //       }
+  //       render()
+  //     })
+  // },
 
   initARController: async function (frame: any) {
     this.arController = new ARController({
@@ -127,7 +128,7 @@ Page({
       maxTrack: 1,
       onUpdate: (data) => {
         if (data.type === 'updateMatrix') {
-          console.log('onUpdate:', data);
+          console.log('onUpdate:', new Date().getTime(), data);
           const {targetIndex, worldMatrix} = data;
 
           for (let i = 0; i < this.arModels.length; i++) {
@@ -136,12 +137,13 @@ Page({
                 this.arModels[i].visible = worldMatrix !== null;
                 if (worldMatrix !== null) {
                   const m = new THREE.Matrix4();
+                  const v = new THREE.Vector3(0.005, 0.005, 0.005);
                   m.elements = worldMatrix;
-                  // console.log('m', m, i, this.postMatrixList)
                   m.multiply(this.postMatrixList[i]);
+                  m.scale(v);
                   this.arModels[i].matrix = m;
                 }
-                console.log('scene', this.scene)
+                // console.log('scene', this.scene)
               } catch (e) {
                 console.error('updateMatrix', e)
               }
@@ -172,6 +174,9 @@ Page({
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
       const camera = new THREE.PerspectiveCamera(fov, canvas.width / canvas.height, near, far);
 
+      console.log('canvas', canvas.width, canvas.height)
+      console.log('frame', frame.width, frame.height)
+      console.log('pixel ratio', THREE.$window.devicePixelRatio)
       // const controls = new OrbitControls(camera, canvas);
       // controls.enableDamping = true;
 
@@ -180,6 +185,7 @@ Page({
       this.scene.add(new THREE.AmbientLight(0xffffff, 1.0))
       this.scene.add(new THREE.DirectionalLight(0xffffff, 1.0))
       renderer.setSize(canvas.width, canvas.height);
+      // renderer.setSize(frame.width, frame.height);
       renderer.setPixelRatio(THREE.$window.devicePixelRatio);
 
       this.renderer = renderer;
@@ -197,7 +203,7 @@ Page({
     console.log('dimentions', dimensions)
 
     const gltfLoader = new GLTFLoader();
-    const gltf = await gltfLoader.loadAsync('https://626c-blog-541fe4-1257925894.tcb.qcloud.la/nft/card.glb');
+    const gltf = await gltfLoader.loadAsync('https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/examples/image-tracking/assets/card-example/softmind/scene.gltf');
     const arModel = gltf.scene;
     arModel.visible = false;
     arModel.matrixAutoUpdate = false;
@@ -229,12 +235,16 @@ Page({
     }
 
     console.log('dummyRun')
+    try{
     await this.arController.dummyRun(frame);
+    }catch(e) {
+      console.error('dummyRun', e)
+    }
   },
 
   onTX(e: any) {
-    this.platform.dispatchTouchEvent(e)
-    console.log('scene', this.scene)
+    // this.platform.dispatchTouchEvent(e)
+    // console.log('scene', this.scene)
   },
 
   executeClassify: async function (frame: any) {
@@ -246,12 +256,6 @@ Page({
     if (!this.arController) {
       await this.initARController(frame);
       console.log('init done')
-      // this.arController = new ARController({inputWidth: frame.width, inputHeight: frame.height});
-      // await this.arController.addImageTargets('https://626c-blog-541fe4-1257925894.tcb.qcloud.la/nft/card.mind');
-      // this.arController = new nft.default.ARControllerNFT(frame.width, frame.height, '', {});
-      // this.arController.addEventListener('getNFTMarker', (evt: any) => {console.log('getNFTMarker', evt)});
-      // this.arController.addEventListener('lostNFTMarker', (evt: any) => {console.log('lostNFTMarker', evt)});
-      // await this.arController.loadNFTMarker('https://626c-blog-541fe4-1257925894.tcb.qcloud.la/nft/pinball');
     }
 
     // console.log('before processVideo');
