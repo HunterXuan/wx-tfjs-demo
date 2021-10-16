@@ -1,7 +1,2 @@
-import { Controller } from './controller';
-import { Compiler } from './compiler';
-
-export {
-  Controller,
-  Compiler
-}
+export { Controller } from './controller';
+export { Compiler } from './compiler';

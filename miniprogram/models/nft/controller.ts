@@ -22,7 +22,6 @@ export class Controller {
   processingVideo: boolean;
   interestedTargetIndex: any;
   maxTrack: number;
-  // imageTargetStates: any[];
   projectionTransform: number[][];
   projectionMatrix: number[];
   worker: Worker;

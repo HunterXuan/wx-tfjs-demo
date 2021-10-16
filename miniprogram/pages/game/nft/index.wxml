@@ -11,6 +11,5 @@
   class="camera"
   style="height:{{cameraBlockHeight}}px;"
 >
-  <!--<canvas id="canvas" canvas-id="canvas" class="canvas"></canvas>-->
   <canvas class="webgl" type="webgl" id="gl"></canvas>
 </camera>

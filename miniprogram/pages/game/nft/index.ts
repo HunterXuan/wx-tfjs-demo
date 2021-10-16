@@ -6,7 +6,6 @@ import { Controller as ARController } from '../../../models/nft';
 import * as THREE from 'three-platformize';
 import { WechatPlatform } from 'three-platformize/src/WechatPlatform';
 import { GLTF, GLTFLoader } from 'three-platformize/examples/jsm/loaders/GLTFLoader';
-import { OrbitControls } from 'three-platformize/examples/jsm/controls/OrbitControls';
 
 const CANVAS_ID = 'canvas'
 
@@ -22,6 +21,7 @@ Page({
   platform: null as unknown as WechatPlatform,
   frameId: -1,
 
+  scene: null as unknown as THREE.Scene,
   arModels: [] as GLTF[],
   postMatrixList: [] as THREE.Matrix4[],
   processing: false,
@@ -40,7 +40,7 @@ Page({
   * 生命周期函数--监听页面加载
   */
   onLoad: function () {
-    //
+    this.scene = new THREE.Scene();
   },
 
   /**
@@ -51,17 +51,9 @@ Page({
       this.ctx = wx.createCanvasContext(CANVAS_ID);
     }, 500);
 
-    // await this.initModel();
-
     const context = wx.createCameraContext();
-    let count = 0;
     const listener = context.onCameraFrame((frame) => {
       this.executeClassify(frame);
-      // count = count + 1;
-      // if (count === 3) {
-      //   count = 0;
-      //   this.executeClassify(frame);
-      // }
     })
     listener.start();
   },
@@ -73,60 +65,14 @@ Page({
     THREE.PLATFORM.dispose();
   },
 
-  // initModel: async function () {
-  //   // this.showLoadingToast();
-
-  //   // this.hideLoadingToast();
-  //   wx.createSelectorQuery()
-  //     .select('#gl')
-  //     .node()
-  //     .exec((res) => {
-  //       const canvas = res[0].node;
-  //       // console.log('canvas', canvas);
-  //       const platform = new WechatPlatform(canvas);
-  //       platform.enableDeviceOrientation('game'); // 开启DeviceOrientation
-  //       this.platform = platform;
-  //       THREE.PLATFORM.set(platform);
-
-  //       const scene = new THREE.Scene();
-  //       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  //       const camera = new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 1000);
-  //       const gltfLoader = new GLTFLoader();
-
-  //       const controls = new OrbitControls(camera, canvas);
-  //       controls.enableDamping = true;
-
-  //       gltfLoader.loadAsync('https://626c-blog-541fe4-1257925894.tcb.qcloud.la/nft/card.glb').then((gltf: GLTF) => {
-  //         // @ts-ignore
-  //         gltf.parser = null;
-  //         gltf.scene.position.y = -2;
-  //         scene.add(gltf.scene);
-  //         scene.scale.set(1, 1, 1);
-  //         console.log('gltf', gltf);
-  //       });
-
-  //       camera.position.z = 15;
-  //       renderer.outputEncoding = THREE.sRGBEncoding;
-  //       scene.add(new THREE.AmbientLight(0xffffff, 1.0))
-  //       scene.add(new THREE.DirectionalLight(0xffffff, 1.0))
-  //       renderer.setSize(canvas.width, canvas.height);
-  //       renderer.setPixelRatio(THREE.$window.devicePixelRatio);
-
-  //       const render = () => {
-  //         if (!this.disposing) this.frameId = THREE.$requestAnimationFrame(render);
-  //         controls.update();
-  //         renderer.render(scene, camera);
-  //       }
-  //       render()
-  //     })
-  // },
-
   initARController: async function (frame: any) {
+    this.showLoadingToast();
+
     this.arController = new ARController({
       inputWidth: frame.width,
       inputHeight: frame.height,
       maxTrack: 1,
-      onUpdate: (data) => {
+      onUpdate: (data: { type?: any; targetIndex?: any; worldMatrix?: any; }) => {
         if (data.type === 'updateMatrix') {
           console.log('onUpdate:', new Date().getTime(), data);
           const {targetIndex, worldMatrix} = data;
@@ -157,9 +103,6 @@ Page({
     const fov = 2 * Math.atan(1/proj[5] ) * 180 / Math.PI; // vertical fov
     const near = proj[14] / (proj[10] - 1.0);
     const far = proj[14] / (proj[10] + 1.0);
-    const ratio = proj[5] / proj[0]; // (r-l) / (t-b)
-
-    this.scene = new THREE.Scene();
 
     wx.createSelectorQuery()
     .select('#gl')
@@ -174,49 +117,32 @@ Page({
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
       const camera = new THREE.PerspectiveCamera(fov, canvas.width / canvas.height, near, far);
 
-      console.log('canvas', canvas.width, canvas.height)
-      console.log('frame', frame.width, frame.height)
-      console.log('pixel ratio', THREE.$window.devicePixelRatio)
-      // const controls = new OrbitControls(camera, canvas);
-      // controls.enableDamping = true;
-
       camera.position.z = 15;
       renderer.outputEncoding = THREE.sRGBEncoding;
       this.scene.add(new THREE.AmbientLight(0xffffff, 1.0))
       this.scene.add(new THREE.DirectionalLight(0xffffff, 1.0))
       renderer.setSize(canvas.width, canvas.height);
-      // renderer.setSize(frame.width, frame.height);
       renderer.setPixelRatio(THREE.$window.devicePixelRatio);
 
-      this.renderer = renderer;
-      this.camera = camera;
-
       const render = () => {
-        if (!this.disposing) this.frameId = THREE.$requestAnimationFrame(render);
-        // controls.update();
-        this.renderer.render(this.scene, this.camera);
+        if (!this.disposing) {
+          this.frameId = THREE.$requestAnimationFrame(render);
+        }
+        renderer.render(this.scene, camera);
       };
       render();
-    })
+    });
 
-    const { dimensions } = await this.arController.addImageTargets('https://626c-blog-541fe4-1257925894.tcb.qcloud.la/nft/card.mind');
-    console.log('dimentions', dimensions)
+    const { dimensions } = await this.arController.addImageTargets('https://ai.flypot.cn/pocket/models/nft/card.mind');
 
     const gltfLoader = new GLTFLoader();
-    const gltf = await gltfLoader.loadAsync('https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/examples/image-tracking/assets/card-example/softmind/scene.gltf');
+    const gltf = await gltfLoader.loadAsync('https://ai.flypot.cn/pocket/models/nft/softmind/scene.gltf');
     const arModel = gltf.scene;
     arModel.visible = false;
     arModel.matrixAutoUpdate = false;
     this.arModels.push(arModel);
 
-    // arModel.parser = null;
     this.scene.add(arModel);
-    console.log('add model scene', this.scene);
-    // this.scene.scale.set(1, 1, 1);
-    // arModel.scene.position.y = -10;
-    
-    
-    console.log('arModels:', this.arModels);
 
     for (let i = 0; i < this.arModels.length; i++) {
       const [markerWidth, markerHeight] = dimensions[i];
@@ -234,17 +160,13 @@ Page({
       console.log('postMatrixList', this.postMatrixList)
     }
 
-    console.log('dummyRun')
-    try{
-    await this.arController.dummyRun(frame);
-    }catch(e) {
-      console.error('dummyRun', e)
+    try {
+      await this.arController.dummyRun(frame);
+    } catch(e) {
+      console.error('dummyRun', e);
     }
-  },
 
-  onTX(e: any) {
-    // this.platform.dispatchTouchEvent(e)
-    // console.log('scene', this.scene)
+    this.hideLoadingToast();
   },
 
   executeClassify: async function (frame: any) {
@@ -255,13 +177,10 @@ Page({
     this.processing = true;
     if (!this.arController) {
       await this.initARController(frame);
-      console.log('init done')
     }
 
-    // console.log('before processVideo');
     await this.arController.processVideo(frame);
     this.processing = false;
-    // console.log('after processVideo')
   },
 
   showLoadingToast() {
