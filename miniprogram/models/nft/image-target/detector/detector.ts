@@ -989,8 +989,8 @@ export class Detector {
   }
 
   _downsampleBilinear(image: tf.Tensor<tf.Rank>) {
-    const imageHeight = image.shape[0];
-    const imageWidth = image.shape[1];
+    const imageHeight = image.shape[0] as number;
+    const imageWidth = image.shape[1] as number;
 
     const kernelKey = 'w' + imageWidth;
     if (!this.kernelCaches.downsampleBilinear) {
