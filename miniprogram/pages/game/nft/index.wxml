@@ -1,0 +1,15 @@
+<!--pages/basic/posenet/index.wxml-->
+<custom-header bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">目标追踪</view>
+</custom-header>
+<camera
+  device-position="back"
+  flash="off"
+  binderror="error"
+  frame-size="medium"
+  class="camera"
+  style="height:{{cameraBlockHeight}}px;"
+>
+  <canvas class="webgl" type="webgl" id="gl"></canvas>
+</camera>

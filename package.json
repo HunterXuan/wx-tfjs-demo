@@ -15,6 +15,7 @@
   "author": "HunterXuan",
   "license": "MIT",
   "dependencies": {
+    "@msgpack/msgpack": "^2.7.1",
     "@tensorflow-models/body-pix": "^2.2.0",
     "@tensorflow-models/coco-ssd": "^2.2.2",
     "@tensorflow-models/face-landmarks-detection": "^0.0.3",
@@ -24,7 +25,10 @@
     "@tensorflow/tfjs-backend-webgl": "3.5.0",
     "@tensorflow/tfjs-converter": "3.5.0",
     "@tensorflow/tfjs-core": "3.5.0",
-    "fetch-wechat": "^0.0.3"
+    "fetch-wechat": "^0.0.3",
+    "ml-matrix": "^6.8.0",
+    "three-platformize": "^1.129.0",
+    "tinyqueue": "^2.0.3"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.5",

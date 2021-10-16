@@ -6,7 +6,7 @@
   "miniprogramRoot": "miniprogram/",
   "cloudfunctionRoot": "cloudfunctions/",
   "compileType": "miniprogram",
-  "libVersion": "2.15.0",
+  "libVersion": "2.19.6",
   "projectname": "AI%20Pocket",
   "scripts": {
     "beforeCompile": "",
@@ -31,6 +31,7 @@
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
     "compileHotReLoad": false,
+    "lazyloadPlaceholderEnable": false,
     "useMultiFrameRuntime": true,
     "useApiHook": true,
     "useApiHostProcess": true,
@@ -39,10 +40,8 @@
       "disablePlugins": [],
       "outputPath": ""
     },
-    "bundle": true,
+    "enableEngineNative": false,
     "useIsolateContext": true,
-    "useCompilerModule": true,
-    "userConfirmedUseCompilerModuleSwitch": false,
     "userConfirmedBundleSwitch": true,
     "packNpmManually": true,
     "packNpmRelationList": [
@@ -51,7 +50,10 @@
         "miniprogramNpmDistDir": "./miniprogram"
       }
     ],
-    "minifyWXSS": true
+    "minifyWXSS": true,
+    "disableUseStrict": false,
+    "showES6CompileOption": false,
+    "useCompilerPlugins": false
   },
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
