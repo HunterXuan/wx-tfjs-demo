@@ -1,14 +1,14 @@
 const {extract} = require('./image-target/tracker/extract');
 const {buildTrackingImageList} = require('./image-target/image-list');
 
-const postMessage = (data, callback) => {
+const postMessage = (data: any, callback: any) => {
   callback({data});
 };
 
 export class Worker {
   public onmessage = (e: any)=>{console.log('message', e)};
 
-  postMessage (data) {
+  postMessage (data: any) {
     this.processMessage({data});
   }
 
@@ -26,7 +26,7 @@ export class Worker {
         const percentPerAction = percentPerImage / imageList.length;
 
         //console.log("compiling tracking...", i);
-        const trackingData = _extractTrackingFeatures(imageList, (index) => {
+        const trackingData = _extractTrackingFeatures(imageList, (_: any) => {
           //console.log("done tracking", i, index);
           percent += percentPerAction
           postMessage({type: 'progress', percent}, this.onmessage);
@@ -41,7 +41,7 @@ export class Worker {
   }
 };
 
-const _extractTrackingFeatures = (imageList, doneCallback) => {
+const _extractTrackingFeatures = (imageList: any[], doneCallback: any) => {
   const featureSets = [];
   for (let i = 0; i < imageList.length; i++) {
     const image = imageList[i];

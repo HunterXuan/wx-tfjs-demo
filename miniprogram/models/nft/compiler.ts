@@ -9,22 +9,25 @@ import * as tf from '@tensorflow/tfjs-core';
 const CURRENT_VERSION = 2;
 
 export class Compiler {
-  data: null;
+  data: any;
+
   constructor() {
-    this.data = null;
+    this.data = [];
   }
 
   // input html Images
-  compileImageTargets(images, progressCallback) {
+  compileImageTargets(images: any[], progressCallback: (arg0: number) => void) {
     return new Promise(async (resolve, reject) => {
-      const targetImages = [];
+      const targetImages: { data?: any; height: any; width: any; }[] = [];
       for (let i = 0; i < images.length; i++) {
         const img = images[i];
         const processCanvas = document.createElement('canvas');
         processCanvas.width = img.width;
         processCanvas.height = img.height;
         const processContext = processCanvas.getContext('2d');
+        // @ts-ignore
         processContext.drawImage(img, 0, 0, img.width, img.height);
+        // @ts-ignore
         const processData = processContext.getImageData(0, 0, img.width, img.height);
 
         const greyImageData = new Uint8Array(img.width * img.height);
@@ -78,6 +81,7 @@ export class Compiler {
 
       const trackingDataList = await compileTrack();
       for (let i = 0; i < targetImages.length; i++) {
+        // @ts-ignore
 	      this.data[i].trackingData = trackingDataList[i];
       }
       resolve(this.data);
@@ -105,21 +109,23 @@ export class Compiler {
     return buffer;
   }
 
-  importData(buffer) {
+  importData(buffer: any) {
     const content = msgpack.decode(new Uint8Array(buffer));
 
+    // @ts-ignore
     if (!content.v || content.v !== CURRENT_VERSION) {
       console.error("Your compiled .mind might be outdated. Please recompile");
       return [];
     }
+    // @ts-ignore
     const { dataList } = content;
     this.data = dataList;
     return this.data;
   }
 }
 
-const _extractMatchingFeatures = async (imageList, doneCallback) => {
-  const keyframes = [];
+const _extractMatchingFeatures = async (imageList: any[], doneCallback: { (): void; (arg0: number): void; }) => {
+  const keyframes: { maximaPoints: { maxima: boolean; x: number; y: number; scale: number; angle: number[]; descriptors: number[]; }[]; minimaPoints: { maxima: boolean; x: number; y: number; scale: number; angle: number[]; descriptors: number[]; }[]; maximaPointsCluster: { rootNode: { centerPointIndex: any; leaf: boolean; children: never[]; pointIndexes: any; }; }; minimaPointsCluster: { rootNode: { centerPointIndex: any; leaf: boolean; children: never[]; pointIndexes: any; }; }; width: any; height: any; scale: any; }[] = [];
   for (let i = 0; i < imageList.length; i++) {
     const image = imageList[i];
     // TODO: can improve performance greatly if reuse the same detector. just need to handle resizing the kernel outputs
@@ -128,6 +134,7 @@ const _extractMatchingFeatures = async (imageList, doneCallback) => {
     await tf.nextFrame();
     tf.tidy(() => {
       //const inputT = tf.tensor(image.data, [image.data.length]).reshape([image.height, image.width]);
+      // @ts-ignore
       const inputT = tf.tensor(image.data, [image.data.length], 'float32').reshape([image.height, image.width]);
       //const ps = detector.detectImageData(image.data);
       const {featurePoints: ps} = detector.detect(inputT);

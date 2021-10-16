@@ -14,7 +14,6 @@ export class Controller {
   tracker: Tracker | undefined;
   inputWidth: any;
   inputHeight: any;
-  detector: Detector;
   cropDetector: CropDetector;
   inputLoader: InputLoader;
   markerDimensions: any;
@@ -23,19 +22,22 @@ export class Controller {
   processingVideo: boolean;
   interestedTargetIndex: any;
   maxTrack: number;
-  imageTargetStates: any[];
+  // imageTargetStates: any[];
   projectionTransform: number[][];
   projectionMatrix: number[];
   worker: Worker;
   workerMatchDone: any;
   workerTrackDone: any;
+  shouldCaptureRegion: boolean;
+  capturedRegion: null;
+  trackingStates: any[];
 
-  constructor({inputWidth, inputHeight, onUpdate=null, maxTrack=1, debugMode=false}) {
+  constructor({inputWidth, inputHeight, onUpdate=null, maxTrack=1, debugMode=false}: any) {
     this.inputWidth = inputWidth;
     this.inputHeight = inputHeight;
     this.maxTrack = maxTrack;
     this.cropDetector = new CropDetector(this.inputWidth, this.inputHeight, debugMode);
-    this.inputLoader = new InputLoader(this.inputWidth, this.inputHeight);
+    this.inputLoader = new InputLoader();
     this.markerDimensions = null;
     this.onUpdate = onUpdate;
     this.debugMode = debugMode;
@@ -86,12 +88,13 @@ export class Controller {
 
   async addImageTargets(fileURL: string) {
     const content = await fetchFunc()(fileURL, {});
+    // @ts-ignore
     const buffer = await content.arrayBuffer();
     const result = this.addImageTargetsFromBuffer(buffer);
     return result;
   }
 
-  addImageTargetsFromBuffer(buffer) {
+  addImageTargetsFromBuffer(buffer: any) {
     const compiler = new Compiler();
     const dataList = compiler.importData(buffer);
     console.log('dataList', dataList)
@@ -133,9 +136,10 @@ export class Controller {
   }
 
   // warm up gpu - build kernels is slow
-  dummyRun(input) {
+  dummyRun(input: { data: any; width: any; height: any; }) {
     const inputT = this.inputLoader.loadInput(input);
     this.cropDetector.detect(inputT);
+    // @ts-ignore
     this.tracker.dummyRun(inputT);
     inputT.dispose();
   }
@@ -144,21 +148,20 @@ export class Controller {
     return this.projectionMatrix;
   }
 
-  getWorldMatrix(modelViewTransform, targetIndex) {
+  getWorldMatrix(modelViewTransform: any, targetIndex: any) {
     return this._glModelViewMatrix(modelViewTransform, targetIndex);
   }
 
-  async _detectAndMatch(inputT, targetIndexes) {
-let startTime = new Date().getTime();
+  async _detectAndMatch(inputT: tf.Tensor3D, targetIndexes: number[]) {
     const {featurePoints} = this.cropDetector.detectMoving(inputT);
-console.log('detectMoving', new Date().getTime()-startTime)
+    // @ts-ignore
     const {targetIndex: matchedTargetIndex, modelViewTransform} = await this._workerMatch(featurePoints, targetIndexes);
-console.log('_workerMatch', new Date().getTime()-startTime)
     return {targetIndex: matchedTargetIndex, modelViewTransform}
   }
 
-  async _trackAndUpdate(inputT, lastModelViewTransform, targetIndex) {
+  async _trackAndUpdate(inputT: tf.Tensor3D, lastModelViewTransform: any, targetIndex: number) {
     const startTime = new Date().getTime();
+    // @ts-ignore
     const {worldCoords, screenCoords} = this.tracker.track(inputT, lastModelViewTransform, targetIndex);
     console.log('tracker track', new Date().getTime() - startTime)
     if (worldCoords.length < 4) return null;
@@ -167,7 +170,7 @@ console.log('_workerMatch', new Date().getTime()-startTime)
     return modelViewTransform;
   }
 
-  async processVideo(input) {
+  async processVideo(input: { data: any; width: any; height: any; }) {
     if (this.processingVideo) return;
 
     this.processingVideo = true;
@@ -284,29 +287,32 @@ console.log('_workerMatch', new Date().getTime()-startTime)
     this.processingVideo = false;
   }
 
-  async detect(input) {
+  async detect(input: { data: any; width: any; height: any; }) {
     const inputT = this.inputLoader.loadInput(input);
     const featurePoints = await this.cropDetector.detect(inputT);
     inputT.dispose();
     return featurePoints;
   }
 
-  async match(featurePoints, targetIndex) {
+  async match(featurePoints: any, targetIndex: any) {
+    // @ts-ignore
     const {modelViewTransform, debugExtra} = await this._workerMatch(featurePoints, [targetIndex]);
     return {modelViewTransform, debugExtra};
   }
 
-  async track(input, modelViewTransforms, targetIndex) {
+  async track(input: { data: any; width: any; height: any; }, modelViewTransforms: any, targetIndex: number) {
     const inputT = this.inputLoader.loadInput(input);
+    // @ts-ignore
     const result = this.tracker.track(inputT, modelViewTransforms, targetIndex);
     inputT.dispose();
     return result;
   }
 
-  async trackAllFrames(input, modelViewTransforms, targetIndex, nKeyframes) {
+  async trackAllFrames(input: { data: any; width: any; height: any; }, modelViewTransforms: any, targetIndex: number, nKeyframes: number) {
     const inputT = this.inputLoader.loadInput(input);
     const trackResults = [];
     for (let i = 0; i < nKeyframes; i++) {
+      // @ts-ignore
       const result = this.tracker.track(inputT, modelViewTransforms, targetIndex, i);
       trackResults.push(result);
     }
@@ -314,24 +320,24 @@ console.log('_workerMatch', new Date().getTime()-startTime)
     return trackResults;
   }
 
-  async trackUpdate(modelViewTransform, trackFeatures) {
+  async trackUpdate(modelViewTransform: any, trackFeatures: { worldCoords: any[]; }) {
     if (trackFeatures.worldCoords.length < 4 ) return null;
     const modelViewTransform2 = await this._workerTrackUpdate(modelViewTransform, trackFeatures);
     return modelViewTransform2;
   }
 
-  _workerMatch(featurePoints, targetIndexes) {
-    return new Promise(async (resolve, reject) => {
-      this.workerMatchDone = (data) => {
+  _workerMatch(featurePoints: { maxima: boolean; x: number; y: number; scale: number; angle: number[]; descriptors: number[]; }[], targetIndexes: any[]) {
+    return new Promise(async (resolve, _) => {
+      this.workerMatchDone = (data: { targetIndex: any; modelViewTransform: any; debugExtra: any; }) => {
         resolve({targetIndex: data.targetIndex, modelViewTransform: data.modelViewTransform, debugExtra: data.debugExtra});
       }
       this.worker.postMessage({type: 'match', featurePoints: featurePoints, targetIndexes});
     });
   }
 
-  _workerTrackUpdate(modelViewTransform, trackingFeatures) {
-    return new Promise(async (resolve, reject) => {
-      this.workerTrackDone = (data) => {
+  _workerTrackUpdate(modelViewTransform: any, trackingFeatures: { worldCoords: any; screenCoords?: any; }) {
+    return new Promise(async (resolve) => {
+      this.workerTrackDone = (data: { modelViewTransform: unknown; }) => {
         resolve(data.modelViewTransform);
       }
       const {worldCoords, screenCoords} = trackingFeatures;
@@ -339,7 +345,7 @@ console.log('_workerMatch', new Date().getTime()-startTime)
     });
   }
 
-  _glModelViewMatrix(modelViewTransform, targetIndex) {
+  _glModelViewMatrix(modelViewTransform: number[][], targetIndex: number) {
     const height = this.markerDimensions[targetIndex][1];
 
     // Question: can someone verify this interpreation is correct? 
@@ -388,7 +394,7 @@ console.log('_workerMatch', new Date().getTime()-startTime)
 
   // build openGL projection matrix
   // ref: https://strawlab.org/2011/11/05/augmented-reality-with-OpenGL/
-  _glProjectionMatrix({projectionTransform, width, height, near, far}) {
+  _glProjectionMatrix({projectionTransform, width, height, near, far}: any) {
     const proj = [
       [2 * projectionTransform[0][0] / width, 0, -(2 * projectionTransform[0][2] / width - 1), 0],
       [0, 2 * projectionTransform[1][1] / height, -(2 * projectionTransform[1][2] / height - 1), 0],
