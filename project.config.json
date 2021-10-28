@@ -31,7 +31,6 @@
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
     "compileHotReLoad": false,
-    "lazyloadPlaceholderEnable": false,
     "useMultiFrameRuntime": true,
     "useApiHook": true,
     "useApiHostProcess": true,
@@ -40,8 +39,10 @@
       "disablePlugins": [],
       "outputPath": ""
     },
-    "enableEngineNative": false,
+    "bundle": false,
     "useIsolateContext": true,
+    "useCompilerModule": true,
+    "userConfirmedUseCompilerModuleSwitch": false,
     "userConfirmedBundleSwitch": true,
     "packNpmManually": true,
     "packNpmRelationList": [
@@ -50,10 +51,7 @@
         "miniprogramNpmDistDir": "./miniprogram"
       }
     ],
-    "minifyWXSS": true,
-    "disableUseStrict": false,
-    "showES6CompileOption": false,
-    "useCompilerPlugins": false
+    "minifyWXSS": true
   },
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
