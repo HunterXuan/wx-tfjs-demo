@@ -1,17 +1,20 @@
 # wx-tfjs-demo
+
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FHunterXuan%2Fwx-tfjs-demo&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+
 微信小程序运行 TensorFlow 的 Demo，代码与小程序「AI Pocket」不定期同步更新。
 
 # 如何运行
 
 ## 运行环境要求
 
-系统：Linux/MacOS 或 Windows 下使用 WSL
+推荐系统：MacOS
 
-NodeJS：>= 12
+NodeJS：v18.x.x
 
-微信基础库版本：>= 2.15.0
+微信基础库版本：>= 2.29.0
 
-微信开发者工具：>= v1.03.2012120
+微信开发者工具：>= v1.06.2210310
 
 微信开发者工具的项目配置：
 
@@ -24,7 +27,7 @@ NodeJS：>= 12
 1. 克隆代码到本地
 2. 修改 project.config.json 中的 `appid` 配置
 3. 在小程序管理后台的“设置-第三方服务-插件管理”中，通过 appid [wx6afed118d9e81df9] 查找并添加
-4. `npm i` 安装依赖
+4. `npm i` 安装依赖（有时可能需要使用 `npm i --force`）
 5. `npm run build` 编译依赖
 6. 手机扫描开发者工具的预览码
 

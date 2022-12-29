@@ -37,7 +37,7 @@ Page({
     wx.navigateToMiniProgram({
       "appId": "wxece3a9a4c82f58c9",
       "extraData": {},
-      "path": "taoke/pages/shopping-guide/index?scene=NGrtKhu"
+      "path": "taoke/pages/shopping-guide/index?scene=9GWP2Ou"
     })
   }
 });

@@ -1,18 +1,14 @@
 {
   "description": "AI Pocket",
   "packOptions": {
-    "ignore": []
+    "ignore": [],
+    "include": []
   },
   "miniprogramRoot": "miniprogram/",
   "cloudfunctionRoot": "cloudfunctions/",
   "compileType": "miniprogram",
   "libVersion": "2.19.6",
   "projectname": "AI%20Pocket",
-  "scripts": {
-    "beforeCompile": "",
-    "beforePreview": "",
-    "beforeUpload": ""
-  },
   "setting": {
     "urlCheck": false,
     "es6": true,
@@ -58,5 +54,10 @@
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "appid": "wx911bc2105f76d5d9",
-  "condition": {}
+  "condition": {},
+  "srcMiniprogramRoot": "miniprogram/",
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
 }

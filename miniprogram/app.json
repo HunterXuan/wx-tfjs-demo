@@ -2,7 +2,16 @@
   "pages": [
     "pages/index/index",
     "pages/basic/home/index",
+    "pages/basic/posenet/index",
+    "pages/basic/body-pix/index",
+    "pages/basic/coco-ssd/index",
+    "pages/basic/handpose/index",
+    "pages/basic/face/index",
     "pages/game/home/index",
+    "pages/game/lipstick/index",
+    "pages/game/nft/index",
+    "pages/game/phone-ranking/index",
+    "pages/game/teachable-machine/index",
     "pages/about/home/index",
     "pages/basic/mobilenet/index",
     "pages/about/story/index",
@@ -51,10 +60,6 @@
     "tfjsPlugin": {
       "version": "0.2.0",
       "provider": "wx6afed118d9e81df9"
-    },
-    "poster": {
-      "version": "1.0.13",
-      "provider": "wx8a6f7c4b3d410554"
     }
   },
   "style": "v2",

@@ -42,15 +42,15 @@ function codeTransform() {
         )
         .replace(
           /https:\/\/tfhub.dev\/tensorflow\/tfjs-model\/blazeface\/1\/default\/1/g,
-          'https://www.gstaticcnapps.cn/tfhub-tfjs-modules/tensorflow/tfjs-model/blazeface/1/default/1/model.json'
+          'https://ai.flypot.cn/proxy/tfjs-models/tfhub-tfjs-modules/tensorflow/tfjs-model/blazeface/1/default/1/model.json'
         )
         .replace(
           /https:\/\/tfhub.dev\/google\/imagenet\/mobilenet_v1_025_224\/classification\/1/g,
-          'https://www.gstaticcnapps.cn/tfhub-tfjs-modules/google/imagenet/mobilenet_v1_025_224/classification/1/model.json'
+          'https://ai.flypot.cn/proxy/tfjs-models/tfhub-tfjs-modules/google/imagenet/mobilenet_v1_025_224/classification/1/model.json'
         )
         .replace(
           /https:\/\/storage.googleapis.com\//g,
-          'https://www.gstaticcnapps.cn/'
+          'https://ai.flypot.cn/proxy/tfjs-models/'
         );
 
       // body-pix
