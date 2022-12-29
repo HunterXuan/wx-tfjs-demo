@@ -32,12 +32,12 @@
         <text class="text-grey">关于</text>
       </navigator>
     </view>
-    <!-- <view class="cu-item arrow">
+    <view class="cu-item arrow">
       <navigator class="content" url="/pages/about/log/index" hover-class="none">
         <text class="cuIcon-formfill text-green"></text>
         <text class="text-grey">更新日志</text>
       </navigator>
-    </view> -->
+    </view>
     <view class="cu-item arrow">
       <view class="content" bindtap="showQrcode">
         <text class="cuIcon-appreciatefill text-red"></text>

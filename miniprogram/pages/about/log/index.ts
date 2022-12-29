@@ -12,14 +12,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function () {
-    const db = wx.cloud.database();
-    db.collection('change_logs').orderBy('date', 'desc').get({
+    wx.request({
+      url: 'https://ai.flypot.cn/pocket/change_logs.json',
       success: (res) => {
         let changeLogs: { tag: any; date: any; key_points: any; }[] = [];
         res.data.forEach((log: any) => {
           changeLogs.push({
             tag: log.tag,
-            date: log.date.toLocaleDateString(),
+            date: log.date,
             key_points: log.key_points
           })
         });

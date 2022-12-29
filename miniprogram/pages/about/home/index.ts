@@ -15,14 +15,34 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function () {
-    let starCount = 426;
-    let viewCount = 15678;
-    let forkCount = 88;
+    wx.request({
+      url: 'https://ai.flypot.cn/pocket/stats.json',
+      dataType: 'json',
+      success: (res) => {
+        let starCount = 0;
+        let viewCount = 0;
+        let forkCount = 0;
 
-    this.setData({
-      starCount: this.formatNum(starCount),
-      viewCount: this.formatNum(viewCount),
-      forkCount: this.formatNum(forkCount),
+        res.data.forEach((element: { label: string; value: number; }) => {
+          if (element.label == 'star_count') {
+            starCount = element.value;
+          }
+
+          if (element.label == 'view_count') {
+            viewCount = element.value;
+          }
+
+          if (element.label == 'fork_count') {
+            forkCount = element.value;
+          }
+        });
+
+        this.setData({
+          starCount: this.formatNum(starCount),
+          viewCount: this.formatNum(viewCount),
+          forkCount: this.formatNum(forkCount),
+        })
+      }
     })
   },
 

@@ -1,6 +1,4 @@
 {
   "navigationBarTitleText": "算力比拼",
-  "usingComponents": {
-    "poster": "plugin://poster/poster"
-  }
+  "usingComponents": {}
 }
