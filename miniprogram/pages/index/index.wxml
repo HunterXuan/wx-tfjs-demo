@@ -6,10 +6,15 @@
         外卖大红包
       </view>
     </view>
+
     <view class="cu-item bg-img shadow-blur" style="background-image:url({{item.img}})" bindtap="handleCardClicked" data-url="{{item.url}}" wx:for="{{list}}" wx:for-index="idx" wx:key="idx">
       <view class="cardTitle">
         {{item.title}}
       </view>
+    </view>
+
+    <view class="cu-item">
+      <ad unit-id="adunit-ecd835a5ec9df5c1"></ad>
     </view>
   </view>
 </scroll-view>

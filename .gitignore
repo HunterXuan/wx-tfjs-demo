@@ -1,3 +1,4 @@
+.DS_Store
 node_modules
 miniprogram/miniprogram_npm
 miniprogram/**/*.js

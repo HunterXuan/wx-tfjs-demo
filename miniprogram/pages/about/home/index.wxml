@@ -25,7 +25,7 @@
         <text class="cuIcon-fork"></text> Fork</view>
     </view>
   </view>
-  <view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
+  <view class="cu-list menu card-menu margin-top-xl shadow-lg radius">
     <view class="cu-item arrow">
       <navigator class="content" url="/pages/about/story/index" hover-class="none">
         <text class="cuIcon-infofill text-grey"></text>
@@ -57,5 +57,10 @@
       </button>
     </view>
   </view>
-  <view class="cu-tabbar-height"></view>
+
+  <view class="cu-card">
+    <view class="cu-item">
+      <ad unit-id="adunit-ccafe3620410a11b"></ad>
+    </view>
+  </view>
 </scroll-view>
