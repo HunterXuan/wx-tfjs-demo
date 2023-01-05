@@ -143,13 +143,16 @@
       <official-account></official-account>
     </view>
     <view class="indent-text">
-      研究生毕业之后，我来到美丽的厦门，就职于网宿科技，先后从事流程引擎、智能客服相关的设计开发工作。很感谢在网宿的同事和领导们，给了很多包容以及成长的机会。
+      研究生毕业之后，我来到美丽的厦门，就职于网宿科技，先后从事流程引擎、智能客服相关的设计开发工作。
     </view>
     <view class="indent-text">
-      于网宿离职后，投身于 STEAM/K12 的教育创业项目中，希望能为我国的素质教育发展贡献点力量。然而因为资金不到位等问题，只好告一段落。
+      于网宿离职后，投身于 STEAM/K12 的教育创业项目中，希望能为我国的素质教育发展贡献点力量。
     </view>
     <view class="indent-text">
-      目前，我在鹅厂 WXG 微信支付线搬砖。有兴趣来鹅厂的欢迎联系，当然我也帮内推其它厂，前提是聊得来。
+      然而因为资金不到位等问题，只好告一段落，开始了在腾讯 WXG 微信支付线的为期两年的「打怪修练」之旅。
+    </view>
+    <view class="indent-text">
+      目前，我就职于一家不知名外企。在辛勤打工之余，也偶尔探索更多有趣的事物！
     </view>
   </view>
 
@@ -159,14 +162,13 @@
     </view>
   </view>
   <view class="padding bg-white tech-tag-container">
+    <view class="cu-tag bg-black">GoLang</view>
     <view class="cu-tag bg-red">PHP</view>
     <view class="cu-tag bg-orange">Python</view>
-    <view class="cu-tag bg-black">GoLang</view>
     <view class="cu-tag bg-pink">NodeJS</view>
     <view class="cu-tag bg-olive">AI</view>
     <view class="cu-tag bg-green">NLP</view>
     <view class="cu-tag bg-cyan">Docker</view>
-    <view class="cu-tag bg-blue">Swarm</view>
     <view class="cu-tag bg-purple">Laravel</view>
     <view class="cu-tag bg-yellow">Vue</view>
     <view class="cu-tag bg-mauve">Camunda</view>
@@ -182,7 +184,10 @@
   </view>
   <view class="padding bg-white">
     <view class="indent-text">
-      目前只有我一个人在折腾，代码将不定期更新到 GitHub 仓库 HunterXuan/wx-tfjs-demo 上。欢迎有兴趣的同学一起加功能 & DeBUG。
+      目前只有我一个人在折腾，代码将不定期更新到 GitHub 仓库 HunterXuan/wx-tfjs-demo 上。
+    </view>
+    <view class="indent-text">
+      当然，我也非常欢迎有兴趣的同学一起加功能 & DeBug。
     </view>
   </view>
 
