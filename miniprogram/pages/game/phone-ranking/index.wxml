@@ -59,5 +59,28 @@
         </view>
       </view>
     </view>
+
+    <view class="cu-list card-menu">
+      <ad unit-id="adunit-40665823848050a9"></ad>
+    </view>
+
+    <view class="padding-xs">
+      <view class="text-center text-shadow text-orange padding-sm text-lg">
+        <text class="cuIcon-rank"></text>
+        比拼记录
+        <text class="cuIcon-rank"></text>
+      </view>
+    </view>
+
+    <view class="cu-list menu card-menu">
+      <view class="cu-item" wx:for="{{ rankingRecords }}" wx:for-item="item" wx:key="item">
+        <view class="content">
+          <text class="text-orange">{{ item.score }}</text>
+        </view>
+        <view class="action">
+          <text class="text-grey text-sm">{{ item.time }}</text>
+        </view>
+      </view>
+    </view>
   </view>
 </view>

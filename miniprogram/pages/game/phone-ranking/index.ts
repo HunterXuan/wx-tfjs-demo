@@ -1,7 +1,10 @@
 // pages/game/teachable-machine/index.ts
 const app = getApp<IAppOption>();
 
+import { isTypedArray } from '@tensorflow/tfjs-core/dist/util';
 import * as model from '../../../models/mobilenet/model';
+
+const rankingRecordsKey = 'RANKING_RECORDS_KEY';
 
 Page({
 
@@ -25,16 +28,27 @@ Page({
     // 比分显示
     btnStatus: 'waiting' as ('waiting' | 'loading' | 'predicting' | 'done'),
     btnText: '0',
+    // 比拼记录
+    rankingRecords: [] as {time: string, score: number}[],
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function () {
-    wx.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage', 'shareTimeline']
-    });
+    try {
+      const strValue = wx.getStorageSync(rankingRecordsKey);
+      if (strValue) {
+        const objValue = JSON.parse(strValue);
+        if (objValue) {
+          this.setData({
+            rankingRecords: objValue,
+          });
+        }
+      }
+    } catch (e) {
+      console.error("getStorageSync err:", e);
+    }
   },
 
   /**
@@ -116,11 +130,11 @@ Page({
     this.setData({
       btnText,
     });
-
   },
 
   processAvgPredictionScore: async function () {
     this.calAvgPredictionScore();
+    this.saveRankingRecords();
     wx.showToast({
       title: '结束啦！',
       icon: 'success',
@@ -139,6 +153,23 @@ Page({
     this.setData({
       btnText
     });
+  },
+
+  saveRankingRecords: function () {
+    const nowTime = new Date();
+    const rankingRecords = this.data.rankingRecords || [];
+    rankingRecords.push({
+      time: nowTime.getFullYear() + '/' + (nowTime.getMonth() + 1) + '/' + nowTime.getDate(),
+      score: this.avgPredictionScore,
+    });
+    this.setData({
+      rankingRecords: rankingRecords,
+    });
+    try {
+      wx.setStorageSync(rankingRecordsKey, JSON.stringify(rankingRecords));
+    } catch (e) {
+      console.error('setStorageSync err:', e);
+    }
   },
 
   /**
