@@ -1,6 +1,6 @@
 <!--pages/game/home/index.wxml-->
 <scroll-view scroll-y class="scrollPage">
-  <image src='https://ai.flypot.cn/pocket/images/game-bg.png' mode='widthFix' class='response'></image>
+  <image src='https://ai.flypot.cn/mp/ai-pocket/images/game-bg.png' mode='widthFix' class='response'></image>
   <view class='nav-list'>
     <navigator hover-class='none' url="/pages/game/{{item.page}}/index" class="nav-li bg-{{item.color}}" wx:for="{{elements}}" wx:for-index="idx" wx:key="idx">
       <view class="nav-title">{{item.title}}</view>

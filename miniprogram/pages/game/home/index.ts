@@ -10,6 +10,7 @@ Page({
       { title: '算力比拼', name: 'Ranking', page: 'phone-ranking', color: 'mauve', icon: 'crown' },
       { title: '口红试色', name: 'Lipstick', page: 'lipstick', color: 'pink', icon: 'female' },
       { title: '目标追踪', name: 'NFT', page: 'nft', color: 'brown', icon: 'square' },
+      { title: '聊天机器人', name: 'ChatGPT', page: 'chat-gpt', color: 'cyan', icon: 'community' },
     ],
   },
 

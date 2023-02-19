@@ -133,10 +133,10 @@ Page({
       render();
     });
 
-    const { dimensions } = await this.arController.addImageTargets('https://ai.flypot.cn/pocket/models/nft/card.mind');
+    const { dimensions } = await this.arController.addImageTargets('https://ai.flypot.cn/mp/ai-pocket/models/nft/card.mind');
 
     const gltfLoader = new GLTFLoader();
-    const gltf = await gltfLoader.loadAsync('https://ai.flypot.cn/pocket/models/nft/softmind/scene.gltf');
+    const gltf = await gltfLoader.loadAsync('https://ai.flypot.cn/mp/ai-pocket/models/nft/softmind/scene.gltf');
     const arModel = gltf.scene;
     arModel.visible = false;
     arModel.matrixAutoUpdate = false;

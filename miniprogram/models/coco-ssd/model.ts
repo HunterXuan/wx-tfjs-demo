@@ -10,7 +10,7 @@ let model: cocoSSD.ObjectDetection;
 
 export const load = async () => {
   model = await cocoSSD.load({
-    modelUrl: 'https://ai.flypot.cn/models/coco-ssd/model.json'
+    modelUrl: 'https://ai.flypot.cn/mp/ai-pocket/models/coco-ssd/model.json'
   });
 
   await model.detect(tf.zeros([227, 227, 3], 'int32'));

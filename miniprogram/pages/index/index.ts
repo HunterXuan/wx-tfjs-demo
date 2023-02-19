@@ -5,17 +5,17 @@ Page({
     list: [
       {
         title: '图像分类',
-        img: 'https://ai.flypot.cn/pocket/images/index-imagenet-bg.jpg',
+        img: 'https://ai.flypot.cn/mp/ai-pocket/images/index-imagenet-bg.jpg',
         url: '/pages/basic/mobilenet/index'
       },
       {
         title: '姿势识别',
-        img: 'https://ai.flypot.cn/pocket/images/index-posenet-bg.jpg',
+        img: 'https://ai.flypot.cn/mp/ai-pocket/images/index-posenet-bg.jpg',
         url: '/pages/basic/posenet/index'
       },
       {
         title: '初识 AI',
-        img: 'https://ai.flypot.cn/pocket/images/index-teach-bg.jpg',
+        img: 'https://ai.flypot.cn/mp/ai-pocket/images/index-teach-bg.jpg',
         url: '/pages/game/teachable-machine/index'
       }
     ]

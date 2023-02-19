@@ -13,7 +13,7 @@ Page({
    */
   onLoad: function () {
     wx.request({
-      url: 'https://ai.flypot.cn/pocket/change_logs.json',
+      url: 'https://ai.flypot.cn/mp/ai-pocket/change_logs.json',
       success: (res) => {
         let changeLogs: { tag: any; date: any; key_points: any; }[] = [];
         res.data.forEach((log: any) => {

@@ -6,7 +6,7 @@
     <view class="margin-top-sm">
       <text>By HunterXuan</text>
     </view>
-    <image src='https://ai.flypot.cn/pocket/images/wave.gif' mode='scaleToFill' class='gif-wave'></image>
+    <image src='https://ai.flypot.cn/mp/ai-pocket/images/wave.gif' mode='scaleToFill' class='gif-wave'></image>
   </view>
   <view class="padding flex text-center text-grey bg-white shadow-warp">
     <view class="flex flex-sub flex-direction solid-right">

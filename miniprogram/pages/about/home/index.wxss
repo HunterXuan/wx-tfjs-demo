@@ -1,6 +1,6 @@
 /* pages/about/home/index.wxss */
 .UCenter-bg {
-  background-image: url(https://ai.flypot.cn/pocket/images/about-bg.jpg);
+  background-image: url(https://ai.flypot.cn/mp/ai-pocket/images/about-bg.jpg);
   background-size: cover;
   height: 550rpx;
   display: flex;

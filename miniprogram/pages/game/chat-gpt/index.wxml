@@ -1,0 +1,55 @@
+<!--pages/game/chat-gpt/index.wxml-->
+<custom-header bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">更多模型</view>
+  <view slot="content">ChatGPT</view>
+</custom-header>
+
+<scroll-view
+  class="cu-chat"
+  scroll-y="true"
+  scroll-top="{{scrollTop}}"
+  style="text-align: center; height: {{scrollViewHeight}}px;">
+  <block wx:for="{{chatList}}" wx:for-item="item" wx:key="item">
+    <view wx:if="{{index==tipsMap.model.idx}}" class="cu-info round">模型版本：{{ tipsMap.model.data.name }}</view>
+    <view wx:if="{{index==tipsMap['slow-down'].idx}}" class="cu-info round">{{ tipsMap['slow-down'].data.text }}</view>
+    <view class="cu-item {{item.user=='me'?'self':''}}" id="{{'message_'+index}}">
+      <view wx:if="{{item.user=='bot'}}" class="cu-avatar radius bg-cyan">
+        <text class="cuIcon-creative"></text>
+      </view>
+      <view class="main">
+        <view class="content shadow {{item.user=='me'?'bg-green':''}}">
+          <view wx:if="{{item.type=='typing'}}" class="cu-load loading chat" style="line-height: 1em;"></view>
+          <text user-select>{{item.message}}</text>
+        </view>
+      </view>
+      <view wx:if="{{item.user=='me'}}" class="cu-avatar radius bg-red">
+        <text class="cuIcon-my"></text>
+      </view>
+    </view>
+    <view wx:if="{{index==tipsMap.sponsor.idx}}" class="cu-info round">
+      开源不易，<text class="text-blue" bindtap="showQrcode">打赏一下</text>
+    </view>
+    <view wx:if="{{index==tipsMap.ad.idx}}" class="cu-item">
+      <ad unit-id="adunit-488985a4e112a96c" bindload="handleAdLoad"></ad>
+    </view>
+  </block>
+</scroll-view>
+
+<view class="cu-bar foot input {{inputBottom!=0?'cur':''}}" style="padding: 0; bottom:{{inputBottom}}px">
+  <input
+    type='text'
+    class="solid-bottom"
+    value="{{text}}"
+    bindconfirm="handleConfirm"
+    confirm-hold="{{true}}"
+    confirm-type="send"
+    bindfocus="handleInputFocus"
+    bindblur="handleInputBlur"
+    bindinput="handleInput"
+    adjust-position="{{false}}"
+    focus="{{inputFocus}}"
+    maxlength="300"
+    cursor-spacing="10"
+    placeholder="说点什么..."
+    style="background: #EBECF0; padding: 0 16rpx; border-radius: 16rpx;"></input>
+</view>

@@ -1,0 +1,8 @@
+/* pages/game/chat-gpt/index.wxss */
+page{
+  padding-bottom: 100rpx;
+}
+
+.chat.cu-load.loading::after {
+  content: '';
+}

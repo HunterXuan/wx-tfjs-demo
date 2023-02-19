@@ -1,5 +1,5 @@
 <scroll-view scroll-y class="scrollPage">
-  <image src='https://ai.flypot.cn/pocket/images/index-bg.png' mode='widthFix' class='png' style='width:100%;height:486rpx'></image>
+  <image src='https://ai.flypot.cn/mp/ai-pocket/images/index-bg.png' mode='widthFix' class='png' style='width:100%;height:486rpx'></image>
   <view class="cu-card">
     <view class="cu-item bg-img shadow-blur" style="background-image:url({{item.img}})" bindtap="handleCardClicked" data-url="{{item.url}}" wx:for="{{list}}" wx:for-index="idx" wx:key="idx">
       <view class="cardTitle">
@@ -11,7 +11,7 @@
       <ad unit-id="adunit-ecd835a5ec9df5c1"></ad>
     </view>
 
-    <view class="cu-item bg-img shadow-blur" style="background-image:url(https://ai.flypot.cn/pocket/images/index-coupon-bg.jpg)" bindtap="goToCoupon">
+    <view class="cu-item bg-img shadow-blur" style="background-image:url(https://ai.flypot.cn/mp/ai-pocket/images/index-coupon-bg.jpg)" bindtap="goToCoupon">
       <view class="cardTitle">
         外卖大红包
       </view>

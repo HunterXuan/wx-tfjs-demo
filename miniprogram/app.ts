@@ -1,8 +1,10 @@
 // app.ts
 import * as tf from '@tensorflow/tfjs-core';
 import * as webgl from '@tensorflow/tfjs-backend-webgl';
-import * as fetchWechat from 'fetch-wechat';
-const plugin = requirePlugin('tfjsPlugin');
+import { setupWechatPlatform } from './plugins/wechat_platform';
+import { fetchFunc } from './plugins/fetch';
+
+const updateManager = wx.getUpdateManager();
 
 App<IAppOption>({
   globalData: {
@@ -10,7 +12,9 @@ App<IAppOption>({
     statusBarHeight: 0,
     menuHeaderHeight: 0,
     systemInfo: {} as WechatMiniprogram.SystemInfo,
-    openid: ''
+    user: {
+      token: ''
+    }
   },
   async onLaunch () {
     // SystemInfo
@@ -21,21 +25,77 @@ App<IAppOption>({
     this.globalData.menuHeaderHeight = rect.bottom + rect.top - systemInfo.statusBarHeight;
     this.globalData.systemInfo = wx.getSystemInfoSync();
 
+    // 登录
+    wx.login({
+      success: (res) => {
+        wx.request({
+          url: 'https://ai.flypot.cn/mp/ai-pocket/proxy/chat-gpt/login',
+          method: 'POST',
+          dataType: 'json',
+          data: {
+            code: res.code,
+          },
+          success: (res: any) => {
+            if (res.statusCode === 200 && res?.data?.token) {
+              this.globalData.user.token = res.data.token;
+            } else {
+              wx.showToast({
+                title: '初始化失败',
+                icon: 'error',
+              });
+            }
+          },
+          fail: (err) => {
+            console.error('login fail:', err);
+            wx.showToast({
+              title: '初始化失败',
+              icon: 'error',
+            });
+           }
+        })
+      },
+      fail: (err) => {
+        console.error('login fail:', err);
+        wx.showToast({
+          title: '初始化失败',
+          icon: 'error',
+        });
+      }
+    });
+
     // Debug: Cannot create a canvas in this context
     // Detect webgl version: https://stackoverflow.com/questions/51428435/how-to-determine-webgl-and-glsl-version
     // tf.ENV.flagRegistry.WEBGL_VERSION.evaluationFn = () => {return 1};
-    plugin.configPlugin({
-      // polyfill fetch function
-      fetchFunc: fetchWechat.fetchFunc(),
+    setupWechatPlatform({
+      fetchFunc: fetchFunc,
       // inject tfjs runtime
       tf,
       // inject webgl backend
       webgl,
       // provide webgl canvas
-      canvas: wx.createOffscreenCanvas(0, 0)
+      canvas: wx.createOffscreenCanvas(0, 0),
     });
   },
 
   async onShow () {
+    updateManager.onCheckForUpdate((res) => {
+      console.log(res.hasUpdate);
+    });
+
+    updateManager.onUpdateReady(() => {
+      wx.showModal({
+        title: '更新提示',
+        content: '新版本已经准备好，是否重启应用',
+        success(res) {
+          if (res.confirm) {
+            updateManager.applyUpdate();
+          }
+        },
+      });
+    });
+
+    updateManager.onUpdateFailed((err) => {
+      console.error('update failed:', err);
+    });
   },
 })

@@ -16,7 +16,7 @@ Page({
    */
   onLoad: function () {
     wx.request({
-      url: 'https://ai.flypot.cn/pocket/stats.json',
+      url: 'https://ai.flypot.cn/mp/ai-pocket/stats.json',
       dataType: 'json',
       success: (res) => {
         let starCount = 0;
@@ -70,8 +70,8 @@ Page({
 
   showQrcode: function () {
     wx.previewImage({
-      urls: ['https://ai.flypot.cn/pocket/images/zan-code.jpg'],
-      current: 'https://ai.flypot.cn/pocket/images/zan-code.jpg' // 当前显示图片的http链接      
-    })
+      urls: ['https://ai.flypot.cn/mp/ai-pocket/images/zan-code.jpg'],
+      current: 'https://ai.flypot.cn/mp/ai-pocket/images/zan-code.jpg' // 当前显示图片的http链接      
+    });
   }
 })

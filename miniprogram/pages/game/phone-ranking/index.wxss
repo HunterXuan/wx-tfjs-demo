@@ -6,7 +6,7 @@
 }
 
 .bubble-bg {
-  background-image: url(https://ai.flypot.cn/pocket/images/phone-ranking-bg.svg);
+  background-image: url(https://ai.flypot.cn/mp/ai-pocket/images/phone-ranking-bg.svg);
   background-size: cover;
   background-position: center;
 }
