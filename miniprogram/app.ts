@@ -25,44 +25,6 @@ App<IAppOption>({
     this.globalData.menuHeaderHeight = rect.bottom + rect.top - systemInfo.statusBarHeight;
     this.globalData.systemInfo = wx.getSystemInfoSync();
 
-    // 登录
-    wx.login({
-      success: (res) => {
-        wx.request({
-          url: 'https://ai.flypot.cn/mp/ai-pocket/proxy/chat-gpt/login',
-          method: 'POST',
-          dataType: 'json',
-          data: {
-            code: res.code,
-          },
-          success: (res: any) => {
-            if (res.statusCode === 200 && res?.data?.token) {
-              this.globalData.user.token = res.data.token;
-            } else {
-              wx.showToast({
-                title: '初始化失败',
-                icon: 'error',
-              });
-            }
-          },
-          fail: (err) => {
-            console.error('login fail:', err);
-            wx.showToast({
-              title: '初始化失败',
-              icon: 'error',
-            });
-           }
-        })
-      },
-      fail: (err) => {
-        console.error('login fail:', err);
-        wx.showToast({
-          title: '初始化失败',
-          icon: 'error',
-        });
-      }
-    });
-
     // Debug: Cannot create a canvas in this context
     // Detect webgl version: https://stackoverflow.com/questions/51428435/how-to-determine-webgl-and-glsl-version
     // tf.ENV.flagRegistry.WEBGL_VERSION.evaluationFn = () => {return 1};

@@ -53,6 +53,44 @@ Page({
         console.log('onClose event emit', res);
       });
     }
+
+    // 登录
+    wx.login({
+      success: (res) => {
+        wx.request({
+          url: 'https://ai.flypot.cn/mp/ai-pocket/proxy/chat-gpt/login',
+          method: 'POST',
+          dataType: 'json',
+          data: {
+            code: res.code,
+          },
+          success: (res: any) => {
+            if (res.statusCode === 200 && res?.data?.token) {
+              app.globalData.user.token = res.data.token;
+            } else {
+              wx.showToast({
+                title: '初始化失败',
+                icon: 'error',
+              });
+            }
+          },
+          fail: (err) => {
+            console.error('login fail:', err);
+            wx.showToast({
+              title: '初始化失败',
+              icon: 'error',
+            });
+           }
+        })
+      },
+      fail: (err) => {
+        console.error('login fail:', err);
+        wx.showToast({
+          title: '初始化失败',
+          icon: 'error',
+        });
+      }
+    });
   },
 
   /**
