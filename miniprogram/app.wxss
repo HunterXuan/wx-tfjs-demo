@@ -18,7 +18,6 @@
   border-radius: 12rpx;
   width: 45%;
   margin: 0 2.5% 40rpx;
-  background-image: url(https://image.weilanwl.com/color2.0/cardBg.png);
   background-size: cover;
   background-position: center;
   position: relative;
