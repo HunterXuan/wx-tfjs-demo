@@ -29,7 +29,7 @@ Page({
     conversationCookie: '',
 
     tipsMap: {
-      'model': { idx: 0, data: { name: 'GPT' } },
+      'model': { idx: 0, data: { name: '...' } },
       'slow-down': { idx: -1, data: { text: '' } },
       'sponsor': { idx: 15, data: {} },
       'ad': { idx: -1, data: {} },
@@ -40,59 +40,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad() {
-    this.data.conversationId = generateUUID();
-    if (wx.createInterstitialAd) {
-      this.data.interstitialAd = wx.createInterstitialAd({ adUnitId: 'adunit-f23fe77457aec849' });
-      this.data.interstitialAd.onLoad(() => {
-        console.log('onLoad event emit');
-      });
-      this.data.interstitialAd.onError((err) => {
-        console.error('onError event emit', err);
-      });
-      this.data.interstitialAd.onClose((res) => {
-        console.log('onClose event emit', res);
-      });
-    }
+    this.initConversationId();
 
-    if (app.globalData.user.token === '') {
-      // 登录
-      wx.login({
-        success: (res) => {
-          wx.request({
-            url: 'https://ai.flypot.cn/mp/ai-pocket/proxy/chat-gpt/login',
-            method: 'POST',
-            dataType: 'json',
-            data: {
-              code: res.code,
-            },
-            success: (res: any) => {
-              if (res.statusCode === 200 && res?.data?.token) {
-                app.globalData.user.token = res.data.token;
-              } else {
-                wx.showToast({
-                  title: '初始化失败',
-                  icon: 'error',
-                });
-              }
-            },
-            fail: (err) => {
-              console.error('login fail:', err);
-              wx.showToast({
-                title: '初始化失败',
-                icon: 'error',
-              });
-            }
-          })
-        },
-        fail: (err) => {
-          console.error('login fail:', err);
-          wx.showToast({
-            title: '初始化失败',
-            icon: 'error',
-          });
-        }
-      });
-    }
+    this.login();
+
+    this.initAd();
+
+    this.initModel();
   },
 
   /**
@@ -152,6 +106,85 @@ Page({
       title: 'ChatGPT 体验',
       imageUrl: 'https://ai.flypot.cn/mp/ai-pocket/images/chat.jpg'
     };
+  },
+
+  initConversationId() {
+    this.data.conversationId = generateUUID();
+  },
+
+  initModel() {
+    wx.request({
+      url: 'https://ai.flypot.cn/mp/ai-pocket/proxy/chat-gpt/chat',
+      method: 'HEAD',
+      header: {
+        conversation: this.data.conversationId,
+      },
+      success: (res: any) => {
+        if (res?.header?.['X-Chat-Model']) {
+          this.data.tipsMap.model.data.name = res?.header?.['X-Chat-Model'];
+          this.setData({
+            tipsMap: this.data.tipsMap,
+          });
+        }
+      },
+    })
+  },
+
+  initAd() {
+    if (wx.createInterstitialAd) {
+      this.data.interstitialAd = wx.createInterstitialAd({ adUnitId: 'adunit-f23fe77457aec849' });
+      this.data.interstitialAd.onLoad(() => {
+        console.log('onLoad event emit');
+      });
+      this.data.interstitialAd.onError((err) => {
+        console.error('onError event emit', err);
+      });
+      this.data.interstitialAd.onClose((res) => {
+        console.log('onClose event emit', res);
+      });
+    }
+  },
+
+  login() {
+    if (app.globalData.user.token === '') {
+      // 登录
+      wx.login({
+        success: (res) => {
+          wx.request({
+            url: 'https://ai.flypot.cn/mp/ai-pocket/proxy/chat-gpt/login',
+            method: 'POST',
+            dataType: 'json',
+            data: {
+              code: res.code,
+            },
+            success: (res: any) => {
+              if (res.statusCode === 200 && res?.data?.token) {
+                app.globalData.user.token = res.data.token;
+              } else {
+                wx.showToast({
+                  title: '初始化失败',
+                  icon: 'error',
+                });
+              }
+            },
+            fail: (err) => {
+              console.error('login fail:', err);
+              wx.showToast({
+                title: '初始化失败',
+                icon: 'error',
+              });
+            }
+          })
+        },
+        fail: (err) => {
+          console.error('login fail:', err);
+          wx.showToast({
+            title: '初始化失败',
+            icon: 'error',
+          });
+        }
+      });
+    }
   },
 
   handleInputFocus(e: any) {
