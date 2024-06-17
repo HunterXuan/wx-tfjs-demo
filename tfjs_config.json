@@ -36,7 +36,8 @@
     "Transpose",
     "Exp",
     "Tile",
-    "NonMaxSuppressionV3"
+    "NonMaxSuppressionV3",
+    "Sequential"
   ],
   "backends": [
     "webgl",

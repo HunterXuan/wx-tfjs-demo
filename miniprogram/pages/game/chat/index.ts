@@ -29,7 +29,7 @@ Page({
     conversationCookie: '',
 
     tipsMap: {
-      'model': { idx: 0, data: { name: '...' } },
+      'model': { idx: 0, data: { name: '' } },
       'slow-down': { idx: -1, data: { text: '' } },
       'sponsor': { idx: 15, data: {} },
       'ad': { idx: -1, data: {} },
@@ -60,7 +60,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    wx.showModal({
+      content: '暂时下线',
+    });
   },
 
   /**

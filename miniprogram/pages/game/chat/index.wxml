@@ -1,7 +1,7 @@
 <!--pages/game/chat-gpt/index.wxml-->
 <custom-header bgColor="bg-gradual-blue" isBack="{{true}}">
   <view slot="backText">更多模型</view>
-  <view slot="content">ChatGPT</view>
+  <view slot="content">AI 对话</view>
 </custom-header>
 
 <scroll-view
@@ -10,7 +10,8 @@
   scroll-top="{{scrollTop}}"
   style="text-align: center; height: {{scrollViewHeight}}px;">
   <block wx:for="{{chatList}}" wx:for-item="item" wx:key="item">
-    <view wx:if="{{index==tipsMap.model.idx}}" class="cu-info round">模型版本：{{ tipsMap.model.data.name }}</view>
+    <!-- <view wx:if="{{index==tipsMap.model.idx}}" class="cu-info round">模型版本：{{ tipsMap.model.data.name }}</view> -->
+    <view wx:if="{{index==tipsMap.model.idx}}" class="cu-info round">{{ tipsMap.model.data.name ? '模型已加载' : '模型加载中' }}</view>
     <view wx:if="{{index==tipsMap['slow-down'].idx}}" class="cu-info round">{{ tipsMap['slow-down'].data.text }}</view>
     <view class="cu-item {{item.user=='me'?'self':''}}" id="{{'message_'+index}}">
       <view wx:if="{{item.user=='bot'}}" class="cu-avatar radius bg-cyan">
@@ -37,6 +38,7 @@
 
 <view class="cu-bar foot input {{inputBottom!=0?'cur':''}}" style="padding: 0; bottom:{{inputBottom}}px">
   <input
+    disabled
     type='text'
     class="solid-bottom"
     value="{{text}}"
