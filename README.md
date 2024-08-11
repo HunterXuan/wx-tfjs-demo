@@ -31,7 +31,7 @@ NodeJS：v18.x.x
 5. `npm run build` 编译依赖
 6. 手机扫描开发者工具的预览码
 
-# TLDR
+# Story
 
 ## 早期实现方式
 
