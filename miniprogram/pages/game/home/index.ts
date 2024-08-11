@@ -6,11 +6,12 @@ Page({
    */
   data: {
     elements: [
-      { title: '初识 AI ', name: 'Teach', page: 'teachable-machine', color: 'purple', icon: 'magic' },
-      { title: '算力比拼', name: 'Ranking', page: 'phone-ranking', color: 'mauve', icon: 'crown' },
-      { title: '口红试色', name: 'Lipstick', page: 'lipstick', color: 'pink', icon: 'female' },
-      { title: '目标追踪', name: 'NFT', page: 'nft', color: 'brown', icon: 'square' },
-      // { title: 'AI 对话', name: 'Chat', page: 'chat', color: 'cyan', icon: 'community' },
+      { title: '初识 AI ', name: 'Teach', target: 'self', appId: '', page: 'teachable-machine', color: 'purple', icon: 'magic' },
+      { title: '算力比拼', name: 'Ranking', target: 'self', appId: '', page: 'phone-ranking', color: 'mauve', icon: 'crown' },
+      { title: '口红试色', name: 'Lipstick', target: 'self', appId: '', page: 'lipstick', color: 'pink', icon: 'female' },
+      { title: '目标追踪', name: 'NFT', target: 'self', appId: '', page: 'nft', color: 'brown', icon: 'square' },
+      // { title: 'AI 对话', name: 'Chat', target: 'self', appId: '', page: 'chat', color: 'cyan', icon: 'community' },
+      { title: '云朵分类', name: 'Cloud', target: 'miniProgram', appId: 'wx8c819c4f1099fa00', page: 'index', color: 'cyan', icon: 'present' },
     ],
   },
 
