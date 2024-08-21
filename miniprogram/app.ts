@@ -28,6 +28,9 @@ App<IAppOption>({
     // Debug: Cannot create a canvas in this context
     // Detect webgl version: https://stackoverflow.com/questions/51428435/how-to-determine-webgl-and-glsl-version
     // tf.ENV.flagRegistry.WEBGL_VERSION.evaluationFn = () => {return 1};
+
+    tf.env().set('WEBGL_DELETE_TEXTURE_THRESHOLD', 67108864)
+
     setupWechatPlatform({
       fetchFunc: fetchFunc,
       // inject tfjs runtime
