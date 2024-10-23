@@ -11,7 +11,7 @@ const mobilenetPredict = async () => {
   // mobilenet
   const model = await mobilenet.load({
     version: 1,
-    modelUrl: 'https://www.gstaticcnapps.cn/tfhub-tfjs-modules/google/imagenet/mobilenet_v1_025_224/classification/1/model.json'
+    modelUrl: 'https://ai.flypot.cn/mp/ai-pocket/models/imagenet/model.json'
   });
   return await model.infer(tf.zeros([1, 224, 224, 3]));
 };

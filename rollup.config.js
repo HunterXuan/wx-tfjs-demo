@@ -22,31 +22,31 @@ function codeTransform() {
         .replace(/fromTFHub:/g, 'fromTFHub_:')
         .replace(
           /https:\/\/tfhub.dev\/mediapipe\/tfjs-model\/handdetector\/1\/default\/1/g,
-          'https://ai.flypot.cn/mp/ai-pocket/proxy/tfjs-models/tfhub-tfjs-modules/mediapipe/tfjs-model/handdetector/1/default/1/model.json'
+          'https://ai.flypot.cn/mp/ai-pocket/models/handdetector/model.json'
         )
         .replace(
           /https:\/\/tfhub.dev\/mediapipe\/tfjs-model\/handskeleton\/1\/default\/1\/anchors.json\?tfjs-format=file/g,
-          'https://ai.flypot.cn/mp/ai-pocket/proxy/tfjs-models/tfhub-tfjs-modules/mediapipe/tfjs-model/handskeleton/1/default/1/anchors.json',
+          'https://ai.flypot.cn/mp/ai-pocket/models/handskeleton/anchors.json',
         )
         .replace(
           /https:\/\/tfhub.dev\/mediapipe\/tfjs-model\/handskeleton\/1\/default\/1/g,
-          'https://ai.flypot.cn/mp/ai-pocket/proxy/tfjs-models/tfhub-tfjs-modules/mediapipe/tfjs-model/handskeleton/1/default/1/model.json',
+          'https://ai.flypot.cn/mp/ai-pocket/models/handskeleton/model.json',
         )
         .replace(
           /https:\/\/tfhub.dev\/mediapipe\/tfjs-model\/facemesh\/1\/default\/1/g,
-          'https://ai.flypot.cn/mp/ai-pocket/proxy/tfjs-models/tfhub-tfjs-modules/mediapipe/tfjs-model/facemesh/1/default/1/model.json',
+          'https://ai.flypot.cn/mp/ai-pocket/models/facemesh/model.json',
         )
         .replace(
           /https:\/\/tfhub.dev\/mediapipe\/tfjs-model\/iris\/1\/default\/2/g,
-          'https://ai.flypot.cn/mp/ai-pocket/proxy/tfjs-models/tfhub-tfjs-modules/mediapipe/tfjs-model/iris/1/default/2/model.json',
+          'https://ai.flypot.cn/mp/ai-pocket/models/iris/model.json',
         )
         .replace(
           /https:\/\/tfhub.dev\/tensorflow\/tfjs-model\/blazeface\/1\/default\/1/g,
-          'https://ai.flypot.cn/mp/ai-pocket/proxy/tfjs-models/tfhub-tfjs-modules/tensorflow/tfjs-model/blazeface/1/default/1/model.json'
+          'https://ai.flypot.cn/mp/ai-pocket/models/blazeface/model.json'
         )
         .replace(
           /https:\/\/tfhub.dev\/google\/imagenet\/mobilenet_v1_025_224\/classification\/1/g,
-          'https://ai.flypot.cn/mp/ai-pocket/proxy/tfjs-models/tfhub-tfjs-modules/google/imagenet/mobilenet_v1_025_224/classification/1/model.json'
+          'https://ai.flypot.cn/mp/ai-pocket/models/imagenet/model.json'
         )
         .replace(
           /https:\/\/storage.googleapis.com\//g,
